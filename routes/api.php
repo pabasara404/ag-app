@@ -29,7 +29,6 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
-//    Route::get('programs', [\App\Http\Controllers\ProgramController::class, 'index']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
 

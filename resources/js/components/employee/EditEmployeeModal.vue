@@ -180,13 +180,13 @@ const isNewEmployee = computed(() => {
 async function save() {
   if (isNewEmployee.value) {
     await Http.post(`employee`, formValue.value);
-    emit("save");
+    emit("close");
 
     return;
   }
 
   await Http.put(`employee/${formValue.value.id}`, formValue.value);
-  emit("save");
+  emit("close");
 }
 function handleSelect(key) {
   message.info(String(key));

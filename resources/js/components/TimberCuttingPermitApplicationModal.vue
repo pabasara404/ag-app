@@ -172,35 +172,35 @@
           <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
-              v-model:value="formValue.tree_details.sub"
+              v-model:value="treeDetailsForm.sub_no"
               placeholder="Sub no"
             />
           </n-form-item>
 
           <n-form-item label="Type">
             <n-input
-              v-model:value="formValue.tree_details.type"
+              v-model:value="treeDetailsForm.type"
               placeholder="Type"
             />
           </n-form-item>
 
           <n-form-item label="Height (feets)">
             <n-input
-              v-model:value="formValue.tree_details.height"
+              v-model:value="treeDetailsForm.height"
               placeholder="Height (feets)"
             />
           </n-form-item>
 
           <n-form-item label="Girth (feets)">
             <n-input
-              v-model:value="formValue.tree_details.girth"
+              v-model:value="treeDetailsForm.girth"
               placeholder="Girth (feets)"
             />
           </n-form-item>
 
           <n-form-item label="Reproducibility">
             <n-radio-group
-              v-model:value="formValue.tree_details.reproducibility"
+              v-model:value="treeDetailsForm.reproducibility"
               name="Reproducibility"
             >
               <n-space>
@@ -212,7 +212,7 @@
 
           <n-form-item label="Age">
             <n-input
-              v-model:value="formValue.tree_details.age"
+              v-model:value="treeDetailsForm.age"
               placeholder="Age"
             />
           </n-form-item>
@@ -220,11 +220,30 @@
           <n-button @click="addTreeDetails">Add Detail</n-button>
         </n-card>
         <n-form-item>
-          <n-data-table :columns="columns" :data="data">
-            <template #action="{ row }">
-              <n-button type="error" @click="removeRow(row)">Remove</n-button>
-            </template>
-          </n-data-table>
+            <n-table :bordered="false" :single-line="false">
+                <thead>
+                <tr>
+                    <th>Sub No</th>
+                    <th>Type</th>
+                    <th>Height</th>
+                    <th>Girth</th>
+                    <th>Reproducibility</th>
+                    <th>Age</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr :key="key" v-for="(tree_detail, key) in formValue.tree_details">
+                    <td>{{ tree_detail.sub_no }}</td>
+                    <td>{{ tree_detail.type}}</td>
+                    <td>{{ tree_detail.height}}</td>
+                    <td>{{ tree_detail.girth }}</td>
+                    <td>{{ tree_detail.reproducibility }}</td>
+                    <td>{{ tree_detail.age }}</td>
+                    <td><n-button @click="removeRow(key)">Remove</n-button></td>
+                </tr>
+                </tbody>
+            </n-table>
         </n-form-item>
 
         <n-form-item label="Reasons for cutting down tree/trees:">
@@ -395,19 +414,20 @@ const formValue = ref({
     palmyra: "",
   },
   tree_details: [
-    {
-      sub_no: "",
-      type: "",
-      height: "",
-      girth: "",
-      reproducibility: "",
-      age: "",
-    },
   ],
   tree_cutting_reasons: [],
   trees_cut_before: "",
   planted_tree_count: "",
   road_to_land: "",
+});
+
+const treeDetailsForm = ref({
+    sub_no: "",
+    type: "",
+    height: "",
+    girth: "",
+    reproducibility: "",
+    age: "",
 });
 
 const rules = {
@@ -614,34 +634,22 @@ function handleChange(group, e) {
   }
 }
 
-const data = ref([]);
 const addTreeDetails = () => {
-  const newTreeDetails = {
-    sub_no: formValue.value.tree_details[0].sub_no,
-    type: formValue.value.tree_details[0].type,
-    height: formValue.value.tree_details[0].height,
-    girth: formValue.value.tree_details[0].girth,
-    reproducibility: formValue.value.tree_details[0].reproducibility,
-    age: formValue.value.tree_details[0].age,
-  };
-  data.value.push(newTreeDetails);
-  clearTreeForm(); // Clear the form after adding tree details
+    formValue.value.tree_details.push({...treeDetailsForm.value});
+    clearTreeForm(); // Clear the form after adding tree details
 };
 
 const clearTreeForm = () => {
-  formValue.value.tree_details[0].sub_no = "";
-  formValue.value.tree_details[0].type = "";
-  formValue.value.tree_details[0].height = "";
-  formValue.value.tree_details[0].girth = "";
-  formValue.value.tree_details[0].reproducibility = "";
-  formValue.value.tree_details[0].age = "";
+  treeDetailsForm.value.sub_no = "";
+  treeDetailsForm.value.type = "";
+  treeDetailsForm.value.height = "";
+  treeDetailsForm.value.girth = "";
+  treeDetailsForm.value.reproducibility = false;
+  treeDetailsForm.value.age = "";
 };
 
-const removeRow = (row) => {
-  const index = data.value.indexOf(row);
-  if (index !== -1) {
-    data.value.splice(index, 1);
-  }
+const removeRow = (index) => {
+    formValue.value.tree_details.splice(index, 1);
 };
 
 async function fetchTreeCuttingReasons() {

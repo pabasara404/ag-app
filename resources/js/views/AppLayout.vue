@@ -6,7 +6,7 @@
                     <div class="flex w-full">
                         <div>
                             <img
-                                style="
+                               style="
                   display: inline;
                   padding: 10px 10px 10px 15px;
                   width: 60px;
@@ -95,25 +95,9 @@
 
 <script setup>
 
-
-// const sideBarItems = {
-//     open: ['Users'],
-//     admins: [
-//         ['Management', 'mdi-account-multiple-outline'],
-//         ['Settings', 'mdi-cog-outline'],
-//     ],
-//     cruds: [
-//         ['Create', 'mdi-plus-outline'],
-//         ['Read', 'mdi-file-outline'],
-//         ['Update', 'mdi-update'],
-//         ['Delete', 'mdi-delete'],
-//     ],
-// };
-
-
-import { computed, h, ref, onMounted } from "vue";
+import {computed, h, ref, onMounted, watch} from "vue";
 import { NIcon } from "naive-ui";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink} from "vue-router";
 
 import {
     BookOutline as BookIcon,
@@ -132,6 +116,7 @@ import {
     // PersonCircle as PersonCircleIcon,
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
+
 // import { useStore } from "vuex";
 import router from "@/routes";
 import http from "@/services/http.js";

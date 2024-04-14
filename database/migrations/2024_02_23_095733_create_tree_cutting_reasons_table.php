@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tree_cutting_reasons', function (Blueprint $table) {
             $table->id();
             $table->string('label');
+            $table-> foreignId('')
             $table->timestamps();
         });
     }

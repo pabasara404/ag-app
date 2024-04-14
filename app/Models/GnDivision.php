@@ -18,5 +18,6 @@ class GnDivision extends Model
 
     public function timberCuttingPermitApplication()
     {
-        return $this->hasOne(TimberCuttingPermitApplication::class);    }
+        return $this->hasMany(TimberCuttingPermitApplication::class);
+    }
 }

@@ -1,12 +1,18 @@
-import AppLayout from "@/views/AppLayout.vue";
-import Login from "@/views/Login.vue";
-
 const authUserRole = 'Admin';
 
 const routes = [
     {
         path: '/login',
+        name: "login",
+        meta: {
+            middleware: "guest",
+            title: `Permits, License and Welfare Fund Request Management System`,
+            // icon:'Emblem_of_Sri_Lanka.svg.png'
+        },
         component: () => import('./views/Login.vue')
+    },{
+        path: '/register',
+        component: () => import('./views/Register.vue')
     },
     {
         path: '/',
