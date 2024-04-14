@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Employee;
+namespace App\Actions;
 
 use App\Models\Employee;
 use App\QueryBuilders\EmployeeBuilder;

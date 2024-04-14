@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Employee\EmployeeActions;
-use App\Actions\TimberCuttingPermitApplication\TimberCuttingPermitApplicationAction;
-use App\Http\Resources\TimberCuttingPermitApplicationResource;
-use App\Models\TimberCuttingPermitApplication;
+use App\Actions\TimberCuttingPermitApplicationAction;
 use App\Http\Requests\StoreTimberCuttingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberCuttingPermitApplicationRequest;
+use App\Http\Resources\TimberCuttingPermitApplicationResource;
+use App\Models\TimberCuttingPermitApplication;
 
 class TimberCuttingPermitApplicationController extends Controller
 {

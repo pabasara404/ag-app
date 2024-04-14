@@ -12,4 +12,7 @@ class Citizen extends Model
     public function licenses(){
         $this->hasMany(License::class);
     }
+    public function timberCuttingPermitApplication(){
+        $this->hasMany(TimberCuttingPermitApplication::class);
+    }
 }

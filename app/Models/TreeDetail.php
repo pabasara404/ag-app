@@ -9,7 +9,17 @@ class TreeDetail extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'sub_no',
+        'type',
+        'height',
+        'girth',
+        'reproducibility',
+        'age',
+    ];
+
     public function timberCuttingPermitApplication()
     {
-        return $this->hasOne(TimberCuttingPermitApplication::class);    }
+        return $this->belongsTo(TimberCuttingPermitApplication::class);
+    }
 }

@@ -4,10 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class TimberCuttingPermitApplication extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'name',
+        'address',
+        'contact_number',
+        'timber_seller_checked_value',
+        'non_commercial_use_checked_value',
+        'ownership_of_land_checked_value',
+        'trees_cut_before',
+        'planted_tree_count',
+        'road_to_land',
+        'reasons',
+        'gn_division_id',
+        'tree_detail_id',
+        'deed_detail_id',
+        'land_detail_id',
+        'boundary_id',
+        'tree_count_id',
+        'citizen_id'
+    ];
 
     protected $casts = [
         'reasons' => 'array'
@@ -17,7 +38,7 @@ class TimberCuttingPermitApplication extends Model
         return $this->belongsTo(GnDivision::class);
     }
     public function tree_detail(){
-        return $this->belongsTo(TreeDetail::class);
+        return $this->hasMany(TreeDetail::class);
     }
     public function deed_detail(){
         return $this->belongsTo(DeedDetail::class);
@@ -33,5 +54,9 @@ class TimberCuttingPermitApplication extends Model
     }
     public function citizen(){
         return $this->belongsTo(Citizen::class);
+    }
+    public function treeCuttingReasons(): BelongsToMany
+    {
+        return $this->belongsToMany(TreeCuttingReason::class,'permit_application_cutting_reason','permit_application_id','cutting_reason_id');
     }
 }

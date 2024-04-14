@@ -168,39 +168,39 @@
             placeholder="Palmyra"
           />
         </n-form-item>
-        <n-card title="Details of trees requested to be cut">
+        <n-card title="Enter details of the trees in the land">
           <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
-              v-model:value="formValue.tree_details.sub"
+              v-model:value="treeDetailsForm.sub_no"
               placeholder="Sub no"
             />
           </n-form-item>
 
           <n-form-item label="Type">
             <n-input
-              v-model:value="formValue.tree_details.type"
+              v-model:value="treeDetailsForm.type"
               placeholder="Type"
             />
           </n-form-item>
 
           <n-form-item label="Height (feets)">
             <n-input
-              v-model:value="formValue.tree_details.height"
+              v-model:value="treeDetailsForm.height"
               placeholder="Height (feets)"
             />
           </n-form-item>
 
           <n-form-item label="Girth (feets)">
             <n-input
-              v-model:value="formValue.tree_details.girth"
+              v-model:value="treeDetailsForm.girth"
               placeholder="Girth (feets)"
             />
           </n-form-item>
 
           <n-form-item label="Reproducibility">
             <n-radio-group
-              v-model:value="formValue.tree_details.reproducibility"
+              v-model:value="treeDetailsForm.reproducibility"
               name="Reproducibility"
             >
               <n-space>
@@ -212,19 +212,44 @@
 
           <n-form-item label="Age">
             <n-input
-              v-model:value="formValue.tree_details.age"
+              v-model:value="treeDetailsForm.age"
               placeholder="Age"
             />
           </n-form-item>
           <!--            </n-form>-->
           <n-button @click="addTreeDetails">Add Detail</n-button>
         </n-card>
+          <br/>
+      <label>Please select the trees you want to cut from the below table.</label>
         <n-form-item>
-          <n-data-table :columns="columns" :data="data">
-            <template #action="{ row }">
-              <n-button type="error" @click="removeRow(row)">Remove</n-button>
-            </template>
-          </n-data-table>
+            <n-table :bordered="false" :single-line="false">
+                <thead>
+                <tr>
+                    <th>Sub No</th>
+                    <th>Type</th>
+                    <th>Height</th>
+                    <th>Girth</th>
+                    <th>Reproducibility</th>
+                    <th>Age</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr :key="key" v-for="(tree_detail, key) in formValue.tree_details">
+                    <td><n-checkbox :v-model="tree_detail.want_to_cut" size="large" label="  " />{{ tree_detail.sub_no }}</td>
+                    <td>{{ tree_detail.type}}</td>
+                    <td>{{ tree_detail.height}}</td>
+                    <td>{{ tree_detail.girth }}</td>
+                    <td>{{ tree_detail.reproducibility }}</td>
+                    <td>{{ tree_detail.age }}</td>
+                    <td><n-button @click="removeRow(key)">
+                        <n-icon>
+                            <clear-outlined-icon/>
+                        </n-icon>
+                    </n-button></td>
+                </tr>
+                </tbody>
+            </n-table>
         </n-form-item>
 
         <n-form-item label="Reasons for cutting down tree/trees:">
@@ -335,6 +360,7 @@ import {
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
+  ClearOutlined as ClearOutlinedIcon,
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
@@ -358,57 +384,112 @@ const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
 
 const formValue = ref({
-  id: "",
-  name: "",
-  address: "",
-  contact_number: "",
-  timber_seller_checked_value: "",
-  non_commercial_use_checked_value: "",
-  grama_niladari_division: {
     id: "",
-    gn_code: "",
-    name: "",
-    mpa_code: "",
-  },
-  deed_details: {
-    land_deed_number: "",
-    land_deed_date: "",
-  },
-  ownership_of_land_checked_value: "",
-  land_details: {
-    land_name: "",
-    land_size: "",
-    plan_number: "",
-    plan_date: "",
-    plan_plot_number: "",
-  },
-  boundaries: {
-    north: "",
-    south: "",
-    east: "",
-    west: "",
-  },
-  tree_count: {
-    breadfruit: "",
-    coconut: "",
-    jackfruit: "",
-    palmyra: "",
-  },
-  tree_details: [
-    {
-      sub_no: "",
-      type: "",
-      height: "",
-      girth: "",
-      reproducibility: "",
-      age: "",
+    name: "John Doe",
+    address: "123 Main St",
+    contact_number: "555-1234",
+    timber_seller_checked_value: true,
+    non_commercial_use_checked_value: false,
+    grama_niladari_division: {
+        id: "74",
+        gn_code: "370",
+        name: "Kotugoda",
+        mpa_code: "204",
     },
-  ],
-  tree_cutting_reasons: [],
-  trees_cut_before: "",
-  planted_tree_count: "",
-  road_to_land: "",
+    deed_details: {
+        land_deed_number: "789",
+        land_deed_date: "2022-04-11",
+    },
+    ownership_of_land_checked_value: "Co-owner",
+    land_details: {
+        land_name: "Example Land",
+        land_size: "10 acres",
+        plan_number: "Plan123",
+        plan_date: "2022-04-11",
+        plan_plot_number: "Plot456",
+    },
+    boundaries: {
+        north: "North boundary",
+        south: "South boundary",
+        east: "East boundary",
+        west: "West boundary",
+    },
+    tree_count: {
+        breadfruit: 5,
+        coconut: 10,
+        jackfruit: 3,
+        palmyra: 2,
+    },
+    tree_details: [{id:"", sub_no: "001", type: "Pine", height: "10 meters", girth: "2 meters", reproducibility: true, age:"12"}],
+    tree_cutting_reasons: [{id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2}, {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
+    trees_cut_before: "Yes",
+    planted_tree_count: "20",
+    road_to_land: "Paved road",
 });
+
+const treeDetailsForm = ref({
+    sub_no: "001",
+    type: "Pine",
+    height: "10 meters",
+    girth: "2 meters",
+    reproducibility: true,
+    age: "5 years",
+    // want_to_cut: true
+});
+// const formValue = ref({
+//     id: "",
+//     name: "",
+//     address: "",
+//     contact_number: "",
+//     timber_seller_checked_value: "",
+//     non_commercial_use_checked_value: "",
+//     grama_niladari_division: {
+//         id: "",
+//         gn_code: "",
+//         name: "",
+//         mpa_code: "",
+//     },
+//     deed_details: {
+//         land_deed_number: "",
+//         land_deed_date: "",
+//     },
+//     ownership_of_land_checked_value: "",
+//     land_details: {
+//         land_name: "",
+//         land_size: "",
+//         plan_number: "",
+//         plan_date: "",
+//         plan_plot_number: "",
+//     },
+//     boundaries: {
+//         north: "",
+//         south: "",
+//         east: "",
+//         west: "",
+//     },
+//     tree_count: {
+//         breadfruit: "",
+//         coconut: "",
+//         jackfruit: "",
+//         palmyra: "",
+//     },
+//     tree_details: [
+//     ],
+//     tree_cutting_reasons: [],
+//     trees_cut_before: "",
+//     planted_tree_count: "",
+//     road_to_land: "",
+// });
+//
+// const treeDetailsForm = ref({
+//     sub_no: "",
+//     type: "",
+//     height: "",
+//     girth: "",
+//     reproducibility: "",
+//     age: "",
+//     want_to_cut: "",
+// });
 
 const rules = {
   user: {
@@ -454,14 +535,11 @@ watch(
     isShowing.value = newValue;
   }
 );
-// const certifyAndSubmit = () => {
-//   console.log(formValue.value);
-// };
 async function certifyAndSubmit() {
   console.log(formValue.value);
   await Http.post("timberCuttingPermitApplication", formValue.value);
-  // isShowing.value = false;
-  // emit("close", false);
+  isShowing.value = false;
+  emit("close", false);
 }
 
 const selectedDeedDate = computed({
@@ -614,34 +692,23 @@ function handleChange(group, e) {
   }
 }
 
-const data = ref([]);
 const addTreeDetails = () => {
-  const newTreeDetails = {
-    sub_no: formValue.value.tree_details[0].sub_no,
-    type: formValue.value.tree_details[0].type,
-    height: formValue.value.tree_details[0].height,
-    girth: formValue.value.tree_details[0].girth,
-    reproducibility: formValue.value.tree_details[0].reproducibility,
-    age: formValue.value.tree_details[0].age,
-  };
-  data.value.push(newTreeDetails);
-  clearTreeForm(); // Clear the form after adding tree details
+    formValue.value.tree_details.push({...treeDetailsForm.value});
+    clearTreeForm(); // Clear the form after adding tree details
 };
 
 const clearTreeForm = () => {
-  formValue.value.tree_details[0].sub_no = "";
-  formValue.value.tree_details[0].type = "";
-  formValue.value.tree_details[0].height = "";
-  formValue.value.tree_details[0].girth = "";
-  formValue.value.tree_details[0].reproducibility = "";
-  formValue.value.tree_details[0].age = "";
+  treeDetailsForm.value.sub_no = "";
+  treeDetailsForm.value.type = "";
+  treeDetailsForm.value.height = "";
+  treeDetailsForm.value.girth = "";
+  treeDetailsForm.value.reproducibility = false;
+  treeDetailsForm.value.age = "";
+    treeDetailsForm.value.want_to_cut = "";
 };
 
-const removeRow = (row) => {
-  const index = data.value.indexOf(row);
-  if (index !== -1) {
-    data.value.splice(index, 1);
-  }
+const removeRow = (index) => {
+    formValue.value.tree_details.splice(index, 1);
 };
 
 async function fetchTreeCuttingReasons() {

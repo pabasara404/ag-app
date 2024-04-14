@@ -24,9 +24,7 @@ return new class extends Migration
             $table->string('trees_cut_before');
             $table->string('planted_tree_count');
             $table->string('road_to_land');
-            $table->json('reasons');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
-            $table->foreignId('tree_detail_id')->nullable()->references('id')->on('tree_details');
             $table->foreignId('deed_detail_id')->nullable()->references('id')->on('deed_details');
             $table->foreignId('land_detail_id')->nullable()->references('id')->on('land_details');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');

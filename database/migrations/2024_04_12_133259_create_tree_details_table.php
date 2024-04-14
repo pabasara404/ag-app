@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('girth');
             $table->boolean('reproducibility');
             $table->string('age');
+            $table->foreignId('timber_cutting_permit_application_id')->nullable()->references('id')->on('timber_cutting_permit_applications');
             $table->timestamps();
         });
     }
