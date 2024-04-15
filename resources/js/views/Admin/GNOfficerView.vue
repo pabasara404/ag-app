@@ -1,13 +1,13 @@
 <template>
   <n-layout style="height: 540px" has-sider>
     <n-layout style="padding-left: 8px" :inverted="inverted">
-      <PageHeader title="Employee Details Management" />
+      <PageHeader title="Grama Niladari Details Management" />
       <div class="flex justify-end pb-6">
         <n-space>
-          <n-button @click="addNewEmployee">
+          <n-button @click="addNewGramaNiladari">
             <template #icon
               ><n-icon><add-icon /></n-icon></template
-            >Add New Employee</n-button
+            >Add New Grama Niladari</n-button
           >
           <n-dropdown :options="options" placement="bottom-start">
             <n-button :bordered="false" style="padding: 0 4px"> ··· </n-button>
@@ -19,16 +19,16 @@
         <n-data-table
           :loading="isLoading"
           :columns="columns"
-          :data="employees"
+          :data="gramaNiladaris"
           :bordered="false"
         />
       </n-space>
     </n-layout>
-    <edit-employee-modal
-      :employee="selectedEmployee"
-      :is-showing="isShowingEditEmployeeModal"
-      @close="isShowingEditEmployeeModal = $event"
-      @save="fetchEmployee"
+    <edit-grama-niladari-modal
+      :gramaNiladari="selectedGramaNiladari"
+      :is-showing="isShowingEditGramaNiladariModal"
+      @close="isShowingEditGramaNiladariModal = $event"
+      @save="fetchGramaNiladari"
     />
   </n-layout>
 </template>
@@ -43,10 +43,10 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditEmployeeModal from "@/components/Admin/EditEmployeeModal.vue";
+import EditGramaNiladariModal from "@/components/Admin/EditGNOfficerModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
-const isShowingEditEmployeeModal = ref(false);
-const selectedEmployee = ref(false);
+const isShowingEditGramaNiladariModal = ref(false);
+const selectedGramaNiladari = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
 const options = [
@@ -59,7 +59,7 @@ const options = [
     key: "2",
   },
 ];
-const employees = ref([]);
+const gramaNiladaris = ref([]);
 const columns = [
   {
     title: "Name",
@@ -99,8 +99,8 @@ const columns = [
           // renderIcon: EyeIcon,
           size: "small",
           onClick: () => {
-            selectedEmployee.value = row;
-            isShowingEditEmployeeModal.value = true;
+            selectedGramaNiladari.value = row;
+            isShowingEditGramaNiladariModal.value = true;
           },
         },
         { default: () => "View" }
@@ -120,8 +120,8 @@ const columns = [
           secondary: true,
           size: "small",
           onClick: async () => {
-            await deleteEmployee(row);
-            await fetchEmployee();
+            await deleteGramaNiladari(row);
+            await fetchGramaNiladari();
           },
         },
         { default: () => "Delete" }
@@ -135,11 +135,11 @@ const components = {
 };
 
 onMounted(() => {
-  fetchEmployee();
+  fetchGramaNiladari();
 });
 
-function addNewEmployee() {
-  selectedEmployee.value = {
+function addNewGramaNiladari() {
+  selectedGramaNiladari.value = {
     id: "",
     name: "",
     nic: "",
@@ -149,22 +149,22 @@ function addNewEmployee() {
     date_of_birth: "2000-12-01",
   };
 
-  isShowingEditEmployeeModal.value = true;
+  isShowingEditGramaNiladariModal.value = true;
 }
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
-async function fetchEmployee() {
+async function fetchGramaNiladari()   {
   isLoading.value = true;
-  const { data } = await Http.get("employee");
+  const { data } = await Http.get("gramaNiladari");
   isLoading.value = false;
-  employees.value = data.data;
+  gramaNiladaris.value = data.data;
 }
 
-async function deleteEmployee(employee) {
+async function deleteGramaNiladari(gramaNiladari) {
   isLoading.value = true;
-  await Http.delete(`employee/${employee.id}`);
+  await Http.delete(`gramaNiladari/${gramaNiladari.id}`);
   isLoading.value = false;
 }
 </script>

@@ -152,7 +152,7 @@ const menuOptions = [
                         RouterLink,
                         {
                             to: {
-                                name: "home",
+                                name: "gramaNiladari",
                             },
                         },
                         { default: () => "Grama Niladhari Details Management" }
@@ -161,13 +161,17 @@ const menuOptions = [
                 authorizedBy: ["Employee", "Admin"],
             },
             {
-                label: "Citizen Details Management",
+                label: () =>
+                    h(
+                        RouterLink,
+                        {
+                            to: {
+                                name: "citizen",
+                            },
+                        },
+                        { default: () => "Citizen Details Management" }
+                    ),
                 key: "citizenDetailsManagement",
-                authorizedBy: ["Employee", "Admin"],
-            },
-            {
-                label: "Field Officer Details Management",
-                key: "fieldOfficerDetailsManagement",
                 authorizedBy: ["Employee", "Admin"],
             },
         ],

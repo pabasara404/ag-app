@@ -42,6 +42,24 @@ const routes = [
                 component: () => import("./views/Employee/EmployeeView.vue"),
             },
             {
+                path: "/gramaNiladari",
+                name: "gramaNiladari",
+                meta: {
+                    middleware: "auth",
+                    title: `Grama Niladari`,
+                },
+                component: () => import("./views/Admin/GNOfficerView.vue"),
+            },
+            {
+                path: "/citizen",
+                name: "citizen",
+                meta: {
+                    middleware: "auth",
+                    title: `Citizen`,
+                },
+                component: () => import("./views/Admin/CitizenView.vue"),
+            },
+            {
                 path: "/timberCutting",
                 name: "timberCutting",
                 meta: {

@@ -11,7 +11,6 @@ use App\Models\TimberCuttingPermitApplication;
 use App\Models\TreeCuttingReason;
 use App\Models\TreeDetail;
 use App\Models\User;
-use App\QueryBuilders\EmployeeBuilder;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -23,16 +22,16 @@ class TimberCuttingPermitApplicationAction
         return TimberCuttingPermitApplication::query()->all();
     }
 
-    public static function update(array $employee): bool
-    {
-        return EmployeeBuilder::whereId($employee['id'])
-            ->update([
-                'name' => $employee['name'],
-                'address' => $employee['address'],
-                'contact_number' => $employee['contact_number'],
-                'date_of_birth' => $employee['date_of_birth'],
-            ]);
-    }
+//    public static function update(array $employee): bool
+//    {
+//        return EmployeeBuilder::whereId($employee['id'])
+//            ->update([
+//                'name' => $employee['name'],
+//                'address' => $employee['address'],
+//                'contact_number' => $employee['contact_number'],
+//                'date_of_birth' => $employee['date_of_birth'],
+//            ]);
+//    }
 
     public static function store(array $timberCuttingPermitApplication, User $authUser = null)
     {
