@@ -12,12 +12,12 @@
     >
       <n-layout style="padding-left: 8px">
         <n-page-header
-          ><n-h2 v-if="!isNewEmployee">Edit Employee</n-h2>
-          <n-h2 v-else>Add New Employee</n-h2>
+          ><n-h2 v-if="!isNewGNOfficer">Edit GNOfficer</n-h2>
+          <n-h2 v-else>Add New GNOfficer</n-h2>
           <n-icon size="25"><CloseIcon /></n-icon>
         </n-page-header>
         <n-form ref="formRef" :model="formValue">
-          <n-form-item label="First Name" path="user.firstName">
+          <n-form-item label="Name" path="user.Name">
             <n-input v-model:value="formValue.name" placeholder="Enter Name" />
           </n-form-item>
           <n-form-item label="Phone" path="phone">
@@ -26,58 +26,9 @@
               placeholder="Phone Number"
             />
           </n-form-item>
-          <n-form-item label="NIC" path="nic">
-            <n-input v-model:value="formValue.nic" placeholder="NIC" />
-          </n-form-item>
-          <n-form-item label="Role" path="role">
-            <n-dropdown
-              trigger="hover"
-              placement="bottom-start"
-              :options="options"
-              @select="handleSelect"
-            >
-              <n-button
-                >Role <n-icon><ArrowDropDownRoundIcon /></n-icon
-              ></n-button>
-            </n-dropdown>
-          </n-form-item>
-          <n-form-item label="Address">
-            <n-input
-              type="textarea"
-              v-model:value="formValue.address"
-              maxlength="100"
-              show-count
-            />
-          </n-form-item>
-          <n-form-item label="Date of Birth">
-            <n-date-picker v-model:value="selectedDOB" type="date" />
-          </n-form-item>
-          <n-form-item>
-            <n-upload
-              multiple
-              directory-dnd
-              action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-              :max="5"
-            >
-              <n-upload-dragger>
-                <div style="margin-bottom: 12px">
-                  <n-icon size="48" :depth="3">
-                    <archive-icon />
-                  </n-icon>
-                </div>
-                <n-text style="font-size: 16px">
-                  Click or drag a file to this area to upload
-                </n-text>
-                <n-p depth="3" style="margin: 8px 0 0 0">
-                  Strictly prohibit from uploading sensitive information. For
-                  example, your bank card PIN or your credit card expiry date.
-                </n-p>
-              </n-upload-dragger>
-            </n-upload>
-          </n-form-item>
           <n-form-item>
             <n-button @click="save">
-              {{ isNewEmployee ? "Add Employee" : "Update Employee" }}
+              {{ isNewGNOfficer ? "Add GNOfficer" : "Update GNOfficer" }}
             </n-button>
           </n-form-item>
         </n-form>
@@ -105,28 +56,26 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
   isShowing: Boolean,
-  employee: Object,
+  GNOfficer: Object,
 });
+
+const formValue = ref({
+    id: "",
+    name: "",
+    contact_number: ""
+});
+
 watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
-    formValue.value = { ...props.employee };
+    formValue.value = { ...props.GNOfficer };
   }
 );
-const formValue = ref({
-  id: "",
-  name: "",
-  nic: "",
-  address: "",
-  contact_number: "",
-  role: "",
-  date_of_birth: "",
-});
 
 const rules = {
   user: {
-    firstName: {
+    Name: {
       required: true,
       message: "Please input your name",
       trigger: "blur",
@@ -162,30 +111,19 @@ const options = [
   },
 ];
 
-const selectedDOB = computed({
-  get: () => {
-    return moment(formValue.value.date_of_birth).valueOf();
-  },
-  set: (epoch) => {
-    formValue.value.date_of_birth = moment
-      .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
-  },
-});
-
-const isNewEmployee = computed(() => {
+const isNewGNOfficer = computed(() => {
   return !formValue.value.id;
 });
 
 async function save() {
-  if (isNewEmployee.value) {
-    await Http.post(`employee`, formValue.value);
+  if (isNewGNOfficer.value) {
+    await Http.post(`gnOfficer`, formValue.value);
     emit("close");
 
     return;
   }
 
-  await Http.put(`employee/${formValue.value.id}`, formValue.value);
+  await Http.put(`gnOfficer/${formValue.value.id}`, formValue.value);
   emit("close");
 }
 function handleSelect(key) {

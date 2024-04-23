@@ -33,11 +33,11 @@
             <n-dropdown
               trigger="hover"
               placement="bottom-start"
-              :options="options"
-              @select="handleSelect"
+              :options="rolesForDropdown"
+              @select="selectRole"
             >
               <n-button
-                >Role <n-icon><ArrowDropDownRoundIcon /></n-icon
+                >{{selectedRole ? selectedRole.label : "Select a Role" }} <n-icon><ArrowDropDownRoundIcon /></n-icon
               ></n-button>
             </n-dropdown>
           </n-form-item>
@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import { useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
@@ -102,6 +102,7 @@ import moment from "moment";
 const formRef = ref(null);
 const message = useMessage();
 const isShowing = ref(false);
+const roleOptions = ref([]);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
   isShowing: Boolean,
@@ -120,7 +121,10 @@ const formValue = ref({
   nic: "",
   address: "",
   contact_number: "",
-  role: "",
+  role: {
+      id: "",
+      role_type: ""
+  },
   date_of_birth: "",
 });
 
@@ -143,24 +147,10 @@ const rules = {
     trigger: ["input"],
   },
 };
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
+
+onMounted(()=>{
+    fetchRoles();
+})
 
 const selectedDOB = computed({
   get: () => {
@@ -191,6 +181,42 @@ async function save() {
 function handleSelect(key) {
   message.info(String(key));
 }
+
+const fetchRoles = async () => {
+    try {
+        const response = await Http.get("role");
+        const data = response.data.data;
+        // console.log(data);
+        roleOptions.value = data;
+        console.log(roleOptions.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const rolesForDropdown = computed(() => {
+    return roleOptions.value.map((roleOption) => {
+        return {
+            key: roleOption.id,
+            label: roleOption.role_type,
+        };
+    });
+});
+function selectRole(key) {
+    formValue.value.role = roleOptions.value.find(
+        (roleOption) => {
+            return roleOption.id === key;
+        }
+    );
+}
+const selectedRole = computed(() => {
+    return rolesForDropdown.value.find((roleForDropdown) => {
+        return (
+            roleForDropdown.key === formValue.value.role.id
+        );
+    });
+});
+
 function handleValidateClick(e) {
   e.preventDefault();
   formRef.value?.validate((errors) => {

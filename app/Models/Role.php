@@ -10,11 +10,10 @@ class Role extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'role_type',
     ];
-    protected $attributes = [
-        'role_type' => 5,
-    ];
+
     public static array $roleTypes = [
         1 => 'Field Officer',
         2 => 'Grama Niladari',
@@ -28,10 +27,14 @@ class Role extends Model
         10 => 'Chief Clerk',
     ];
 
-    public function getRoleTypeAttribute(){
-        return self::$roleTypes[$this->role_type];
+
+    public function getRoleTypeAttribute()
+    {
+        return self::$roleTypes[$this->attributes['role_type']];
     }
-    public function setRoleTypeAttribute(string $roleType){
-        return array_search($roleType, self::$roleTypes);
+
+    public function setRoleTypeAttribute(string $roleType)
+    {
+        $this->attributes['role_type'] = array_search($roleType, self::$roleTypes);
     }
 }

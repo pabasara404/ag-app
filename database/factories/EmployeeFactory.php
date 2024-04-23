@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Employee;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,7 +26,8 @@ class EmployeeFactory extends Factory
             'nic' => $this->faker->creditCardNumber,
             'contact_number' => $this->faker->phoneNumber,
             'date_of_birth' => $this->faker->date,
-            'user_id' => User::factory(1)->createOne()->id
+            'role_id' => Role::factory(1)->createOne()->id,
+            'user_id' => User::factory(1)->createOne()->id,
         ];
     }
 }

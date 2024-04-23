@@ -27,8 +27,7 @@
     <edit-employee-modal
       :employee="selectedEmployee"
       :is-showing="isShowingEditEmployeeModal"
-      @close="isShowingEditEmployeeModal = $event"
-      @save="fetchEmployee"
+      @close="handleEditEmployeeModalClose"
     />
   </n-layout>
 </template>
@@ -77,10 +76,10 @@ const columns = [
     title: "Contact Number",
     key: "contact_number",
   },
-  // {
-  //   title: "Role",
-  //   key: "role",
-  // },
+  {
+    title: "Role",
+    key: "role.role_type",
+  },
   {
     title: "DOB",
     key: "date_of_birth",
@@ -138,18 +137,27 @@ onMounted(() => {
   fetchEmployee();
 });
 
+function handleEditEmployeeModalClose() {
+    isShowingEditEmployeeModal.value = false;
+    fetchEmployee();
+}
+
 function addNewEmployee() {
   selectedEmployee.value = {
-    id: "",
-    name: "",
-    nic: "",
-    address: "",
-    contact_number: "",
-    role: "",
-    date_of_birth: "2000-12-01",
+      id: "",
+      name: "",
+      nic: "",
+      address: "",
+      contact_number: "",
+      role: {
+          id: "",
+          role_type: ""
+      },
+      date_of_birth: "2000-12-01",
   };
 
   isShowingEditEmployeeModal.value = true;
+  fetchEmployee();
 }
 
 function renderIcon(icon) {
@@ -166,5 +174,6 @@ async function deleteEmployee(employee) {
   isLoading.value = true;
   await Http.delete(`employee/${employee.id}`);
   isLoading.value = false;
+    await fetchEmployee();
 }
 </script>

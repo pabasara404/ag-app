@@ -19,6 +19,7 @@ class GnOfficerFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'contact_number' => $this->faker->phoneNumber(),
             'user_id' => User::factory(1)->createOne()->id
         ];
     }

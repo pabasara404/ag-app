@@ -97,7 +97,8 @@
 
 import {computed, h, ref, onMounted, watch} from "vue";
 import { NIcon } from "naive-ui";
-import { RouterLink} from "vue-router";
+import {RouterLink, useRouter} from "vue-router";
+
 
 import {
     BookOutline as BookIcon,
@@ -118,7 +119,7 @@ import {
 import Http from "@/services/http";
 
 // import { useStore } from "vuex";
-import router from "@/routes";
+const router = useRouter();
 import http from "@/services/http.js";
 
 // const store = useStore();
@@ -155,7 +156,7 @@ const menuOptions = [
                                 name: "gramaNiladari",
                             },
                         },
-                        { default: () => "Grama Niladhari Details Management" }
+                        { default: () => "GN Officer Details Management" }
                     ),
                 key: "gramaNiladhariDetails",
                 authorizedBy: ["Employee", "Admin"],
@@ -290,12 +291,20 @@ const hasOnlyOneSideBarItem = authUserSideBarItems.value.length === 1;
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
-
+const isAuthenticated = ref(false);
 onMounted(async () => {
-    const response = await http.get('user');
-    localStorage.setItem('AUTH_USER', JSON.stringify(response.data));
-    console.log(response.data,"::", JSON.parse(localStorage.getItem('AUTH_USER')));
-})
+    try {
+        const response = await http.get('user');
+        localStorage.setItem('AUTH_USER', JSON.stringify(response.data));
+        console.log(response.data, "::", JSON.parse(localStorage.getItem('AUTH_USER')));
+    } catch (error) {
+        if (error.response.status === 401) {
+            await router.push('/login')
+        } else {
+            console.error("Error:", error);
+        }
+    }
+});
 
 const handleLogout = () => {
     http.get('auth/logout');

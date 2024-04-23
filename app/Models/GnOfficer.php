@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class GnOfficer extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'contact_number',
+    ];
 }

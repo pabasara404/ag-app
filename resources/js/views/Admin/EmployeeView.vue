@@ -1,13 +1,13 @@
 <template>
   <n-layout style="height: 540px" has-sider>
     <n-layout style="padding-left: 8px" :inverted="inverted">
-      <PageHeader title="GN Officer Details Management" />
+      <PageHeader title="Employee Details Management" />
       <div class="flex justify-end pb-6">
         <n-space>
-          <n-button @click="addNewGNOfficer">
+          <n-button @click="addNewEmployee">
             <template #icon
               ><n-icon><add-icon /></n-icon></template
-            >Add New GN Officer</n-button
+            >Add New Employee</n-button
           >
           <n-dropdown :options="options" placement="bottom-start">
             <n-button :bordered="false" style="padding: 0 4px"> ··· </n-button>
@@ -19,15 +19,16 @@
         <n-data-table
           :loading="isLoading"
           :columns="columns"
-          :data="GNOfficers"
+          :data="employees"
           :bordered="false"
         />
       </n-space>
     </n-layout>
-    <EditGNOfficerModal
-      :GNOfficer="selectedGNOfficer"
-      :is-showing="isShowingEditGNOfficerModal"
-      @close="handleEditGNOfficerModalClose"
+    <edit-employee-modal
+      :employee="selectedEmployee"
+      :is-showing="isShowingEditEmployeeModal"
+      @close="isShowingEditEmployeeModal = $event"
+      @save="fetchEmployee"
     />
   </n-layout>
 </template>
@@ -42,10 +43,10 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditGNOfficerModal from "@/components/Admin/EditGNOfficerModal.vue";
+import EditEmployeeModal from "@/components/Admin/EditEmployeeModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
-const isShowingEditGNOfficerModal = ref(false);
-const selectedGNOfficer = ref(false);
+const isShowingEditEmployeeModal = ref(false);
+const selectedEmployee = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
 const options = [
@@ -58,15 +59,31 @@ const options = [
     key: "2",
   },
 ];
-const GNOfficers = ref([]);
+const employees = ref([]);
 const columns = [
   {
     title: "Name",
     key: "name",
   },
   {
+    title: "NIC",
+    key: "nic",
+  },
+  {
+    title: "Address",
+    key: "address",
+  },
+  {
     title: "Contact Number",
     key: "contact_number",
+  },
+  // {
+  //   title: "Role",
+  //   key: "role",
+  // },
+  {
+    title: "DOB",
+    key: "date_of_birth",
   },
   {
     title: "",
@@ -82,8 +99,8 @@ const columns = [
           // renderIcon: EyeIcon,
           size: "small",
           onClick: () => {
-            selectedGNOfficer.value = row;
-            isShowingEditGNOfficerModal.value = true;
+            selectedEmployee.value = row;
+            isShowingEditEmployeeModal.value = true;
           },
         },
         { default: () => "View" }
@@ -103,8 +120,8 @@ const columns = [
           secondary: true,
           size: "small",
           onClick: async () => {
-            await deleteGNOfficer(row);
-            await fetchGNOfficer();
+            await deleteEmployee(row);
+            await fetchEmployee();
           },
         },
         { default: () => "Delete" }
@@ -114,37 +131,36 @@ const columns = [
 ];
 
 onMounted(() => {
-  fetchGNOfficer();
+  fetchEmployee();
 });
 
-function handleEditGNOfficerModalClose(){
-    isShowingEditGNOfficerModal.value = false;
-    fetchGNOfficer();
-}
-
-function addNewGNOfficer() {
-  selectedGNOfficer.value = {
+function addNewEmployee() {
+  selectedEmployee.value = {
     id: "",
     name: "",
+    nic: "",
+    address: "",
     contact_number: "",
+    role: "",
+    date_of_birth: "2000-12-01",
   };
 
-  isShowingEditGNOfficerModal.value = true;
+  isShowingEditEmployeeModal.value = true;
 }
 
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
-async function fetchGNOfficer()   {
+async function fetchEmployee() {
   isLoading.value = true;
-  const { data } = await Http.get("gnOfficer");
+  const { data } = await Http.get("employee");
   isLoading.value = false;
-  GNOfficers.value = data.data;
+  employees.value = data.data;
 }
 
-async function deleteGNOfficer(GNOfficer) {
+async function deleteEmployee(employee) {
   isLoading.value = true;
-  await Http.delete(`gnOfficer/${GNOfficer.id}`);
+  await Http.delete(`employee/${employee.id}`);
   isLoading.value = false;
 }
 </script>

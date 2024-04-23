@@ -15,7 +15,7 @@
             const result = await http.post('/auth/login', form)
             if (result.status === 200 && result.data && result.data.token) {
                 localStorage.setItem('APP_DEMO_USER_TOKEN', result.data.token)
-                await router.push('/')
+                await router.push('/home')
             }
         } catch (e) {
             if(e && e.response.data && e.response.data.errors) {
