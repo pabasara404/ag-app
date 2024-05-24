@@ -37,8 +37,9 @@
               <n-radio :value="true" label="Yes"> Yes </n-radio>
               <n-radio :value="false" label="No"> No </n-radio>
             </n-space>
-          </n-radio-group> </n-form-item
-        ><n-form-item
+          </n-radio-group>
+        </n-form-item>
+          <n-form-item
           label="Are you cutting trees for non-commercial use?"
           path="timberSeller"
           ><n-radio-group
@@ -98,13 +99,13 @@
         </n-form-item>
         <n-form-item label="Land Name" path="land_name">
           <n-input
-            v-model:value="formValue.land_details.land_name"
+            v-model:value="formValue.land_detail.land_name"
             placeholder="Land Name"
           />
         </n-form-item>
         <n-form-item label="Land Size in perches" path="land_size">
           <n-input
-            v-model:value="formValue.land_details.land_size"
+            v-model:value="formValue.land_detail.land_size"
             placeholder="Land Size in perches"
           />
           <n-tooltip trigger="hover">
@@ -116,7 +117,7 @@
         </n-form-item>
         <n-form-item label="Plan No." path="plan_number">
           <n-input
-            v-model:value="formValue.land_details.plan_number"
+            v-model:value="formValue.land_detail.plan_number"
             placeholder="Plan No."
           />
         </n-form-item>
@@ -125,25 +126,25 @@
         </n-form-item>
         <n-form-item label="Plan plot No." path="plan_plot_no">
           <n-input
-            v-model:value="formValue.land_details.plan_plot_number"
+            v-model:value="formValue.land_detail.plan_plot_number"
             placeholder="Plan plot No."
           />
         </n-form-item>
-        <n-form-item label="Boundaries:" path="boundaries">
+        <n-form-item label="Boundaries:" path="boundary">
           <n-input
-            v-model:value="formValue.boundaries.north"
+            v-model:value="formValue.boundary.north"
             placeholder="To North"
           />
           <n-input
-            v-model:value="formValue.boundaries.south"
+            v-model:value="formValue.boundary.south"
             placeholder="To South"
           />
           <n-input
-            v-model:value="formValue.boundaries.east"
+            v-model:value="formValue.boundary.east"
             placeholder="To East"
           />
           <n-input
-            v-model:value="formValue.boundaries.west"
+            v-model:value="formValue.boundary.west"
             placeholder="To West"
           />
         </n-form-item>
@@ -236,7 +237,9 @@
                 </thead>
                 <tbody>
                 <tr :key="key" v-for="(tree_detail, key) in formValue.tree_details">
-                    <td><n-checkbox :v-model="tree_detail.want_to_cut" size="large" label="  " />{{ tree_detail.sub_no }}</td>
+                    <td>
+                        <n-checkbox v-model="tree_detail.want_to_cut" size="large" label="  " />{{ tree_detail.sub_no }}
+                    </td>
                     <td>{{ tree_detail.type}}</td>
                     <td>{{ tree_detail.height}}</td>
                     <td>{{ tree_detail.girth }}</td>
@@ -390,7 +393,7 @@ const formValue = ref({
     contact_number: "555-1234",
     timber_seller_checked_value: true,
     non_commercial_use_checked_value: false,
-    grama_niladari_division: {
+    gn_division: {
         id: "74",
         gn_code: "370",
         name: "Kotugoda",
@@ -401,14 +404,14 @@ const formValue = ref({
         land_deed_date: "2022-04-11",
     },
     ownership_of_land_checked_value: "Co-owner",
-    land_details: {
+    land_detail: {
         land_name: "Example Land",
         land_size: "10 acres",
         plan_number: "Plan123",
         plan_date: "2022-04-11",
         plan_plot_number: "Plot456",
     },
-    boundaries: {
+    boundary: {
         north: "North boundary",
         south: "South boundary",
         east: "East boundary",
@@ -420,11 +423,31 @@ const formValue = ref({
         jackfruit: 3,
         palmyra: 2,
     },
-    tree_details: [{id:"", sub_no: "001", type: "Pine", height: "10 meters", girth: "2 meters", reproducibility: true, age:"12"}],
-    tree_cutting_reasons: [{id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2}, {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
+    tree_details: [
+        {id:"",
+            sub_no: "001",
+            type: "Pine",
+            height: "10 meters",
+            girth: "2 meters",
+            reproducibility: true,
+            want_to_cut:true,
+            age:"12"}
+    ],
+    tree_cutting_reasons: [
+        {id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2},
+        {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
     trees_cut_before: "Yes",
     planted_tree_count: "20",
     road_to_land: "Paved road",
+    // citizen_id:{
+    //    name: "John Doe",
+    //    address: "123 Main St",
+    //    nic: "200006458556",
+    //    contact_number: "071542157",
+    //     date_of_birth: "2000-05-20",
+    //     gn_division_id: "1",
+    //     user_id: "1"
+    // }
 });
 
 const treeDetailsForm = ref({
@@ -434,7 +457,7 @@ const treeDetailsForm = ref({
     girth: "2 meters",
     reproducibility: true,
     age: "5 years",
-    // want_to_cut: true
+    want_to_cut: true
 });
 // const formValue = ref({
 //     id: "",
@@ -443,7 +466,7 @@ const treeDetailsForm = ref({
 //     contact_number: "",
 //     timber_seller_checked_value: "",
 //     non_commercial_use_checked_value: "",
-//     grama_niladari_division: {
+//     gn_division: {
 //         id: "",
 //         gn_code: "",
 //         name: "",
@@ -454,14 +477,14 @@ const treeDetailsForm = ref({
 //         land_deed_date: "",
 //     },
 //     ownership_of_land_checked_value: "",
-//     land_details: {
+//     land_detail: {
 //         land_name: "",
 //         land_size: "",
 //         plan_number: "",
 //         plan_date: "",
 //         plan_plot_number: "",
 //     },
-//     boundaries: {
+//     boundary: {
 //         north: "",
 //         south: "",
 //         east: "",
@@ -488,7 +511,7 @@ const treeDetailsForm = ref({
 //     girth: "",
 //     reproducibility: "",
 //     age: "",
-//     want_to_cut: "",
+//     want_to_cut: false,
 // });
 
 const rules = {
@@ -558,13 +581,13 @@ const selectedDeedDate = computed({
 
 const selectedPlanDate = computed({
   get: () => {
-    const planDate = formValue.value.land_details.plan_date;
+    const planDate = formValue.value.land_detail.plan_date;
     return moment(planDate, "YYYY-MM-DD").isValid()
       ? moment(planDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.land_details.plan_date = moment
+    formValue.value.land_detail.plan_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
@@ -586,7 +609,7 @@ const gnDivisionsForDropdown = computed(() => {
 const selectedGramaNiladariDivision = computed(() => {
   return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
     return (
-      gnDivisionForDropdown.key === formValue.value.grama_niladari_division.id
+      gnDivisionForDropdown.key === formValue.value.gn_division.id
     );
   });
 });

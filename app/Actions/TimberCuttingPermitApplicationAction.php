@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\DTO\TimberCuttingPermitApplicationDTO;
 use App\Models\Boundaries;
+use App\Models\Citizen;
 use App\Models\DeedDetail;
 use App\Models\GnDivision;
 use App\Models\LandDetail;
@@ -39,19 +40,21 @@ class TimberCuttingPermitApplicationAction
         try {
             $dto = (array) new TimberCuttingPermitApplicationDTO($timberCuttingPermitApplication);
             $timberCuttingPermitApplication = TimberCuttingPermitApplication::create($dto);
-            $gnDivision = GnDivision::create($dto['grama_niladari_division']);
+            $gnDivision = GnDivision::create($dto['gn_division']);
             $deedDetails = DeedDetail::create($dto['deed_details']);
-            $landDetails = LandDetail::create($dto['land_details']);
-            $boundaries = Boundaries::create($dto['boundaries']);
+            $landDetails = LandDetail::create($dto['land_detail']);
+            $boundaries = Boundaries::create($dto['boundary']);
+//            $citizen = Citizen::create($dto['citizen']);
 
             $timberCuttingPermitApplication->gn_division_id = $gnDivision->id;
             $timberCuttingPermitApplication->deed_detail_id = $deedDetails->id;
             $timberCuttingPermitApplication->land_detail_id = $landDetails->id;
             $timberCuttingPermitApplication->boundary_id = $boundaries->id;
+//            $timberCuttingPermitApplication->citizen_id = $citizen->id;
             $timberCuttingPermitApplication->save();
 
             collect($dto['tree_cutting_reasons'])->each(function ($treeCuttingReason) use ($timberCuttingPermitApplication) {
-                $timberCuttingPermitApplication->treeCuttingReasons()->attach(TreeCuttingReason::find($treeCuttingReason['id']));
+                $timberCuttingPermitApplication->tree_cutting_reasons()->attach(TreeCuttingReason::find($treeCuttingReason['id']));
             });
 
             collect($dto['tree_details'])->each(function ($treeDetail) use ($timberCuttingPermitApplication) {

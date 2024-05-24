@@ -141,7 +141,7 @@ function addNewEmployee() {
     nic: "",
     address: "",
     contact_number: "",
-    role: "",
+    user: "",
     date_of_birth: "2000-12-01",
   };
 

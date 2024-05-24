@@ -421,7 +421,6 @@ class GnDivisionSeeder extends Seeder
             ]', true);
                     DB::table('gn_divisions')->insert($data);
 
-
                 }
 
             }

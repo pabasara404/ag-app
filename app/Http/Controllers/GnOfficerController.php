@@ -18,7 +18,8 @@ class GnOfficerController extends Controller
     public function index()
     {
         return GnOfficerResource::collection(
-            GnOfficer::all()
+            GnOfficer::with("user")->get()
+
         );
     }
 

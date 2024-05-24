@@ -15,16 +15,9 @@ class Role extends Model
     ];
 
     public static array $roleTypes = [
-        1 => 'Field Officer',
-        2 => 'Grama Niladari',
-        3 => 'Employee',
-        4 => 'Admin',
-        5 => 'Citizen',
-        6 => 'Executive',
-        7 => 'Samurdhi Officer',
-        8 => 'Excise Department',
-        9 => 'Department of Revenue',
-        10 => 'Chief Clerk',
+        1 => 'Admin',
+        2 => 'GeneralUser',
+        3 => 'GuestUser'
     ];
 
 
@@ -36,5 +29,9 @@ class Role extends Model
     public function setRoleTypeAttribute(string $roleType)
     {
         $this->attributes['role_type'] = array_search($roleType, self::$roleTypes);
+    }
+
+    public function users(){
+        return $this->hasMany(User::class);
     }
 }

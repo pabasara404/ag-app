@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\GnDivision;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,14 @@ class CitizenFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'address' => $this->faker->address,
+            'nic' => $this->faker->creditCardNumber,
+            'contact_number' => $this->faker->phoneNumber,
+            'date_of_birth' => $this->faker->date,
+            'role_id' => Role::factory(1)->createOne()->id,
+            'user_id' => User::factory(1)->createOne()->id,
+            'gn_division_id' => GnDivision::factory(1)->createOne()->id,
         ];
     }
 }

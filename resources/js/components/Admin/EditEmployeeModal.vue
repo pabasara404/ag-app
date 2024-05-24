@@ -121,9 +121,11 @@ const formValue = ref({
   nic: "",
   address: "",
   contact_number: "",
-  role: {
-      id: "",
-      role_type: ""
+  user: {
+      name: "",
+      email: "",
+      password: "",
+      role_id: "",
   },
   date_of_birth: "",
 });

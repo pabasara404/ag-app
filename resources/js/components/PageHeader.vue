@@ -2,12 +2,7 @@
   <n-page-header style="padding-left: 8px">
     <template #title> {{ pageTitle }} </template>
     <template #header>
-      <n-breadcrumb>
-        <n-breadcrumb-item>Podcast</n-breadcrumb-item>
-        <n-breadcrumb-item>Best Collection</n-breadcrumb-item>
-        <n-breadcrumb-item>Ultimate Best Collection</n-breadcrumb-item>
-        <n-breadcrumb-item>Anyway.FM</n-breadcrumb-item>
-      </n-breadcrumb>
+        <dynamic-breadcrumb />
     </template>
 
     <n-divider />
@@ -16,6 +11,7 @@
 
 <script setup>
 import { computed, defineProps } from "vue";
+import DynamicBreadcrumb from "@/components/DynamicBreadcrumb.vue";
 
 const propsData = defineProps({
   title: String,

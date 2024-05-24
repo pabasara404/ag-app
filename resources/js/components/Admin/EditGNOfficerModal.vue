@@ -62,7 +62,7 @@ const props = defineProps({
 const formValue = ref({
     id: "",
     name: "",
-    contact_number: ""
+    contact_number: "",
 });
 
 watch(

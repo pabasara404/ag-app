@@ -17,7 +17,7 @@ class GnDivisionController extends Controller
     public function index()
     {
         return GnDivisionResource::collection(
-            GnDivision::all()
+            GnDivision::with('gnOfficer')->get()
         );
     }
 

@@ -16,6 +16,7 @@ class TreeDetail extends Model
         'girth',
         'reproducibility',
         'age',
+        'want_to_cut'
     ];
 
     public function timberCuttingPermitApplication()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,12 +23,12 @@ class TimberCuttingPermitApplication extends Model
         'road_to_land',
         'reasons',
         'gn_division_id',
-        'tree_detail_id',
         'deed_detail_id',
         'land_detail_id',
         'boundary_id',
         'tree_count_id',
-        'citizen_id'
+        'citizen_id',
+        'tree_detail_id'
     ];
 
     protected $casts = [
@@ -37,7 +38,7 @@ class TimberCuttingPermitApplication extends Model
     public function gn_division(){
         return $this->belongsTo(GnDivision::class);
     }
-    public function tree_detail(){
+    public function tree_details(){
         return $this->hasMany(TreeDetail::class);
     }
     public function deed_detail(){
@@ -46,7 +47,7 @@ class TimberCuttingPermitApplication extends Model
     public function land_detail(){
         return $this->belongsTo(LandDetail::class);
     }
-    public function boundaries(){
+    public function boundary(){
         return $this->belongsTo(Boundaries::class);
     }
     public function tree_count(){
@@ -55,7 +56,7 @@ class TimberCuttingPermitApplication extends Model
     public function citizen(){
         return $this->belongsTo(Citizen::class);
     }
-    public function treeCuttingReasons(): BelongsToMany
+    public function tree_cutting_reasons(): BelongsToMany
     {
         return $this->belongsToMany(TreeCuttingReason::class,'permit_application_cutting_reason','permit_application_id','cutting_reason_id');
     }

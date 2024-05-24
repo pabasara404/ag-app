@@ -13,11 +13,23 @@ class GnDivision extends Model
         'gn_code',
         'name',
         'mpa_code',
-        'grama_officer_id',
+        'gn_officer_id',
     ];
 
     public function timberCuttingPermitApplication()
     {
         return $this->hasMany(TimberCuttingPermitApplication::class);
+    }
+    public function timberTransportingPermitApplication()
+    {
+        return $this->hasMany(TimberTransportingPermitApplication::class);
+    }
+    public function citizen()
+    {
+        return $this->hasMany(Citizen::class);
+    }
+
+    public function gnOfficer(){
+        return $this->belongsTo(GnOfficer::class);
     }
 }

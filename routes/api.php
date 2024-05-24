@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GnDivisionController;
 use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
+use App\Http\Controllers\TimberTransportingPermitApplicationController;
 use App\Http\Controllers\TreeCuttingReasonController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,9 +35,6 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 });
 
-//routes for letters
-Route::get('letter', [LetterController::class, 'index']);
-
 //routes for employees
 Route::get('employee', [EmployeeController::class, 'index']);
 Route::put('employee/{employee}', [EmployeeController::class, 'update']);
@@ -48,11 +47,23 @@ Route::put('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'update']);
 Route::delete('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'destroy']);
 Route::post('gnOfficer', [GnOfficerController::class, 'store']);
 
+//routes for citizen
+Route::get('citizen', [CitizenController::class, 'index']);
+Route::put('citizen/{citizen}', [CitizenController::class, 'update']);
+Route::delete('citizen/{citizen}', [CitizenController::class, 'destroy']);
+Route::post('citizen', [CitizenController::class, 'store']);
+
 //routes for timberCuttingPermitApplications
 Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 Route::put('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'update']);
 Route::delete('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'destroy']);
 Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);
+
+//routes for timberTransportingPermitApplications
+Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
+Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
+Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
+Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
 
 //routes for gnDivisions
 Route::get('gnDivision', [GnDivisionController::class, 'index']);
