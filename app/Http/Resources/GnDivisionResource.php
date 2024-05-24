@@ -19,7 +19,7 @@ class GnDivisionResource extends JsonResource
             "name" => $this->name,
             "gn_code"=>$this->gn_code,
             "mpa_code"=>$this->mpa_code,
-            "gn_officer"=>$this->gn_officer,
+            "gn_officer_id"=>$this->gn_officer_id,
         ];
     }
 }

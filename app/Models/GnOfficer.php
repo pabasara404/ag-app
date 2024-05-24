@@ -13,4 +13,12 @@ class GnOfficer extends Model
         'name',
         'contact_number',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function gn_divisions(){
+        return $this->hasMany(GnDivision::class);
+    }
 }

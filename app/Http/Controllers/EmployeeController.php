@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class EmployeeController extends Controller
@@ -15,10 +16,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return EmployeeResource::collection(
-            Employee::with("role")->get()
+            Employee::with("user")->get()
         );
     }
 

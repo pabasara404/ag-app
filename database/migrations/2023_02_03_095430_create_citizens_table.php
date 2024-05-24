@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('citizens', function (Blueprint $table) {
+        Schema::create('citizens', function ( Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('address');
+            $table->string('nic');
+            $table->string('contact_number');
+            $table->date('date_of_birth');
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
-            $table->foreignId('gn_division')->nullable()->references('id')->on('gn_divisions');
+            $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->timestamps();
         });
     }

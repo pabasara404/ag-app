@@ -19,12 +19,15 @@ class TimberCuttingPermitApplicationController extends Controller
     {
         return TimberCuttingPermitApplicationResource::collection(
             TimberCuttingPermitApplication::with(
-                "tree_detail",
-                "tree_count",
-                "boundaries",
-                "land_detail",
+                "gn_division",
+                "tree_details",
                 "deed_detail",
-                "gn_division")->get()
+                "land_detail",
+                "boundary",
+                "tree_count",
+                "citizen",
+                "treeCuttingReasons")->get()
+
         );
     }
 
@@ -83,7 +86,8 @@ class TimberCuttingPermitApplicationController extends Controller
      */
     public function update(UpdateTimberCuttingPermitApplicationRequest $request, TimberCuttingPermitApplication $timberCuttingPermitApplication)
     {
-        //
+        $timberCuttingPermitApplication->update($request->toArray());
+        return response('', 204);
     }
 
     /**
@@ -94,6 +98,7 @@ class TimberCuttingPermitApplicationController extends Controller
      */
     public function destroy(TimberCuttingPermitApplication $timberCuttingPermitApplication)
     {
-        //
+        $timberCuttingPermitApplication->delete();
+        return response('', 204);
     }
 }

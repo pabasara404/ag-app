@@ -37,8 +37,9 @@
               <n-radio :value="true" label="Yes"> Yes </n-radio>
               <n-radio :value="false" label="No"> No </n-radio>
             </n-space>
-          </n-radio-group> </n-form-item
-        ><n-form-item
+          </n-radio-group>
+        </n-form-item>
+          <n-form-item
           label="Are you cutting trees for non-commercial use?"
           path="timberSeller"
           ><n-radio-group

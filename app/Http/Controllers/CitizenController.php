@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CitizenResource;
 use App\Models\Citizen;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\UpdateCitizenRequest;
@@ -11,11 +12,13 @@ class CitizenController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        return CitizenResource::collection(
+            Citizen::with(["gn_division", "user"])->get()
+        );
     }
 
     /**
@@ -36,7 +39,9 @@ class CitizenController extends Controller
      */
     public function store(StoreCitizenRequest $request)
     {
-        //
+        Citizen::create($request->toArray());
+
+        return response()->noContent();
     }
 
     /**
@@ -70,7 +75,8 @@ class CitizenController extends Controller
      */
     public function update(UpdateCitizenRequest $request, Citizen $citizen)
     {
-        //
+        $citizen->update($request->toArray());
+        return response()->noContent();
     }
 
     /**
@@ -81,6 +87,7 @@ class CitizenController extends Controller
      */
     public function destroy(Citizen $citizen)
     {
-        //
+        $citizen->delete();
+        return response()->noContent();
     }
 }

@@ -11,7 +11,7 @@
                   padding: 10px 10px 10px 15px;
                   width: 60px;
                 "
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Emblem_of_Sri_Lanka.svg/150px-Emblem_of_Sri_Lanka.svg.png"
+                               src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Emblem_of_Sri_Lanka.svg/150px-Emblem_of_Sri_Lanka.svg.png"
                             />
                         </div>
                         <div class="flex flex-col py-3">
@@ -30,7 +30,10 @@
                                     src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
                                 />
                             </div>
-                            <div>
+                            <div class="pt-2 pr-2">
+                                <span class="font-medium">{{ userData.name }}</span>
+                            </div>
+                            <div class="mt-1.5">
                                 <n-button
                                     strong
                                     secondary
@@ -98,8 +101,6 @@
 import {computed, h, ref, onMounted, watch} from "vue";
 import { NIcon } from "naive-ui";
 import {RouterLink, useRouter} from "vue-router";
-
-
 import {
     BookOutline as BookIcon,
     Business as BusinessIcon,
@@ -116,7 +117,6 @@ import {
     MoonOutline as MoonOutlineIcon,
     // PersonCircle as PersonCircleIcon,
 } from "@vicons/ionicons5";
-import Http from "@/services/http";
 
 // import { useStore } from "vuex";
 const router = useRouter();
@@ -178,7 +178,16 @@ const menuOptions = [
         ],
     },
     {
-        label: "Grama Niladari Division Details Management",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "gramaNiladariDivision",
+                    },
+                },
+                { default: () => "Grama Niladari Division Details Management" }
+            ),
         key: "gramaNiladariDivisionDetailsManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(MapIcon),
@@ -201,77 +210,151 @@ const menuOptions = [
     },
 
     {
-        label: "Timber Transportation Process and Permits",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "timberTransportation",
+                    },
+                },
+                { default: () => "Timber Transportation Process and Permits" }
+            ),
         key: "timberTransportationProcessAndPermits",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(CarIcon),
     },
     {
-        label: "Business Registration Certificates",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "businessRegistrationCertificates",
+                    },
+                },
+                { default: () => "Business Registration Certificates" }
+            ),
         key: "businessRegistrationCertificates",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(BusinessIcon),
     },
     {
-        label: "Requesting & Issuing Income Certificates",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "requestingAndIssuingIncomeCertificates",
+                    },
+                },
+                { default: () => "Requesting & Issuing Income Certificates" }
+            ),
         key: "requestingAndIssuingIncomeCertificates",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(BusinessIcon),
     },
     {
-        label: "Welfare Information Verification",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "welfareInformationVerification",
+                    },
+                },
+                { default: () => "Welfare Information Verification" }
+            ),
         key: "welfareInformationVerification",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(LogoBitcoinIcon),
         children: [
             {
-                label: "Grade 5 Scholarship Information Verification",
-                key: "grade5",
-                authorizedBy: ["Employee", "Admin"],
-            },
-            {
-                label: "Agrahara Information Verification",
-                key: "agrahara",
-                authorizedBy: ["Employee", "Admin"],
-            },
-            {
-                label: "President Fund Information Verification",
+                label: () =>
+                    h(
+                        RouterLink,
+                        {
+                            to: {
+                                name: "presidentFund",
+                            },
+                        },
+                        { default: () => "President Fund Information Verification" }
+                    ),
                 key: "presidentFund",
                 authorizedBy: ["Employee", "Admin"],
             },
             {
-                label: "Mahapola Application Processing",
+                label: () =>
+                    h(
+                        RouterLink,
+                        {
+                            to: {
+                                name: "mahapola",
+                            },
+                        },
+                        { default: () => "Mahapola Application Processing" }
+                    ),
                 key: "mahapola",
                 authorizedBy: ["Employee", "Admin"],
             },
         ],
     },
     {
-        label: "Animal Transportation Permit",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "animalTransportationPermit",
+                    },
+                },
+                { default: () => "Animal Transportation Permit" }
+            ),
         key: "animalTransportationPermit",
         authorizedBy: ["Client", "Admin"],
         icon: renderIcon(CartIcon),
     },
     {
-        label: "Pawning Licensing",
-        key: "pawningLicensing",
-        authorizedBy: ["Employee", "Admin"],
-        icon: renderIcon(DiamondIcon),
-    },
-    {
-        label: "Excise Licensing",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "exciseLicensing",
+                    },
+                },
+                { default: () => "Excise Licensing" }
+            ),
         key: "exciseLicensing",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(WineIcon),
     },
     {
-        label: "Valuation Report Issuing",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "valuationReportIssuing",
+                    },
+                },
+                { default: () => "Valuation Report Issuing" }
+            ),
         key: "valuationReportIssuing",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(DocumentIcon),
     },
     {
-        label: "Payment Management",
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "paymentManagement",
+                    },
+                },
+                { default: () => "Payment Management" }
+            ),
         key: "paymentManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(BookIcon),
@@ -291,17 +374,23 @@ const hasOnlyOneSideBarItem = authUserSideBarItems.value.length === 1;
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
-const isAuthenticated = ref(false);
+
+const userData = ref({});
 onMounted(async () => {
     try {
         const response = await http.get('user');
         localStorage.setItem('AUTH_USER', JSON.stringify(response.data));
         console.log(response.data, "::", JSON.parse(localStorage.getItem('AUTH_USER')));
+        userData.value = response.data; // Update the ref with value
     } catch (error) {
-        if (error.response.status === 401) {
-            await router.push('/login')
+        if (error && error.response) { // Check if error is an object with response
+            if (error.response.status === 401) {
+                await router.push('/login');
+            } else {
+                console.error("Error:", error);
+            }
         } else {
-            console.error("Error:", error);
+            console.error("Unexpected error:", error); // Handle other errors
         }
     }
 });

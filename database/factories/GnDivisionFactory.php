@@ -21,7 +21,7 @@ class GnDivisionFactory extends Factory
             'gn_code' => $this->faker->unique()->regexify('[A-Z]{3}\d{4}'),
             'name' => $this->faker->city,
             'mpa_code' => $this->faker->unique()->regexify('[A-Z]{3}\d{4}'),
-            'grama_officer_id' => GnOfficer::inRandomOrder()->first()->id,
+            'gn_officer_id' => GnOfficer::inRandomOrder()->first()->id,
         ];
     }
 }

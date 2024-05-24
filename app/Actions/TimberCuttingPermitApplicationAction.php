@@ -43,11 +43,13 @@ class TimberCuttingPermitApplicationAction
             $deedDetails = DeedDetail::create($dto['deed_details']);
             $landDetails = LandDetail::create($dto['land_details']);
             $boundaries = Boundaries::create($dto['boundaries']);
+            $citizen = Boundaries::create($dto['citizen']);
 
             $timberCuttingPermitApplication->gn_division_id = $gnDivision->id;
             $timberCuttingPermitApplication->deed_detail_id = $deedDetails->id;
             $timberCuttingPermitApplication->land_detail_id = $landDetails->id;
             $timberCuttingPermitApplication->boundary_id = $boundaries->id;
+            $timberCuttingPermitApplication->citizen_id = $citizen->id;
             $timberCuttingPermitApplication->save();
 
             collect($dto['tree_cutting_reasons'])->each(function ($treeCuttingReason) use ($timberCuttingPermitApplication) {

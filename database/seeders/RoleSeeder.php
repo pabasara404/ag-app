@@ -16,19 +16,12 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $roles = [
-            ['role_type' => 1],
-            ['role_type' => 2],
-            ['role_type' => 3],
-            ['role_type' => 4],
-            ['role_type' => 5],
-            ['role_type' => 6],
-            ['role_type' => 7],
-            ['role_type' => 8],
-            ['role_type' => 9],
-            ['role_type' => 10],
-        ];
-
-        DB::table('roles')->insert($roles);
+        $roles = Role::$roleTypes;
+        $roles = collect($roles)->map(function ($role, $id) {
+            return [
+                'role_type' => $id,
+            ];
+        });
+        DB::table('roles')->insert($roles->toArray());
     }
 }

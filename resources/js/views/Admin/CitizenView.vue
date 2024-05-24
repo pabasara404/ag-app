@@ -1,13 +1,13 @@
 <template>
     <n-layout style="height: 540px" has-sider>
         <n-layout style="padding-left: 8px" :inverted="inverted">
-            <PageHeader title="Employee Details Management" />
+            <PageHeader title="Citizen Details Management" />
             <div class="flex justify-end pb-6">
                 <n-space>
-                    <n-button @click="addNewEmployee">
+                    <n-button @click="addNewCitizen">
                         <template #icon
                         ><n-icon><add-icon /></n-icon></template
-                        >Add New Employee</n-button
+                        >Add New Citizen</n-button
                     >
                     <n-dropdown :options="options" placement="bottom-start">
                         <n-button :bordered="false" style="padding: 0 4px"> ··· </n-button>
@@ -19,16 +19,15 @@
                 <n-data-table
                     :loading="isLoading"
                     :columns="columns"
-                    :data="employees"
+                    :data="citizens"
                     :bordered="false"
                 />
             </n-space>
         </n-layout>
-        <edit-employee-modal
-            :employee="selectedEmployee"
-            :is-showing="isShowingEditEmployeeModal"
-            @close="isShowingEditEmployeeModal = $event"
-            @save="fetchEmployee"
+        <edit-citizen-modal
+            :citizen="selectedCitizen"
+            :is-showing="isShowingEditCitizenModal"
+            @close="handleEditCitizenModalClose"
         />
     </n-layout>
 </template>
@@ -43,10 +42,10 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditEmployeeModal from "@/components/employee/EditEmployeeModal.vue";
+import EditCitizenModal from "@/components/Admin/EditCitizenModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
-const isShowingEditEmployeeModal = ref(false);
-const selectedEmployee = ref(false);
+const isShowingEditCitizenModal = ref(false);
+const selectedCitizen = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
 const options = [
@@ -59,7 +58,7 @@ const options = [
         key: "2",
     },
 ];
-const employees = ref([]);
+const citizens = ref([]);
 const columns = [
     {
         title: "Name",
@@ -77,10 +76,6 @@ const columns = [
         title: "Contact Number",
         key: "contact_number",
     },
-    // {
-    //   title: "Role",
-    //   key: "role",
-    // },
     {
         title: "DOB",
         key: "date_of_birth",
@@ -99,8 +94,8 @@ const columns = [
                     // renderIcon: EyeIcon,
                     size: "small",
                     onClick: () => {
-                        selectedEmployee.value = row;
-                        isShowingEditEmployeeModal.value = true;
+                        selectedCitizen.value = row;
+                        isShowingEditCitizenModal.value = true;
                     },
                 },
                 { default: () => "View" }
@@ -120,8 +115,8 @@ const columns = [
                     secondary: true,
                     size: "small",
                     onClick: async () => {
-                        await deleteEmployee(row);
-                        await fetchEmployee();
+                        await deleteCitizen(row);
+                        await fetchCitizen();
                     },
                 },
                 { default: () => "Delete" }
@@ -135,36 +130,46 @@ const components = {
 };
 
 onMounted(() => {
-    fetchEmployee();
+    fetchCitizen();
 });
 
-function addNewEmployee() {
-    selectedEmployee.value = {
+function handleEditCitizenModalClose() {
+    isShowingEditCitizenModal.value = false;
+    fetchCitizen();
+}
+
+function addNewCitizen() {
+    selectedCitizen.value = {
         id: "",
         name: "",
         nic: "",
         address: "",
         contact_number: "",
-        role: "",
+        role: {
+            id: "",
+            role_type: ""
+        },
         date_of_birth: "2000-12-01",
     };
 
-    isShowingEditEmployeeModal.value = true;
+    isShowingEditCitizenModal.value = true;
+    fetchCitizen();
 }
 
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
-async function fetchEmployee() {
+async function fetchCitizen() {
     isLoading.value = true;
-    const { data } = await Http.get("employee");
+    const { data } = await Http.get("citizen");
     isLoading.value = false;
-    employees.value = data.data;
+    citizens.value = data.data;
 }
 
-async function deleteEmployee(employee) {
+async function deleteCitizen(citizen) {
     isLoading.value = true;
-    await Http.delete(`employee/${employee.id}`);
+    await Http.delete(`citizen/${citizen.id}`);
     isLoading.value = false;
+    await fetchCitizen();
 }
 </script>

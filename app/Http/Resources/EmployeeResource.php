@@ -20,8 +20,8 @@ class EmployeeResource extends JsonResource
             "nic" => $this->nic,
             "address" => $this->address,
             "contact_number" => $this->contact_number,
-            "role" => $this->role,
-            "date_of_birth" => $this->date_of_birth
+            "date_of_birth" => $this->date_of_birth,
+            "user" => $this->user
         ];
     }
 }
