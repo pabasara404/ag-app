@@ -1,4 +1,7 @@
-const authUserRole = 'Admin';
+import {getLocalAuthUser} from "@/services/auth.js";
+
+const authUserRole = () => getLocalAuthUser()?.role?.role_type;
+console.log('4 ', authUserRole);
 
 const routes = [
     {
@@ -32,7 +35,7 @@ const routes = [
                     title: `Dashboard`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import(`./views/${authUserRole}/DashboardView.vue`),
+                component: () => import(`./views/${authUserRole()}/DashboardView.vue`),
             },
             {
                 path: "employee",
@@ -42,7 +45,7 @@ const routes = [
                     title: `Employee`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Employee/EmployeeView.vue"),
+                component: () => import(`./views/${authUserRole()}/EmployeeView.vue`),
             },
             {
                 path: "gramaNiladari",
@@ -72,6 +75,7 @@ const routes = [
                     title: `Timber Cutting Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
+                to:"name",
                 component: () => import("./views/Admin/TimberCuttingMainView.vue"),
                 children: [
                     {

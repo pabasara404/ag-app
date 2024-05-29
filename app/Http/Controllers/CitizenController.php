@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CitizenActions;
 use App\Http\Resources\CitizenResource;
 use App\Models\Citizen;
 use App\Http\Requests\StoreCitizenRequest;
 use App\Http\Requests\UpdateCitizenRequest;
+use Illuminate\Http\Request;
 
 class CitizenController extends Controller
 {
@@ -48,11 +50,13 @@ class CitizenController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Citizen  $citizen
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Citizen $citizen)
+    public function show(Request $request)
     {
-        //
+        return response()->json(
+            CitizenActions::getCitizenByUserId($request->user_id)
+        );
     }
 
     /**

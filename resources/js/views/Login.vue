@@ -2,6 +2,7 @@
     import {useRouter} from "vue-router";
     import {reactive, ref} from "vue";
     import http from "@/services/http.js";
+    import {login} from "@/services/auth.js";
 
     const errors = ref()
     const router = useRouter();
@@ -11,14 +12,8 @@
     })
     const handleLogin = async () => {
         try {
-            await axios.get('/sanctum/csrf-cookie')
-            const result = await http.post('/auth/login', form)
-            if (result.status === 200 && result.data && result.data.token) {
-                localStorage.setItem('APP_DEMO_USER_TOKEN', result.data.token);
-                const response = await http.get('user');
-                localStorage.setItem('AUTH_USER', JSON.stringify(response.data));
-                await router.push('/home')
-            }
+            await login(form);
+            await router.push('/home');
         } catch (e) {
             if(e && e.response.data && e.response.data.errors) {
                 errors.value = Object.values(e.response.data.errors)

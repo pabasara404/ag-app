@@ -2,6 +2,7 @@
 
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {login} from "@/services/auth.js";
 
 const errors = ref()
 const router = useRouter();
@@ -9,6 +10,7 @@ const form = reactive({
     name: '',
     email: '',
     password: '',
+    role_id:''
 })
 const handleRegister = async () => {
     try {
@@ -16,7 +18,11 @@ const handleRegister = async () => {
         const result = await axios.post('/auth/register', form)
         if (result.status === 200 && result.data && result.data.token) {
             localStorage.setItem('APP_DEMO_USER_TOKEN', result.data.token)
-            await router.push('/')
+            await login({
+                email: form.email,
+                password: form.password,
+            });
+            await router.push('/home');
         }
     } catch (e) {
         if(e && e.response.data && e.response.data.errors) {

@@ -26,6 +26,20 @@ class DatabaseSeeder extends Seeder
              'role_id' => '1',
          ]);
 
+         User::factory()->create([
+             'name' => 'Guest User',
+             'email' => 'guest@example.com',
+             'password' => Hash::make('12345678'),
+             'role_id' => '3',
+         ]);
+
+         User::factory()->create([
+             'name' => 'General User',
+             'email' => 'general@example.com',
+             'password' => Hash::make('12345678'),
+             'role_id' => '2',
+         ]);
+
 //        GnOfficer::factory(10)->create();
 //        Citizen::factory(10)->create();
 

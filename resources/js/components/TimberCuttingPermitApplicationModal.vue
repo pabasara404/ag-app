@@ -370,6 +370,7 @@ import moment from "moment";
 import axios from "axios";
 
 import TableRow from "./TableRow.vue";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
 const message = useMessage();
@@ -551,7 +552,14 @@ const options = [
     key: "The Beverly Hills Hotel, Los Angeles",
   },
 ];
-
+onMounted(async () => {
+        await Http.get('citizen-by-user-id', {
+            params:{
+                user_id: getLocalAuthUser().id
+            }
+        })
+    }
+);
 watch(
   () => props.isShowing,
   (newValue) => {

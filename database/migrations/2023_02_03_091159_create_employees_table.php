@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->date('date_of_birth');
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
+            $table->foreignId('role_id')->nullable()->references('id')->on('roles');
             $table->timestamps();
         });
     }

@@ -214,7 +214,7 @@ function selectRole(key) {
 const selectedRole = computed(() => {
     return rolesForDropdown.value.find((roleForDropdown) => {
         return (
-            roleForDropdown.key === formValue.value.role.id
+            roleForDropdown.key === formValue.value?.role?.id
         );
     });
 });

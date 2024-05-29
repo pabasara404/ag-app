@@ -86,7 +86,7 @@
                     />
                 </n-layout-sider>
                 <n-layout class="h-[calc(100vh-80px-24px)]">
-                    <router-view />
+                    <router-view #name/>
                 </n-layout>
             </n-layout>
             <n-layout-footer :inverted="inverted" bordered align="center" class="h-6">
@@ -122,7 +122,7 @@ import {
 const router = useRouter();
 import http from "@/services/http.js";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb.vue";
-import {logout} from "@/services/auth.js";
+import {getLocalAuthUser, logout} from "@/services/auth.js";
 
 // const store = useStore();
 
@@ -380,7 +380,7 @@ function renderIcon(icon) {
 const userData = ref({});
 onMounted(async () => {
     try {
-        userData.value = JSON.parse(localStorage.getItem('AUTH_USER'));
+        userData.value = getLocalAuthUser();
     } catch (error) {
         if (error && error.response) {
             if (error.response.status === 401) {
