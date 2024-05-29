@@ -2,7 +2,7 @@
     <PageHeader title="Timber Transportation Permit Services" />
     <div class="flex justify-evenly flex-wrap px-20">
         <n-card
-            @click="handleCardClick('/timberTransportationApplication')"
+            @click="handleCardClick('timberTransportationApplication')"
             title="Apply to a Timber Transportation Permit"
             hoverable
             class="my-6"
@@ -16,7 +16,7 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberTransportationPermitStatus')" title="View Timber Transportation Permit Status" hoverable>
+            @click="handleCardClick('timberTransportationPermitStatus')" title="View Timber Transportation Permit Status" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
@@ -26,21 +26,21 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberTransportationPermitRenewal')" title="Permit Renewal Request" hoverable>
+            @click="handleCardClick('timberTransportationPermitRenewal')" title="Permit Renewal Request" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberTransportationReviewApplication')" title="Review the Applications" hoverable>
+            @click="handleCardClick('timberTransportationReviewApplication')" title="Review the Applications" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img_1.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberTransportationIssuePermits')" title="Issue Permits" hoverable>
+            @click="handleCardClick('timberTransportationIssuePermits')" title="Issue Permits" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
@@ -59,7 +59,7 @@ import PageHeader from "@/components/PageHeader.vue";
 const router = useRouter();
 
 const handleCardClick = (route) => {
-    router.push(route);
+    router.push(`/timberTransportation/${route}`);
     console.log("Clicked");
 };
 </script>

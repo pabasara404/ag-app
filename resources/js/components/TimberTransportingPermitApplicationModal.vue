@@ -102,7 +102,7 @@
           </n-form-item>
           <n-form-item label="Land Deed Number" path="land_deed_number">
               <n-input
-                  v-model:value="formValue.private_land_details.land_deed_number"
+                  v-model:value="formValue.private_lands.land_deed_number"
                   placeholder="Land Deed Number"
               />
           </n-form-item>
@@ -111,31 +111,31 @@
           </n-form-item>
           <n-form-item label="Plan plot No." path="plan_plot_no">
               <n-input
-                  v-model:value="formValue.private_land_details.plan_plot_number"
+                  v-model:value="formValue.private_lands.plan_plot_number"
                   placeholder="Plan plot No."
               />
           </n-form-item>
           <n-form-item label="Registration office" path="registration_office">
               <n-input
-                  v-model:value="formValue.private_land_details.registration_office"
+                  v-model:value="formValue.private_lands.registration_office"
                   placeholder="Registration office"
               />
           </n-form-item>
           <n-form-item label="Plan No." path="plan_number">
               <n-input
-                  v-model:value="formValue.private_land_details.plan_number"
+                  v-model:value="formValue.private_lands.plan_number"
                   placeholder="Plan No."
               />
           </n-form-item>
           <n-form-item label="Land Name" path="land_name">
               <n-input
-                  v-model:value="formValue.private_land_details.land_name"
+                  v-model:value="formValue.private_lands.land_name"
                   placeholder="Land Name"
               />
           </n-form-item>
           <n-form-item label="Land Size in perches" path="land_size">
               <n-input
-                  v-model:value="formValue.private_land_details.land_size"
+                  v-model:value="formValue.private_lands.land_size"
                   placeholder="Land Size in perches"
               />
               <n-tooltip trigger="hover">
@@ -351,7 +351,7 @@ const formValue = ref({
     bought_date: "2022-01-01",
     road_to_timber_location: "Take the highway and exit at Main St.",
     is_timber_private_land_checked_value: false,
-    private_land_details: {
+    private_lands: {
         land_deed_number: "123456",
         registration_date: "2021-01-01",
         plan_plot_number: "789",
@@ -412,7 +412,7 @@ const treeDetailsForm = ref({
 //     bought_date: "",
 //     road_to_timber_location: "",
 //     is_timber_private_land_checked_value: "",
-//     private_land_details:{
+//     private_lands:{
 //         land_deed_number: "",
 //         registration_date: "",
 //         plan_plot_number: "",
@@ -495,13 +495,13 @@ async function certifyAndSubmit() {
 
 const selectedRegistrationDate = computed({
   get: () => {
-    const landRegistrationDate = formValue.value.private_land_details.registration_date;
+    const landRegistrationDate = formValue.value.private_lands.registration_date;
     return moment(landRegistrationDate, "YYYY-MM-DD").isValid()
       ? moment(landRegistrationDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.private_land_details.registration_date = moment
+    formValue.value.private_lands.registration_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },

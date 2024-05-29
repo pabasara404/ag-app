@@ -34,16 +34,20 @@ class TimberTransportingPermitApplicationAction
             $dto = (array) new TimberTransportingPermitApplicationDTO($timberTransportingPermitApplication);
             $timberTransportingPermitApplication = TimberTransportingPermitApplication::create($dto);
             $gnDivision = GnDivision::create($dto['gn_division']);
-            $timberDetails = TimberDetail::create($dto['timber_details']);
-            $privateLand = PrivateLandDetail::create($dto['private_land']);
+            $privateLand = PrivateLandDetail::create($dto['private_lands']);
             $boundaries = Boundaries::create($dto['boundaries']);
 //            $citizen = Citizen::create($dto['citizen']);
 
             $timberTransportingPermitApplication->gn_division_id = $gnDivision->id;
-            $timberTransportingPermitApplication->timber_detail_id = $timberDetails->id;
             $timberTransportingPermitApplication->private_land_id = $privateLand->id;
             $timberTransportingPermitApplication->boundary_id = $boundaries->id;
 //            $timberTransportingPermitApplication->citizen_id = $citizen->id;
+
+            collect($dto['timber_details'])->each(function ($timberDetail) use ($timberTransportingPermitApplication) {
+                $timberDetails = TimberDetail::create($timberDetail);
+                $timberTransportingPermitApplication->timber_details()->save($timberDetails);
+            });
+
 
             $timberTransportingPermitApplication->save();
 

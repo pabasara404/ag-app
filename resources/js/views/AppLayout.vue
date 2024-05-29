@@ -122,6 +122,7 @@ import {
 const router = useRouter();
 import http from "@/services/http.js";
 import DynamicBreadcrumb from "@/components/DynamicBreadcrumb.vue";
+import {logout} from "@/services/auth.js";
 
 // const store = useStore();
 
@@ -379,12 +380,9 @@ function renderIcon(icon) {
 const userData = ref({});
 onMounted(async () => {
     try {
-        const response = await http.get('user');
-        localStorage.setItem('AUTH_USER', JSON.stringify(response.data));
-        console.log(response.data, "::", JSON.parse(localStorage.getItem('AUTH_USER')));
-        userData.value = response.data; // Update the ref with value
+        userData.value = JSON.parse(localStorage.getItem('AUTH_USER'));
     } catch (error) {
-        if (error && error.response) { // Check if error is an object with response
+        if (error && error.response) {
             if (error.response.status === 401) {
                 await router.push('/login');
             } else {
@@ -397,10 +395,7 @@ onMounted(async () => {
 });
 
 const handleLogout = () => {
-    http.get('auth/logout');
-    localStorage.removeItem('APP_DEMO_USER_TOKEN');
-    localStorage.removeItem('AUTH_USER');
-    window.location.reload();
+    logout();
 }
 </script>
 

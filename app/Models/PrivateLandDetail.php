@@ -9,6 +9,8 @@ class PrivateLandDetail extends Model
 {
     use HasFactory;
 
+    protected $table = 'private_lands';
+
     protected $fillable = [
         'land_deed_number',
         'registration_date',

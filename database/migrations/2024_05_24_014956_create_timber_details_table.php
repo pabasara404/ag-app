@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('length');
             $table->string('width');
             $table->string('piece_count');
+            $table->foreignId('timber_transporting_permit_application_id')->nullable()->references('id')->on('timber_transporting_applications');
             $table->timestamps();
         });
     }

@@ -15,10 +15,10 @@ class TimberTransportingPermitApplicationDTO
     public array $grama_niladari_division;
     public array $deed_details;
     public string $ownership_of_land_checked_value;
-    public array $land_details;
+    public array $private_lands;
     public array $boundaries;
     public array $tree_count;
-    public array $tree_details;
+    public array $timber_details;
     public array $tree_cutting_reasons;
     public string $cutted_other_tree_count;
     public string $planted_tree_count;

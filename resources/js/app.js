@@ -11,6 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import routes from "./routes.js";
+import {logout} from "@/services/auth.js";
 
 const vuetify = createVuetify({
     components,
@@ -35,6 +36,8 @@ router.beforeEach( (to, from, next) => {
     const isLoggedIn = !!localStorage.getItem('APP_DEMO_USER_TOKEN');
 
     document.title = to.meta.title;
+    const authUserRoleType = JSON.parse(localStorage.getItem('AUTH_USER'))?.role?.role_type;
+    console.log("39 ",authUserRoleType);
 
     if (to.meta.middleware === "auth" && !isLoggedIn) {
         next({ name: "login" });
@@ -42,9 +45,10 @@ router.beforeEach( (to, from, next) => {
         return;
     }
 
-    if (to.meta.middleware === "guest" && isLoggedIn) {
-        next({ name: "home" });
-
+    if(
+        to.meta.allowed?.every(authUserRole => authUserRole !== authUserRoleType)
+    ) {
+        logout();
         return;
     }
 

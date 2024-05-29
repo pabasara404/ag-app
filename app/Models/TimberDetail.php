@@ -18,6 +18,6 @@ class TimberDetail extends Model
 
     public function timberTransportingPermitApplication()
     {
-        return $this->hasOne(TimberTransportingPermitApplication::class);
+        return $this->belongsTo(TimberTransportingPermitApplication::class);
     }
 }

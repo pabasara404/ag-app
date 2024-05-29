@@ -1,8 +1,9 @@
 <template>
     <PageHeader title="Timber Cutting Permit Services" />
+    <router-view/>
     <div class="flex justify-evenly flex-wrap px-20">
         <n-card
-            @click="handleCardClick('/timberCuttingApplication')"
+            @click="handleCardClick('timberCuttingApplication')"
             title="Apply to a Timber Cutting Permit"
             hoverable
             class="my-6"
@@ -16,7 +17,7 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberCuttingPermitStatus')" title="View Timber Cutting Permit Status" hoverable>
+            @click="handleCardClick('timberCuttingPermitStatus')" title="View Timber Cutting Permit Status" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
@@ -26,21 +27,21 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberCuttingPermitRenewal')" title="Permit Renewal Request" hoverable>
+            @click="handleCardClick('timberCuttingPermitRenewal')" title="Permit Renewal Request" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberCuttingReviewApplication')" title="Review the Applications" hoverable>
+            @click="handleCardClick('timberCuttingReviewApplication')" title="Review the Applications" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img_1.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('/timberCuttingIssuePermits')" title="Issue Permits" hoverable>
+            @click="handleCardClick('timberCuttingIssuePermits')" title="Issue Permits" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
@@ -49,7 +50,6 @@
             </div>
         </n-card>
     </div>
-    <router-view />
 </template>
 
 <script setup>
@@ -59,7 +59,7 @@ import PageHeader from "@/components/PageHeader.vue";
 const router = useRouter();
 
 const handleCardClick = (route) => {
-    router.push(route);
+    router.push(`/timberCutting/${route}`);
     console.log("Clicked");
 };
 </script>

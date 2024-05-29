@@ -29,9 +29,7 @@ return new class extends Migration
             $table->string('total_pieces');
             $table->foreignId('private_land_id')->nullable()->references('id')->on('private_lands');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');
-            $table->foreignId('
-        gn_division_id')->nullable()->references('id')->on('gn_divisions');
-            $table->foreignId('timber_detail_id')->nullable()->references('id')->on('timber_details');
+            $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->timestamps();
         });
     }
