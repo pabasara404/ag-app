@@ -77,58 +77,55 @@ const routes = [
                 },
                 to:"name",
                 component: () => import("./views/Admin/TimberCuttingMainView.vue"),
-                children: [
-                    {
-                        path: "timberCuttingPermitRenewal",
-                        name: "TimberCuttingPermitRenewal",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Cutting Permit Renewal`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberCuttingPermitRenewalRequestView.vue"),
-                    },
-                    {
-                        path: "timberCuttingPermitStatus",
-                        name: "TimberCuttingPermitStatus",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Cutting Permit Status`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberCuttingPermitStatusView.vue"),
-                    },
-                    {
-                        path: "timberCuttingIssuePermits",
-                        name: "TimberCuttingIssuePermits",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Cutting Issue Permits`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberCuttingIssuePermitsView.vue"),
-                    },
-                    {
-                        path: "timberCuttingApplication",
-                        name: "TimberCuttingApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Cutting Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberCuttingApplicationView.vue"),
-                    },
-                    {
-                        path: "timberCuttingReviewApplication",
-                        name: "TimberCuttingReviewApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Cutting Review Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberCuttingReviewApplicationsView.vue"),
-                    },
-                ]
+            },{
+                path: "timberCuttingPermitRenewal",
+                name: "TimberCuttingPermitRenewal",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Cutting Permit Renewal`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberCuttingPermitRenewalRequestView.vue"),
+            },
+            {
+                path: "timberCuttingPermitStatus",
+                name: "TimberCuttingPermitStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Cutting Permit Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberCuttingPermitStatusView.vue"),
+            },
+            {
+                path: "timberCuttingIssuePermits",
+                name: "TimberCuttingIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Cutting Issue Permits`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberCuttingIssuePermitsView.vue"),
+            },
+            {
+                path: "timberCuttingApplication",
+                name: "TimberCuttingApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Cutting Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberCuttingApplicationView.vue"),
+            },
+            {
+                path: "timberCuttingReviewApplication",
+                name: "TimberCuttingReviewApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Cutting Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberCuttingReviewApplicationsView.vue"),
             },
             {
                 path: "gramaNiladariDivision",
@@ -149,58 +146,55 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/TimberTransportationView.vue"),
-                children: [
-                    {
-                        path: "timberTransportationPermitRenewal",
-                        name: "TimberTransportationPermitRenewal",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Permit Renewal`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
-                    },
-                    {
-                        path: "timberTransportationPermitStatus",
-                        name: "TimberTransportationPermitStatus",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Permit Status`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
-                    },
-                    {
-                        path: "timberTransportationIssuePermits",
-                        name: "TimberTransportationIssuePermits",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Issue Permits`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
-                    },
-                    {
-                        path: "timberTransportationApplication",
-                        name: "TimberTransportationApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
-                    },
-                    {
-                        path: "timberTransportationReviewApplication",
-                        name: "TimberTransportationReviewApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Review Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
-                    },
-                ]
+            },{
+                path: "timberTransportationPermitRenewal",
+                name: "TimberTransportationPermitRenewal",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Permit Renewal`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
+            },
+            {
+                path: "timberTransportationPermitStatus",
+                name: "TimberTransportationPermitStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Permit Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
+            },
+            {
+                path: "timberTransportationIssuePermits",
+                name: "TimberTransportationIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Issue Permits`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
+            },
+            {
+                path: "timberTransportationApplication",
+                name: "TimberTransportationApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
+            },
+            {
+                path: "timberTransportationReviewApplication",
+                name: "TimberTransportationReviewApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
             },
             {
                 path: "businessRegistrationCertificates",
@@ -211,58 +205,55 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/BusinessRegistrationCertificatesView.vue"),
-                children: [
-                    {
-                        path: "individualBusiness",
-                        name: "Individual Business",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Permit Renewal`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
-                    },
-                    {
-                        path: "timberTransportationPermitStatus",
-                        name: "TimberTransportationPermitStatus",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Permit Status`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
-                    },
-                    {
-                        path: "timberTransportationIssuePermits",
-                        name: "TimberTransportationIssuePermits",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Issue Permits`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
-                    },
-                    {
-                        path: "timberTransportationApplication",
-                        name: "TimberTransportationApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
-                    },
-                    {
-                        path: "timberTransportationReviewApplication",
-                        name: "TimberTransportationReviewApplication",
-                        meta: {
-                            middleware: "auth",
-                            title: `Timber Transportation Review Application`,
-                            allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                        },
-                        component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
-                    },
-                ]
+            }, {
+                path: "individualBusiness",
+                name: "Individual Business",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Permit Renewal`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
+            },
+            {
+                path: "timberTransportationPermitStatus",
+                name: "TimberTransportationPermitStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Permit Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
+            },
+            {
+                path: "timberTransportationIssuePermits",
+                name: "TimberTransportationIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Issue Permits`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
+            },
+            {
+                path: "timberTransportationApplication",
+                name: "TimberTransportationApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
+            },
+            {
+                path: "timberTransportationReviewApplication",
+                name: "TimberTransportationReviewApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Timber Transportation Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
             },
             {
                 path: "requestingAndIssuingIncomeCertificates",
