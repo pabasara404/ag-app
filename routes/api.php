@@ -5,6 +5,7 @@ use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GnDivisionController;
 use App\Http\Controllers\GnOfficerController;
+use App\Http\Controllers\IndividualBusinessController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
@@ -65,6 +66,12 @@ Route::get('timberTransportingPermitApplication', [TimberTransportingPermitAppli
 Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
 Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
 Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
+
+//routes for individualBusiness
+Route::get('individualBusiness', [individualBusinessController::class, 'index']);
+Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
+Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
+Route::post('individualBusiness', [individualBusinessController::class, 'store']);
 
 //routes for gnDivisions
 Route::get('gnDivision', [GnDivisionController::class, 'index']);

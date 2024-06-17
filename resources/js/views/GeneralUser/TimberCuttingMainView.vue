@@ -1,6 +1,5 @@
 <template>
     <PageHeader title="Timber Cutting Permit Services" />
-    <router-view/>
     <div class="flex justify-evenly flex-wrap px-20">
         <n-card
             @click="handleCardClick('timberCuttingApplication')"
@@ -53,13 +52,15 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PageHeader from "@/components/PageHeader.vue";
+import TimberCuttingReviewApplicationsView from "@/views/GuestUser/TimberCuttingReviewApplicationsView.vue";
 
 const router = useRouter();
 
 const handleCardClick = (route) => {
-    router.push(`/timberCutting/${route}`);
+    router.push(`${route}`);
     console.log("Clicked");
 };
 </script>

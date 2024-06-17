@@ -1,5 +1,5 @@
 <template>
-  <n-h2 class="p-2">Guest Dashboard</n-h2>
+  <n-h2 class="p-2">Admin Dashboard</n-h2>
   <div class="bg-emerald-100">
     <div class="grid grid-rows-4 grid-flow-col gap-4">
       <div class="row-span-4 col-span-2 bg-emerald-300">

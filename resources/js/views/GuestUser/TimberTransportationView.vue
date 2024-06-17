@@ -49,7 +49,6 @@
             </div>
         </n-card>
     </div>
-    <router-view />
 </template>
 
 <script setup>
@@ -59,7 +58,7 @@ import PageHeader from "@/components/PageHeader.vue";
 const router = useRouter();
 
 const handleCardClick = (route) => {
-    router.push(`/timberTransportation/${route}`);
+    router.push(`${route}`);
     console.log("Clicked");
 };
 </script>

@@ -38,7 +38,7 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import EditApplicationModal from "@/components/EditTimberCuttingApplicationModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditApplicationModal = ref(false);
 const selectedApplication = ref(false);

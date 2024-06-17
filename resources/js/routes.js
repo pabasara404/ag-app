@@ -213,47 +213,56 @@ const routes = [
                     title: `Timber Transportation Permit Renewal`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
+                component: () => import("./views/Admin/BusinessRegistrationIndividualApplicationView.vue"),
             },
             {
-                path: "timberTransportationPermitStatus",
-                name: "TimberTransportationPermitStatus",
+                path: "firm",
+                name: "Firm",
                 meta: {
                     middleware: "auth",
-                    title: `Timber Transportation Permit Status`,
+                    title: `Apply to a Registration by a Firm`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
+                component: () => import("./views/Admin/BusinessRegistrationFirmApplicationView.vue"),
             },
             {
-                path: "timberTransportationIssuePermits",
-                name: "TimberTransportationIssuePermits",
+                path: "businessRegistrationStatus",
+                name: "BusinessRegistrationStatus",
                 meta: {
                     middleware: "auth",
-                    title: `Timber Transportation Issue Permits`,
+                    title: `View Application Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
+                component: () => import("./views/Admin/BusinessRegistrationStatusView.vue"),
             },
             {
-                path: "timberTransportationApplication",
-                name: "TimberTransportationApplication",
+                path: "cessation",
+                name: "Cessation",
                 meta: {
                     middleware: "auth",
-                    title: `Timber Transportation Application`,
+                    title: `Submit a Notice of Cessation of Business`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
+                component: () => import("./components/BusinessRegistrationCessationApplicationModal.vue"),
             },
             {
-                path: "timberTransportationReviewApplication",
-                name: "TimberTransportationReviewApplication",
+                path: "businessRegistrationReviewApplication",
+                name: "businessRegistrationReviewApplication",
                 meta: {
                     middleware: "auth",
-                    title: `Timber Transportation Review Application`,
+                    title: `Review the Applications`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
+                component: () => import("./views/Admin/BusinessRegistrationReviewApplicationsView.vue"),
+            },{
+                path: "businessRegistrationIssuePermits",
+                name: "businessRegistrationIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Issue the Certificates`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/BusinessRegistrationIssuePermitsView.vue"),
             },
             {
                 path: "requestingAndIssuingIncomeCertificates",
