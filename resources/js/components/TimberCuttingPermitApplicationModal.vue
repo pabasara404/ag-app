@@ -11,7 +11,6 @@
           <n-h2 v-if="!isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
           <n-h2 v-else>Timber Cutting Permit Application</n-h2>
         </div>
-          <n-icon size="25"><CloseIcon /></n-icon>
       </n-page-header>
 
       <n-form ref="formRef" :model="formValue">
@@ -582,15 +581,8 @@ watch(
 );
 async function certifyAndSubmit() {
   console.log(formValue.value);
-  if(isNewTimberCuttingPermitApplication.value) {
-      await Http.post("timberCuttingPermitApplication", formValue.value);
-      isShowing.value = false;
-      emit("close");
-
-      return;
-  }
-
-  await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
+  await Http.post("timberCuttingPermitApplication", formValue.value);
+  isShowing.value = false;
   emit("close");
 }
 

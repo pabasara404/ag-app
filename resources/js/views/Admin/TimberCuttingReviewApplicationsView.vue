@@ -41,9 +41,10 @@ import { NButton, NIcon } from "naive-ui";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditApplicationModal = ref(false);
-const selectedApplication = ref(false);
+let selectedApplication = ref();
 const inverted = ref(false);
 const isLoading = ref(false);
+const applications = ref([]);
 const options = [
     {
         label: "Sort By Recently Added",
@@ -54,7 +55,6 @@ const options = [
         key: "2",
     },
 ];
-const applications = ref([]);
 const columns = [
     {
         title: "Name of Applicant",
@@ -94,8 +94,9 @@ const columns = [
                     // renderIcon: EyeIcon,
                     size: "small",
                     onClick: () => {
-                        selectedApplication.value = row;
+                        selectedApplication = row;
                         isShowingEditApplicationModal.value = true;
+                        // addNewApplication();
                     },
                 },
                 { default: () => "Review" }
@@ -129,60 +130,63 @@ onMounted(() => {
     fetchApplication();
 });
 
-function addNewApplication() {
-    selectedApplication.value = {
-        id: "",
-        name: "",
-        address: "",
-        contact_number: "",
-        timber_seller_checked_value: "",
-        non_commercial_use_checked_value: "",
-        grama_niladari_division: {
-            id: "",
-            gn_code: "",
-            name: "",
-            mpa_code: "",
-        },
-        deed_details: {
-            land_deed_number: "",
-            land_deed_date: "",
-        },
-        ownership_of_land_checked_value: "",
-        land_details: {
-            land_name: "",
-            land_size: "",
-            plan_number: "",
-            plan_date: "",
-            plan_plot_number: "",
-        },
-        boundaries: {
-            north: "",
-            south: "",
-            east: "",
-            west: "",
-        },
-        tree_details: [
-        ],
-        tree_cutting_reasons: [],
-        trees_cut_before: "",
-        planted_tree_count: "",
-        road_to_land: "",
-        status:"",
-        submission_timestamp:"",
-        tree_count:""
-    };
-
-    isShowingEditApplicationModal.value = true;
-}
+// function addNewApplication() {
+//     selectedApplication.value = {
+//         id: "",
+//         name: "",
+//         address: "",
+//         contact_number: "",
+//         timber_seller_checked_value: "",
+//         non_commercial_use_checked_value: "",
+//         grama_niladari_division: {
+//             id: "",
+//             gn_code: "",
+//             name: "",
+//             mpa_code: "",
+//         },
+//         deed_details: {
+//             land_deed_number: "",
+//             land_deed_date: "",
+//         },
+//         ownership_of_land_checked_value: "",
+//         land_details: {
+//             land_name: "",
+//             land_size: "",
+//             plan_number: "",
+//             plan_date: "",
+//             plan_plot_number: "",
+//         },
+//         boundaries: {
+//             north: "",
+//             south: "",
+//             east: "",
+//             west: "",
+//         },
+//         tree_details: [
+//         ],
+//         tree_cutting_reasons: [],
+//         trees_cut_before: "",
+//         planted_tree_count: "",
+//         road_to_land: "",
+//         status:"",
+//         submission_timestamp:"",
+//         tree_count:""
+//     };
+//
+//     isShowingEditApplicationModal.value = true;
+// }
 
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("timberCuttingPermitApplication");
-    isLoading.value = false;
-    applications.value = data.data;
+    try {
+        const { data } = await Http.get("timberCuttingPermitApplication");
+        applications.value = data.data;
+    } finally {
+        isLoading.value = false;
+    }
 }
 
 async function deleteApplication(application) {
