@@ -1,15 +1,7 @@
 <template>
     <n-layout style="height: 540px" has-sider>
         <n-layout style="padding-left: 8px" :inverted="inverted">
-            <PageHeader title="Application Details Management" />
-            <div class="flex justify-end pb-6">
-                <n-space>
-                    <n-dropdown :options="options" placement="bottom-start">
-                        <n-button :bordered="false" style="padding: 0 4px"> ··· </n-button>
-                    </n-dropdown>
-                </n-space>
-            </div>
-
+            <PageHeader title="Timber Cutting Application Management" />
             <n-space vertical>
                 <n-data-table
                     :loading="isLoading"
@@ -41,10 +33,9 @@ import { NButton, NIcon } from "naive-ui";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditApplicationModal = ref(false);
-let selectedApplication = ref();
+const selectedApplication = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
-const applications = ref([]);
 const options = [
     {
         label: "Sort By Recently Added",
@@ -55,6 +46,7 @@ const options = [
         key: "2",
     },
 ];
+const applications = ref([]);
 const columns = [
     {
         title: "Name of Applicant",
@@ -94,35 +86,34 @@ const columns = [
                     // renderIcon: EyeIcon,
                     size: "small",
                     onClick: () => {
-                        selectedApplication = row;
+                        selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
-                        // addNewApplication();
                     },
                 },
                 { default: () => "Review" }
             );
         },
-    // },
-    // {
-    //     title: "",
-    //     key: "actions",
-    //     render(row) {
-    //         return h(
-    //             NButton,
-    //             {
-    //                 round: true,
-    //                 type: "info",
-    //                 strong: true,
-    //                 secondary: true,
-    //                 size: "small",
-    //                 onClick: async () => {
-    //                     await deleteApplication(row);
-    //                     await fetchApplication();
-    //                 },
-    //             },
-    //             { default: () => "Reject" }
-    //         );
-    //     },
+    },
+    {
+        title: "",
+        key: "actions",
+        render(row) {
+            return h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: async () => {
+                        await deleteApplication(row);
+                        await fetchApplication();
+                    },
+                },
+                { default: () => "Delete" }
+            );
+        },
     },
 ];
 
@@ -130,68 +121,86 @@ onMounted(() => {
     fetchApplication();
 });
 
-// function addNewApplication() {
-//     selectedApplication.value = {
-//         id: "",
-//         name: "",
-//         address: "",
-//         contact_number: "",
-//         timber_seller_checked_value: "",
-//         non_commercial_use_checked_value: "",
-//         grama_niladari_division: {
-//             id: "",
-//             gn_code: "",
-//             name: "",
-//             mpa_code: "",
-//         },
-//         deed_details: {
-//             land_deed_number: "",
-//             land_deed_date: "",
-//         },
-//         ownership_of_land_checked_value: "",
-//         land_details: {
-//             land_name: "",
-//             land_size: "",
-//             plan_number: "",
-//             plan_date: "",
-//             plan_plot_number: "",
-//         },
-//         boundaries: {
-//             north: "",
-//             south: "",
-//             east: "",
-//             west: "",
-//         },
-//         tree_details: [
-//         ],
-//         tree_cutting_reasons: [],
-//         trees_cut_before: "",
-//         planted_tree_count: "",
-//         road_to_land: "",
-//         status:"",
-//         submission_timestamp:"",
-//         tree_count:""
-//     };
-//
-//     isShowingEditApplicationModal.value = true;
-// }
+function addNewApplication() {
+    selectedApplication.value = {
+        id: "",
+        name: "",
+        address: "",
+        contact_number: "",
+        timber_seller_checked_value: false,
+        non_commercial_use_checked_value: false,
+        gn_division: {
+            id: "",
+            gn_code: "",
+            name: "",
+            mpa_code: "",
+        },
+        deed_detail: {
+            land_deed_number: "",
+            land_deed_date: "",
+        },
+        ownership_of_land_checked_value: "",
+        land_detail: {
+            land_name: "",
+            land_size: "",
+            plan_number: "",
+            plan_date: "",
+            plan_plot_number: "",
+        },
+        boundary: {
+            north: "",
+            south: "",
+            east: "",
+            west: "",
+        },
+        tree_count: "",
+        tree_details: [
+            {
+                id: "",
+                sub_no: "",
+                type: "",
+                height: "",
+                girth: "",
+                reproducibility: false,
+                want_to_cut: false,
+                age: ""
+            }
+        ],
+        tree_cutting_reasons: [],
+        trees_cut_before: "",
+        planted_tree_count: "",
+        road_to_land: "",
+        status: "",
+        submission_timestamp: "",
+        checked_date: "",
+        checked_time: ""
+        // citizen_id: {
+        //    name: "",
+        //    address: "",
+        //    nic: "",
+        //    contact_number: "",
+        //    date_of_birth: "",
+        //    gn_division_id: "",
+        //    user_id: ""
+        // }
+    };
+
+    isShowingEditApplicationModal.value = true;
+}
 
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
 async function fetchApplication() {
     isLoading.value = true;
-    try {
-        const { data } = await Http.get("timberCuttingPermitApplication");
-        applications.value = data.data;
-    } finally {
-        isLoading.value = false;
-    }
+    const { data } = await Http.get("timberCuttingPermitApplication");
+    isLoading.value = false;
+    applications.value = data.data;
 }
 
-async function deleteApplication(application) {
+async function deleteApplication(Application) {
     isLoading.value = true;
-    await Http.delete(`timberCuttingPermitApplication/${application.id}`);
+    await Http.delete(`timberCuttingPermitApplication/${Application.id}`);
     isLoading.value = false;
 }
 </script>

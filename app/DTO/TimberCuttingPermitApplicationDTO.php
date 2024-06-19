@@ -21,7 +21,7 @@ class TimberCuttingPermitApplicationDTO
     public string $tree_count;
     public array $tree_details;
     public array $tree_cutting_reasons;
-    public string $cutted_other_tree_count;
+    public string $trees_cut_before;
     public string $planted_tree_count;
     public string $road_to_land;
     public ?string $submission_timestamp;

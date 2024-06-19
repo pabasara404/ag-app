@@ -41,7 +41,7 @@ class TimberCuttingPermitApplicationAction
             $dto = (array) new TimberCuttingPermitApplicationDTO($timberCuttingPermitApplication);
             $timberCuttingPermitApplication = TimberCuttingPermitApplication::create($dto);
             $gnDivision = GnDivision::create($dto['gn_division']);
-            $deedDetails = DeedDetail::create($dto['deed_details']);
+            $deedDetails = DeedDetail::create($dto['deed_detail']);
             $landDetails = LandDetail::create($dto['land_detail']);
             $boundaries = Boundaries::create($dto['boundary']);
 //            $citizen = Citizen::create($dto['citizen']);

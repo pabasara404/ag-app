@@ -75,7 +75,7 @@
         </n-form-item>
         <n-form-item label="Land Deed Number" path="land_deed_number">
           <n-input
-            v-model:value="formValue.deed_details.land_deed_number"
+            v-model:value="formValue.deed_detail.land_deed_number"
             placeholder="Land Deed Number"
           />
         </n-form-item>
@@ -391,7 +391,8 @@ const message = useMessage();
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
-  isShowing: Boolean,
+    isShowing: Boolean,
+    application: Object,
 });
 const non_commercial_use_checked_value = ref(false);
 const timber_seller_checked_value = ref(false);
@@ -414,7 +415,7 @@ const formValue = ref({
         name: "Kotugoda",
         mpa_code: "204",
     },
-    deed_details: {
+    deed_detail: {
         land_deed_number: "789",
         land_deed_date: "2022-04-11",
     },
@@ -446,7 +447,7 @@ const formValue = ref({
     tree_cutting_reasons: [
         {id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2},
         {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
-    trees_cut_before: "Yes",
+    trees_cut_before: "2",
     planted_tree_count: "20",
     road_to_land: "Paved road",
     status: "Submitted",
@@ -486,7 +487,7 @@ const treeDetailsForm = ref({
 //         name: "",
 //         mpa_code: "",
 //     },
-//     deed_details: {
+//     deed_detail: {
 //         land_deed_number: "",
 //         land_deed_date: "",
 //     },
@@ -577,6 +578,7 @@ watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
+    formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
@@ -588,13 +590,13 @@ async function certifyAndSubmit() {
 
 const selectedDeedDate = computed({
   get: () => {
-    const landDeedDate = formValue.value.deed_details.land_deed_date;
+    const landDeedDate = formValue.value.deed_detail.land_deed_date;
     return moment(landDeedDate, "YYYY-MM-DD").isValid()
       ? moment(landDeedDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.deed_details.land_deed_date = moment
+    formValue.value.deed_detail.land_deed_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
