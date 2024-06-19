@@ -15,21 +15,28 @@ class TimberCuttingPermitApplicationDTO
     public array $gn_division;
     public array $deed_details;
     public string $ownership_of_land_checked_value;
+    public string $status;
     public array $land_detail;
     public array $boundary;
-    public array $tree_count;
+    public string $tree_count;
     public array $tree_details;
     public array $tree_cutting_reasons;
     public string $cutted_other_tree_count;
     public string $planted_tree_count;
     public string $road_to_land;
+    public ?string $submission_timestamp;
+    public ?string $checked_date;
+    public ?string $checked_time;
 
     public function __construct(array $data)
     {
         collect($data)->each(function ($value, $key) {
-            $this->{$key} = $value;
-            if($key==='id' && $value === null){
-                unset($this->id);
+            if ($key === 'id' && empty($value)) {
+                $this->id = null;
+            } elseif ($key === 'submission_timestamp' && empty($value)) {
+                $this->submission_timestamp = now()->toDateTimeString();
+            } else {
+                $this->{$key} = $value;
             }
         });
 

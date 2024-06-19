@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTimberCuttingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberCuttingPermitApplicationRequest;
 use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Models\TimberCuttingPermitApplication;
+use Illuminate\Http\Request;
 
 class TimberCuttingPermitApplicationController extends Controller
 {
@@ -24,7 +25,6 @@ class TimberCuttingPermitApplicationController extends Controller
                 "deed_detail",
                 "land_detail",
                 "boundary",
-                "tree_count",
 //                "citizen",
                 "tree_cutting_reasons")->get()
 
@@ -100,5 +100,15 @@ class TimberCuttingPermitApplicationController extends Controller
     {
         $timberCuttingPermitApplication->delete();
         return response('', 204);
+    }
+
+    public function updateStatus(Request $request, TimberCuttingPermitApplication $application)
+    {
+        $newStatus = $request->input('status');
+        if ($application->transitionTo($newStatus)) {
+            return response()->json(['message' => 'Status updated successfully.']);
+        } else {
+            return response()->json(['message' => 'Invalid status transition.'], 400);
+        }
     }
 }

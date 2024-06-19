@@ -1,6 +1,6 @@
 <template>
   <n-page-header style="padding-left: 8px">
-    <template #title> {{ pageTitle }} </template>
+    <template #title>{{ pageTitle }} </template>
     <template #header>
         <dynamic-breadcrumb />
     </template>

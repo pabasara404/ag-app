@@ -46,6 +46,7 @@ class TimberCuttingPermitApplicationAction
             $boundaries = Boundaries::create($dto['boundary']);
 //            $citizen = Citizen::create($dto['citizen']);
 
+//            $timberCuttingPermitApplication->submission_timestamp = now();
             $timberCuttingPermitApplication->gn_division_id = $gnDivision->id;
             $timberCuttingPermitApplication->deed_detail_id = $deedDetails->id;
             $timberCuttingPermitApplication->land_detail_id = $landDetails->id;

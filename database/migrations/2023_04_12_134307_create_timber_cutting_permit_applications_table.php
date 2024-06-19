@@ -24,11 +24,16 @@ return new class extends Migration
             $table->string('trees_cut_before');
             $table->string('planted_tree_count');
             $table->string('road_to_land');
+            $table->string('tree_count');
+            $table->string('status')->default('Submitted');
+            $table->timestamp('submission_timestamp')->nullable();
+            $table->date('checked_date')->nullable();
+            $table->time('checked_time')->nullable();
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->foreignId('deed_detail_id')->nullable()->references('id')->on('deed_details');
             $table->foreignId('land_detail_id')->nullable()->references('id')->on('land_details');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');
-            $table->foreignId('tree_count_id')->nullable()->references('id')->on('tree_counts');
+//            $table->foreignId('tree_count_id')->nullable()->references('id')->on('tree_counts');
             $table->foreignId('citizen_id')->nullable()->references('id')->on('citizens');
             $table->timestamps();
         });

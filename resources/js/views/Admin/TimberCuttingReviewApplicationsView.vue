@@ -62,7 +62,7 @@ const columns = [
     },
     {
         title: "Tree count",
-        key: "nic",
+        key: "tree_count",
     },
     {
         title: "Address",
@@ -70,7 +70,7 @@ const columns = [
     },
     {
         title: "Status",
-        key: "contact_number",
+        key: "status",
     },
     // {
     //   title: "Role",
@@ -78,7 +78,7 @@ const columns = [
     // },
     {
         title: "Submitted date",
-        key: "date_of_birth",
+        key: "submission_timestamp",
     },
     {
         title: "",
@@ -161,18 +161,15 @@ function addNewApplication() {
             east: "",
             west: "",
         },
-        tree_count: {
-            breadfruit: "",
-            coconut: "",
-            jackfruit: "",
-            palmyra: "",
-        },
         tree_details: [
         ],
         tree_cutting_reasons: [],
         trees_cut_before: "",
         planted_tree_count: "",
         road_to_land: "",
+        status:"",
+        submission_timestamp:"",
+        tree_count:""
     };
 
     isShowingEditApplicationModal.value = true;

@@ -8,8 +8,10 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>Timber Cutting Permit Application</n-h2>
+          <n-h2 v-if="!isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
+          <n-h2 v-else>Timber Cutting Permit Application</n-h2>
         </div>
+          <n-icon size="25"><CloseIcon /></n-icon>
       </n-page-header>
 
       <n-form ref="formRef" :model="formValue">
@@ -238,7 +240,7 @@
                 <tbody>
                 <tr :key="key" v-for="(tree_detail, key) in formValue.tree_details">
                     <td>
-                        <n-checkbox v-model="tree_detail.want_to_cut" size="large" label="  " />{{ tree_detail.sub_no }}
+                        <n-checkbox v-model="tree_detail.want_to_cut" size="large" label="  " @update:checked="updateTreeCount"/>{{ tree_detail.sub_no }}
                     </td>
                     <td>{{ tree_detail.type}}</td>
                     <td>{{ tree_detail.height}}</td>
@@ -254,6 +256,8 @@
                 </tbody>
             </n-table>
         </n-form-item>
+          <label>Tree Count: {{ treeCount }}</label>
+          <br/><br/>
 
         <n-form-item label="Reasons for cutting down tree/trees:">
           <n-select
@@ -287,6 +291,16 @@
             placeholder="Briefly mention the road signs from the Divisional Secretariat to the land"
           />
         </n-form-item>
+          <n-card v-if="isNewTimberCuttingPermitApplication && formValue.status==='Submitted'">
+              <n-h3>By GN Officer</n-h3>
+              <n-form-item label="Checked Date" path="checked_date">
+                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+              </n-form-item>
+                 <n-form-item>
+<!--                     <n-time-picker v-model:value="formValue.checked_time" />-->
+                 </n-form-item>
+              <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
+          </n-card>
         <n-p
           >Upload following documents:<n-ul>
             <n-li>Duly Filled application</n-li>
@@ -344,7 +358,7 @@
         >
         <div class="flex justify-end">
           <n-form-item>
-            <n-button @click="certifyAndSubmit"> Certify and Submit </n-button>
+            <n-button @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Review" }} </n-button>
           </n-form-item>
         </div>
       </n-form>
@@ -360,6 +374,7 @@ import { NButton, useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
   InformationCircleOutline as InformationCircleOutlineIcon,
+    Close as CloseIcon,
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
@@ -388,7 +403,7 @@ const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
 
 const formValue = ref({
-    id: "",
+    id: "1",
     name: "John Doe",
     address: "123 Main St",
     contact_number: "555-1234",
@@ -418,12 +433,7 @@ const formValue = ref({
         east: "East boundary",
         west: "West boundary",
     },
-    tree_count: {
-        breadfruit: 5,
-        coconut: 10,
-        jackfruit: 3,
-        palmyra: 2,
-    },
+    tree_count: "2",
     tree_details: [
         {id:"",
             sub_no: "001",
@@ -440,6 +450,10 @@ const formValue = ref({
     trees_cut_before: "Yes",
     planted_tree_count: "20",
     road_to_land: "Paved road",
+    status: "Submitted",
+    submission_timestamp:"",
+    checked_date:"",
+    checked_time:""
     // citizen_id:{
     //    name: "John Doe",
     //    address: "123 Main St",
@@ -458,7 +472,7 @@ const treeDetailsForm = ref({
     girth: "2 meters",
     reproducibility: true,
     age: "5 years",
-    want_to_cut: true
+    want_to_cut: false
 });
 // const formValue = ref({
 //     id: "",
@@ -568,9 +582,16 @@ watch(
 );
 async function certifyAndSubmit() {
   console.log(formValue.value);
-  await Http.post("timberCuttingPermitApplication", formValue.value);
-  isShowing.value = false;
-  emit("close", false);
+  if(isNewTimberCuttingPermitApplication.value) {
+      await Http.post("timberCuttingPermitApplication", formValue.value);
+      isShowing.value = false;
+      emit("close");
+
+      return;
+  }
+
+  await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
+  emit("close");
 }
 
 const selectedDeedDate = computed({
@@ -596,6 +617,20 @@ const selectedPlanDate = computed({
   },
   set: (epoch) => {
     formValue.value.land_detail.plan_date = moment
+      .unix(epoch / 1000)
+      .format("YYYY-MM-DD");
+  },
+});
+
+const selectedCheckedDate = computed({
+  get: () => {
+    const checkedDate = formValue.value.checked_date;
+    return moment(checkedDate, "YYYY-MM-DD").isValid()
+      ? moment(checkedDate).valueOf()
+      : null;
+  },
+  set: (epoch) => {
+    formValue.value.checked_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
@@ -650,6 +685,7 @@ const selectedTreeCuttingReasons = computed({
   },
 });
 
+
 onMounted(() => {
   fetchGnDivisions();
   // fetchTimberCuttingPermitApplication();
@@ -681,6 +717,11 @@ const fetchGnDivisions = async () => {
     console.error(error);
   }
 };
+
+async function fetchTreeCuttingReasons() {
+    const { data } = await Http.get("/treeCuttingReason");
+    treeCuttingReasons.value = data;
+}
 
 function selectGramaNiladariDivision(key) {
   formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
@@ -724,8 +765,10 @@ function handleChange(group, e) {
 }
 
 const addTreeDetails = () => {
-    formValue.value.tree_details.push({...treeDetailsForm.value});
+    formValue.value.tree_details.push({ ...treeDetailsForm.value, want_to_cut: false });
     clearTreeForm(); // Clear the form after adding tree details
+    // updateTreeCount();
+
 };
 
 const clearTreeForm = () => {
@@ -740,12 +783,22 @@ const clearTreeForm = () => {
 
 const removeRow = (index) => {
     formValue.value.tree_details.splice(index, 1);
+    updateTreeCount();
 };
 
-async function fetchTreeCuttingReasons() {
-  const { data } = await Http.get("/treeCuttingReason");
-  treeCuttingReasons.value = data;
-}
+const updateTreeCount = () => {
+    formValue.value.tree_count = formValue.value.tree_details.filter(tree => tree.want_to_cut).length;
+};
+
+const treeCount = computed(() => formValue.value.tree_count);
+
+// Watch for changes in the want_to_cut property of any tree_details to update the tree count
+watch(
+    () => formValue.value.tree_details.map(tree => tree.want_to_cut),
+    updateTreeCount,
+    { deep: true }
+);
+
 </script>
 
 <style scoped></style>
