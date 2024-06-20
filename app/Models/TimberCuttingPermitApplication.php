@@ -12,6 +12,7 @@ class TimberCuttingPermitApplication extends Model
     use HasFactory;
 
     protected $fillable=[
+        'id',
         'name',
         'address',
         'contact_number',

@@ -88,6 +88,7 @@ const columns = [
                     onClick: () => {
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
+                        console.log(selectedApplication.value.id);
                     },
                 },
                 { default: () => "Review" }
@@ -121,73 +122,6 @@ onMounted(() => {
     fetchApplication();
 });
 
-function addNewApplication() {
-    selectedApplication.value = {
-        id: "",
-        name: "",
-        address: "",
-        contact_number: "",
-        timber_seller_checked_value: false,
-        non_commercial_use_checked_value: false,
-        gn_division: {
-            id: "",
-            gn_code: "",
-            name: "",
-            mpa_code: "",
-        },
-        deed_detail: {
-            land_deed_number: "",
-            land_deed_date: "",
-        },
-        ownership_of_land_checked_value: "",
-        land_detail: {
-            land_name: "",
-            land_size: "",
-            plan_number: "",
-            plan_date: "",
-            plan_plot_number: "",
-        },
-        boundary: {
-            north: "",
-            south: "",
-            east: "",
-            west: "",
-        },
-        tree_count: "",
-        tree_details: [
-            {
-                id: "",
-                sub_no: "",
-                type: "",
-                height: "",
-                girth: "",
-                reproducibility: false,
-                want_to_cut: false,
-                age: ""
-            }
-        ],
-        tree_cutting_reasons: [],
-        trees_cut_before: "",
-        planted_tree_count: "",
-        road_to_land: "",
-        status: "",
-        submission_timestamp: "",
-        checked_date: "",
-        checked_time: ""
-        // citizen_id: {
-        //    name: "",
-        //    address: "",
-        //    nic: "",
-        //    contact_number: "",
-        //    date_of_birth: "",
-        //    gn_division_id: "",
-        //    user_id: ""
-        // }
-    };
-
-    isShowingEditApplicationModal.value = true;
-}
-
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
@@ -198,9 +132,9 @@ async function fetchApplication() {
     applications.value = data.data;
 }
 
-async function deleteApplication(Application) {
+async function deleteApplication(application) {
     isLoading.value = true;
-    await Http.delete(`timberCuttingPermitApplication/${Application.id}`);
+    await Http.delete(`timberCuttingPermitApplication/${application.id}`);
     isLoading.value = false;
 }
 </script>

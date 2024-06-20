@@ -31,7 +31,7 @@
     </n-ul>
     <div class="flex justify-center ... p-8">
       <n-button
-        @click="isShowingTimberCuttingPermitApplicationModal = true"
+        @click="addNewApplication"
         type="warning"
         secondary
         bordered
@@ -40,6 +40,7 @@
       </n-button>
     </div>
     <timber-cutting-permit-application-modal
+        :application="selectedApplication"
       :is-showing="isShowingTimberCuttingPermitApplicationModal"
       @close="isShowingTimberCuttingPermitApplicationModal = $event"
     />
@@ -53,7 +54,74 @@ import TimberCuttingPermitApplicationModal from "@/components/TimberCuttingPermi
 
 
 const isShowingTimberCuttingPermitApplicationModal = ref(false);
+const selectedApplication = ref(false);
 
+function addNewApplication() {
+    selectedApplication.value = {
+        id: "",
+        name: "John Doe",
+        address: "123 Main St",
+        contact_number: "555-1234",
+        timber_seller_checked_value: true,
+        non_commercial_use_checked_value: false,
+        gn_division: {
+            id: "74",
+            gn_code: "370",
+            name: "Kotugoda",
+            mpa_code: "204",
+        },
+        deed_detail: {
+            land_deed_number: "789",
+            land_deed_date: "2022-04-11",
+        },
+        ownership_of_land_checked_value: "Co-owner",
+        land_detail: {
+            land_name: "Example Land",
+            land_size: "10 acres",
+            plan_number: "Plan123",
+            plan_date: "2022-04-11",
+            plan_plot_number: "Plot456",
+        },
+        boundary: {
+            north: "North boundary",
+            south: "South boundary",
+            east: "East boundary",
+            west: "West boundary",
+        },
+        tree_count: "2",
+        tree_details: [
+            {id:"",
+                sub_no: "001",
+                type: "Pine",
+                height: "10 meters",
+                girth: "2 meters",
+                reproducibility: true,
+                want_to_cut:true,
+                age:"12"}
+        ],
+        tree_cutting_reasons: [
+            {id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2},
+            {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
+        trees_cut_before: "2",
+        planted_tree_count: "20",
+        road_to_land: "Paved road",
+        status: "Submitted",
+        submission_timestamp:"",
+        checked_date:"",
+        checked_time:""
+        // citizen_id: {
+        //    name: "",
+        //    address: "",
+        //    nic: "",
+        //    contact_number: "",
+        //    date_of_birth: "",
+        //    gn_division_id: "",
+        //    user_id: ""
+        // }
+    };
+
+    isShowingTimberCuttingPermitApplicationModal.value = true
+}
 </script>
 
 <style scoped></style>

@@ -8,7 +8,7 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2 v-if="!isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
+          <n-h2 v-if="isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
           <n-h2 v-else>Timber Cutting Permit Application</n-h2>
         </div>
       </n-page-header>
@@ -290,7 +290,7 @@
             placeholder="Briefly mention the road signs from the Divisional Secretariat to the land"
           />
         </n-form-item>
-          <n-card v-if="isNewTimberCuttingPermitApplication && formValue.status==='Submitted'">
+          <n-card v-if="!isNewTimberCuttingPermitApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="checked_date">
                   <n-date-picker v-model:value="selectedCheckedDate" type="date" />
@@ -403,7 +403,7 @@ const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
 
 const formValue = ref({
-    id: "1",
+    id: "",
     name: "John Doe",
     address: "123 Main St",
     contact_number: "555-1234",
@@ -466,6 +466,7 @@ const formValue = ref({
 });
 
 const treeDetailsForm = ref({
+    id:"",
     sub_no: "001",
     type: "Pine",
     height: "10 meters",
@@ -581,11 +582,20 @@ watch(
     formValue.value = {...props.application };
   }
 );
+
+
+const isNewTimberCuttingPermitApplication = computed(() => {
+    return !formValue.value.id;
+});
 async function certifyAndSubmit() {
-  console.log(formValue.value);
-  await Http.post("timberCuttingPermitApplication", formValue.value);
-  isShowing.value = false;
-  emit("close");
+  if(isNewTimberCuttingPermitApplication.value){
+      await Http.post("timberCuttingPermitApplication", formValue.value);
+      emit("close", false);
+
+      return;
+  }
+  await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
+    emit("close", false);
 }
 
 const selectedDeedDate = computed({
@@ -630,10 +640,6 @@ const selectedCheckedDate = computed({
   },
 });
 
-const isNewTimberCuttingPermitApplication = computed(() => {
-  return !formValue.value.id;
-});
-
 const gnDivisionsForDropdown = computed(() => {
   return GNDivisionOptions.value.map((gnDivisionOption) => {
     return {
@@ -644,11 +650,12 @@ const gnDivisionsForDropdown = computed(() => {
 });
 
 const selectedGramaNiladariDivision = computed(() => {
-  return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
-    return (
-      gnDivisionForDropdown.key === formValue.value.gn_division.id
-    );
-  });
+    if (!formValue.value.gn_division || formValue.value.gn_division.id === null) {
+        return null;
+    }
+    return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
+        return gnDivisionForDropdown.key === formValue.value.gn_division.id;
+    });
 });
 
 const treeCuttingReasonsForSelect = computed(() => {
@@ -781,14 +788,19 @@ const removeRow = (index) => {
 };
 
 const updateTreeCount = () => {
-    formValue.value.tree_count = formValue.value.tree_details.filter(tree => tree.want_to_cut).length;
+    if (formValue.value.tree_details) {
+        formValue.value.tree_count = formValue.value.tree_details.filter(tree => tree.want_to_cut).length;
+    } else {
+        formValue.value.tree_count = 0;
+    }
 };
 
 const treeCount = computed(() => formValue.value.tree_count);
 
-// Watch for changes in the want_to_cut property of any tree_details to update the tree count
 watch(
-    () => formValue.value.tree_details.map(tree => tree.want_to_cut),
+    () => {
+        return formValue.value.tree_details ? formValue.value.tree_details.map(tree => tree.want_to_cut) : [];
+    },
     updateTreeCount,
     { deep: true }
 );
