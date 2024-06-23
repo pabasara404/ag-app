@@ -108,7 +108,8 @@ function addNewApplication() {
         status: "Submitted",
         submission_timestamp:"",
         checked_date:"",
-        checked_time:""
+        checked_time:"",
+        comment:"",
         // citizen_id: {
         //    name: "",
         //    address: "",

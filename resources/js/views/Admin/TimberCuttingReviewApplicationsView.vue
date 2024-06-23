@@ -16,6 +16,7 @@
             :is-showing="isShowingEditApplicationModal"
             @close="isShowingEditApplicationModal = $event"
             @save="fetchApplication"
+            :initial-status="initialStatus"
         />
     </n-layout>
 </template>
@@ -36,6 +37,7 @@ const isShowingEditApplicationModal = ref(false);
 const selectedApplication = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
+const initialStatus = ref(null);
 const options = [
     {
         label: "Sort By Recently Added",
@@ -88,7 +90,6 @@ const columns = [
                     onClick: () => {
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
-                        console.log(selectedApplication.value.id);
                     },
                 },
                 { default: () => "Review" }

@@ -27,6 +27,8 @@ class TimberCuttingPermitApplicationDTO
     public ?string $submission_timestamp;
     public ?string $checked_date;
     public ?string $checked_time;
+    public ?string $comment;
+
 
     public function __construct(array $data)
     {

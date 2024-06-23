@@ -290,16 +290,6 @@
             placeholder="Briefly mention the road signs from the Divisional Secretariat to the land"
           />
         </n-form-item>
-          <n-card v-if="!isNewTimberCuttingPermitApplication">
-              <n-h3>By GN Officer</n-h3>
-              <n-form-item label="Checked Date" path="checked_date">
-                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-              </n-form-item>
-                 <n-form-item>
-<!--                     <n-time-picker v-model:value="formValue.checked_time" />-->
-                 </n-form-item>
-              <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
-          </n-card>
         <n-p
           >Upload following documents:<n-ul>
             <n-li>Duly Filled application</n-li>
@@ -349,15 +339,54 @@
             </n-upload-dragger>
           </n-upload>
         </n-form-item>
-        <n-p
+        <n-p v-if="isNewTimberCuttingPermitApplication"
           >I certify that I have the legal right to the land related to felling
           of trees and that there is no dispute, that the above information is
           true and that I will take full responsibility if any problem
           arises.</n-p
         >
+          <n-card v-if="!isNewTimberCuttingPermitApplication">
+              <n-h3>By GN Officer</n-h3>
+              <n-form-item label="Checked Date" path="checked_date">
+                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+              </n-form-item>
+              <n-form-item>
+                  <!--                     <n-time-picker v-model:value="formValue.checked_time" />-->
+              </n-form-item>
+              <n-form-item
+                  label="Any comment about application"
+              >
+                  <n-input
+                      type="textarea"
+                      v-model:value="formValue.comment"
+                      placeholder="Any comment about application"
+                  />
+              </n-form-item>
+              <n-form-item
+                  label="Status"
+                  path="status"
+              >
+                  <n-dropdown
+                      trigger="hover"
+                      placement="bottom-start"
+                      :options="statusOptions"
+                      @select="handleStatusSelect"
+                  >
+                      <n-button
+                      >{{
+                              selectedStatus
+                                  ? selectedStatus.label
+                                  : "Change the Status"
+                          }}
+                          <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                      </n-button>
+                  </n-dropdown>
+              </n-form-item>
+              <p>I have personally inspected the tree/trees for which permission is sought to be cut by the applicant. There is no problem Regarding ownership or boundaries of the land. I certify that the facts mentioned in this report are true. I recommend permission for cutting tree/trees.</p>
+          </n-card>
         <div class="flex justify-end">
           <n-form-item>
-            <n-button @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Review" }} </n-button>
+            <n-button @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
           </n-form-item>
         </div>
       </n-form>
@@ -393,6 +422,7 @@ const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
     application: Object,
+    initialStatus: String
 });
 const non_commercial_use_checked_value = ref(false);
 const timber_seller_checked_value = ref(false);
@@ -401,6 +431,7 @@ const timberCuttingPermitApplications = ref([]);
 const selectedValues = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
+const initialStatus = ref("");
 
 const formValue = ref({
     id: "",
@@ -453,7 +484,8 @@ const formValue = ref({
     status: "Submitted",
     submission_timestamp:"",
     checked_date:"",
-    checked_time:""
+    checked_time:"",
+    comment:"",
     // citizen_id:{
     //    name: "John Doe",
     //    address: "123 Main St",
@@ -575,6 +607,10 @@ onMounted(async () => {
         })
     }
 );
+onMounted(() => {
+    initialStatus.value = formValue.value.status;
+    console.log(initialStatus.value)
+});
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -589,11 +625,15 @@ const isNewTimberCuttingPermitApplication = computed(() => {
 });
 async function certifyAndSubmit() {
   if(isNewTimberCuttingPermitApplication.value){
+      formValue.value.status = "Submitted";
       await Http.post("timberCuttingPermitApplication", formValue.value);
       emit("close", false);
 
       return;
   }
+    if (initialStatus.value === "Pending" && formValue.value.status === "Pending") {
+        formValue.value.status = "Resubmitted";
+    }
   await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
@@ -639,6 +679,23 @@ const selectedCheckedDate = computed({
       .format("YYYY-MM-DD");
   },
 });
+
+const statusOptions = [
+    { label: 'Pending', key: 'Pending' },
+    { label: 'Escalated', key: 'Escalated' },
+];
+
+const selectedStatus = computed(() => {
+    if (!formValue.value.status) {
+        return { label: "Submitted" };
+    }
+    return statusOptions.find(statusOption => statusOption.label === formValue.value.status) || { label: formValue.value.status };
+});
+
+function handleStatusSelect(selected) {
+    console.log(selected);
+    formValue.value.status = selected;
+}
 
 const gnDivisionsForDropdown = computed(() => {
   return GNDivisionOptions.value.map((gnDivisionOption) => {

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->timestamp('submission_timestamp')->nullable();
             $table->date('checked_date')->nullable();
             $table->time('checked_time')->nullable();
+            $table->string('comment')->nullable();
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->foreignId('deed_detail_id')->nullable()->references('id')->on('deed_details');
             $table->foreignId('land_detail_id')->nullable()->references('id')->on('land_details');
