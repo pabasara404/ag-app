@@ -6,6 +6,8 @@ use App\Models\Citizen;
 use App\Models\Employee;
 use App\QueryBuilders\CitizenBuilder;
 use App\QueryBuilders\EmployeeBuilder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class CitizenActions
@@ -15,7 +17,7 @@ class CitizenActions
         return Citizen::query()->all();
     }
 
-    public static function getCitizenByUserId($userId): \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+    public static function getCitizenByUserId($userId): Builder|Model
     {
         return CitizenBuilder::whereUserId($userId);
     }

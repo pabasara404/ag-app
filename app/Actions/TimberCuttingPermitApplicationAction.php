@@ -12,7 +12,10 @@ use App\Models\TimberCuttingPermitApplication;
 use App\Models\TreeCuttingReason;
 use App\Models\TreeDetail;
 use App\Models\User;
+use App\QueryBuilders\TimberCuttingPermitApplicationBuilder;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +24,11 @@ class TimberCuttingPermitApplicationAction
     public static function all(): Collection
     {
         return TimberCuttingPermitApplication::query()->all();
+    }
+
+    public static function getApplicationByStatus($status): array|\Illuminate\Database\Eloquent\Collection
+    {
+            return TimberCuttingPermitApplicationBuilder::whereStatus($status)->get();
     }
 
 //    public static function update(array $employee): bool

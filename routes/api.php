@@ -57,6 +57,7 @@ Route::post('citizen', [CitizenController::class, 'store']);
 
 //routes for timberCuttingPermitApplications
 Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
+Route::get('timberCuttingPermitApplicationByStatus', [TimberCuttingPermitApplicationController::class, 'show']);
 Route::put('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'update']);
 Route::delete('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'destroy']);
 Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);

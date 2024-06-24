@@ -431,7 +431,6 @@ const timberCuttingPermitApplications = ref([]);
 const selectedValues = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
-const initialStatus = ref("");
 
 const formValue = ref({
     id: "",
@@ -607,10 +606,7 @@ onMounted(async () => {
         })
     }
 );
-onMounted(() => {
-    initialStatus.value = formValue.value.status;
-    console.log(initialStatus.value)
-});
+
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -624,17 +620,16 @@ const isNewTimberCuttingPermitApplication = computed(() => {
     return !formValue.value.id;
 });
 async function certifyAndSubmit() {
-  if(isNewTimberCuttingPermitApplication.value){
-      formValue.value.status = "Submitted";
-      await Http.post("timberCuttingPermitApplication", formValue.value);
-      emit("close", false);
-
-      return;
-  }
-    if (initialStatus.value === "Pending" && formValue.value.status === "Pending") {
+    if (isNewTimberCuttingPermitApplication.value) {
+        formValue.value.status = "Submitted";
+        await Http.post("timberCuttingPermitApplication", formValue.value);
+        emit("close", false);
+        return;
+    }
+    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
-  await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
+    await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 

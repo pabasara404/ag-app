@@ -59,11 +59,12 @@ class TimberCuttingPermitApplicationController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\TimberCuttingPermitApplication  $timberCuttingPermitApplication
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(TimberCuttingPermitApplication $timberCuttingPermitApplication)
+    public function show(Request $request)
     {
-        //
+        $applications = TimberCuttingPermitApplicationAction::getApplicationByStatus($request->status);
+        return response()->json(['data' => $applications]);
     }
 
     /**
