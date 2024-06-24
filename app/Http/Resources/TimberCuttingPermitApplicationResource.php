@@ -55,7 +55,8 @@ class TimberCuttingPermitApplicationResource extends JsonResource
             "trees_cut_before"=> $this->trees_cut_before,
             "planted_tree_count"=> $this->planted_tree_count,
             "road_to_land"=> $this->road_to_land,
-            "comment"=>$this->comment
+            "comment"=>$this->comment,
+            "updated_at"=>$this->updated_at
 //            "reasons"=>
 
         ];

@@ -34,6 +34,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 });
 
 //routes for employees
@@ -56,12 +57,12 @@ Route::delete('citizen/{citizen}', [CitizenController::class, 'destroy']);
 Route::post('citizen', [CitizenController::class, 'store']);
 
 //routes for timberCuttingPermitApplications
-Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
+//Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 Route::get('timberCuttingPermitApplicationByStatus', [TimberCuttingPermitApplicationController::class, 'show']);
 Route::put('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'update']);
 Route::delete('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'destroy']);
 Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);
-Route::post('/applications/{application}/status', [TimberCuttingPermitApplicationController::class, 'updateStatus']);
+Route::put('timberCuttingPermitApplication/{id}', [TimberCuttingPermitApplicationController::class, 'updateStatus']);
 
 //routes for timberTransportingPermitApplications
 Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);

@@ -95,28 +95,7 @@ const columns = [
                 { default: () => "Review" }
             );
         },
-    },
-    {
-        title: "",
-        key: "actions",
-        render(row) {
-            return h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: async () => {
-                        await deleteApplication(row);
-                        await fetchApplication();
-                    },
-                },
-                { default: () => "Delete" }
-            );
-        },
-    },
+    }
 ];
 
 onMounted(() => {
@@ -128,7 +107,11 @@ function renderIcon(icon) {
 }
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("timberCuttingPermitApplication");
+    const { data } = await Http.get("timberCuttingPermitApplicationByStatus", {
+        params: {
+            status: 'Submitted,Resubmitted'
+        }
+    });
     isLoading.value = false;
     applications.value = data.data;
 }

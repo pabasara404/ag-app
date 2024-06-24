@@ -86,6 +86,10 @@ const columns = [
         key: "submission_timestamp",
     },
     {
+        title: "Last updated date",
+        key: "updated_at",
+    },
+    {
         title: "",
         key: "actions",
         render(row) {

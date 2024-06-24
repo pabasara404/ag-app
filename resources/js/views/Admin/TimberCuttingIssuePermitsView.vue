@@ -43,10 +43,6 @@ const columns = [
         key: "address",
     },
     {
-        title: "Status",
-        key: "status",
-    },
-    {
         title: "Comment",
         key: "comment",
     },
@@ -77,14 +73,6 @@ const columns = [
         }
     }
 ];
-// onMounted(async () => {
-//         await Http.get('timberCuttingPermitApplicationByStatus', {
-//             params:{
-//                 status: 'Escalated'
-//             }
-//         })
-//     }
-// );
 onMounted(() => {
     fetchApplication();
 });

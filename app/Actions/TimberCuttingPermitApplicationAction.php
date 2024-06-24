@@ -26,9 +26,19 @@ class TimberCuttingPermitApplicationAction
         return TimberCuttingPermitApplication::query()->all();
     }
 
-    public static function getApplicationByStatus($status): array|\Illuminate\Database\Eloquent\Collection
+    public static function getApplicationByStatus(string $statuses): array|\Illuminate\Database\Eloquent\Collection
     {
-            return TimberCuttingPermitApplicationBuilder::whereStatus($status)->get();
+        $statusArray = explode(',', $statuses);
+        return TimberCuttingPermitApplicationBuilder::whereStatus($statusArray)
+            ->with([
+                "gn_division",
+                "tree_details",
+                "deed_detail",
+                "land_detail",
+                "boundary",
+                "tree_cutting_reasons"
+            ])
+            ->get();
     }
 
 //    public static function update(array $employee): bool

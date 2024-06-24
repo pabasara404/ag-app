@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTimberCuttingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberCuttingPermitApplicationRequest;
 use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Models\TimberCuttingPermitApplication;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TimberCuttingPermitApplicationController extends Controller
@@ -59,7 +60,7 @@ class TimberCuttingPermitApplicationController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\TimberCuttingPermitApplication  $timberCuttingPermitApplication
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function show(Request $request)
     {
@@ -103,13 +104,12 @@ class TimberCuttingPermitApplicationController extends Controller
         return response('', 204);
     }
 
-    public function updateStatus(Request $request, TimberCuttingPermitApplication $application)
+    public function updateStatus(Request $request, $id): JsonResponse
     {
-        $newStatus = $request->input('status');
-        if ($application->transitionTo($newStatus)) {
-            return response()->json(['message' => 'Status updated successfully.']);
-        } else {
-            return response()->json(['message' => 'Invalid status transition.'], 400);
-        }
+        $application = TimberCuttingPermitApplication::findOrFail($id);
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }

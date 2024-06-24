@@ -386,7 +386,9 @@
           </n-card>
         <div class="flex justify-end">
           <n-form-item>
-            <n-button @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+            <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
         </div>
       </n-form>
@@ -598,6 +600,8 @@ const options = [
     key: "The Beverly Hills Hotel, Los Angeles",
   },
 ];
+
+
 onMounted(async () => {
         await Http.get('citizen-by-user-id', {
             params:{
@@ -632,6 +636,18 @@ async function certifyAndSubmit() {
     await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
+
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`timberCuttingPermitApplication/${props.application.id}`, {
+            status: status
+        });
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+    }
+};
 
 const selectedDeedDate = computed({
   get: () => {

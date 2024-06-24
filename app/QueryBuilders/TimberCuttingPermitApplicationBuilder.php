@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TimberCuttingPermitApplicationBuilder
 {
-    static function whereStatus(string $status) : Builder|Model
+    public static function whereStatus(array $statuses): Builder
     {
-        return TimberCuttingPermitApplication::query()->where('status', $status);
+        return TimberCuttingPermitApplication::query()->whereIn('status', $statuses);
     }
 }
