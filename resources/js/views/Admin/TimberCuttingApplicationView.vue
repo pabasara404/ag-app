@@ -1,8 +1,7 @@
 <template>
   <n-layout class="pl-2">
     <PageHeader title="Timber Cutting Permit Request" />
-    <n-p
-      >Any citizen should obtain a permit to cut tree types such as Jackfruit,
+      <n-p>According to the 1 of 2000. ACT TO PROVIDE FOR THE PROHIBITION, REGULATION OR CONTROL OF THE FELLING OF TREES citizens should obtain a permit to cut tree types such as Jackfruit,
       coconut, breadfruit, and palmyra. Required documents to obtain the timber
       cutting permit :</n-p
     >
