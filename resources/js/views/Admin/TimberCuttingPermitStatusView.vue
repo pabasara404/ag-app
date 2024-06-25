@@ -110,6 +110,27 @@ const columns = [
                 { default: () => "Edit Application" }
             ) : null;
         }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return row.status === "Issued" ? h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: () => {
+                        selectedApplication.value = row;
+                        isShowingEditApplicationModal.value = true;
+                        initialStatus.value = row.status;
+                    },
+                },
+                { default: () => "Download" }
+            ) : null;
+        }
     }
 ];
 

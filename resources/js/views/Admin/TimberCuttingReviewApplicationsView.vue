@@ -116,9 +116,5 @@ async function fetchApplication() {
     applications.value = data.data;
 }
 
-async function deleteApplication(application) {
-    isLoading.value = true;
-    await Http.delete(`timberCuttingPermitApplication/${application.id}`);
-    isLoading.value = false;
-}
+
 </script>

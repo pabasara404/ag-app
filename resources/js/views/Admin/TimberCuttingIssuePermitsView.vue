@@ -71,7 +71,27 @@ const columns = [
                 { default: () => "View Application" }
             );
         }
-    }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: async () => {
+                        await deleteApplication(row);
+                        await fetchApplication();
+                    },
+                },
+                { default: () => "Delete" }
+            );
+        },
+    },
 ];
 onMounted(() => {
     fetchApplication();
@@ -87,7 +107,11 @@ async function fetchApplication() {
     isLoading.value = false;
     applications.value = data.data; // Ensure the response is handled correctly
 }
-
+async function deleteApplication(application) {
+    isLoading.value = true;
+    await Http.delete(`timberCuttingPermitApplication/${application.id}`);
+    isLoading.value = false;
+}
 </script>
 
 <style scoped>
