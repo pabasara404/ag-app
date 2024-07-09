@@ -1,6 +1,7 @@
 <template>
   <n-layout class="pl-2">
     <PageHeader title="Business Registration Firm Application"/>
+      <n-h4><i><u>Business Names Statute Of Trade, Coporations and Non—incoporated Trade Institutions of the Western Province No. 05 of 2011</u></i></n-h4>
       <n-p>Required documents to obtain the registration of a firm:</n-p>
       <n-ul>
           <n-li>1. Duly filled application.</n-li>
