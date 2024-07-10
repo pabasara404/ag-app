@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FirmController;
 use App\Http\Controllers\GnDivisionController;
 use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\IndividualBusinessController;
@@ -75,6 +76,15 @@ Route::get('individualBusiness', [individualBusinessController::class, 'index'])
 Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
 Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
 Route::post('individualBusiness', [individualBusinessController::class, 'store']);
+
+//routes for firms
+Route::get('firmApplication', [FirmController::class, 'index']);
+Route::get('firmByStatus', [FirmController::class, 'show']);
+Route::put('firmApplication/{firmApplication}', [FirmController::class, 'update']);
+Route::delete('firmApplication/{firmApplication}', [FirmController::class, 'destroy']);
+Route::post('firmApplication', [FirmController::class, 'store']);
+Route::put('firmApplication/{id}', [FirmController::class, 'updateStatus']);
+
 
 //routes for gnDivisions
 Route::get('gnDivision', [GnDivisionController::class, 'index']);

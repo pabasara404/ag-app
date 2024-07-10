@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FirmAction;
+use App\Http\Resources\FirmResource;
 use App\Models\Firm;
 use App\Http\Requests\StoreFirmRequest;
 use App\Http\Requests\UpdateFirmRequest;
+use App\Models\OtherPartneredBusiness;
+use App\Models\Partner;
+use Illuminate\Support\Facades\DB;
 
 class FirmController extends Controller
 {
@@ -13,7 +18,12 @@ class FirmController extends Controller
      */
     public function index()
     {
-        //
+        $firms = Firm::with(
+            'addresses',
+            'partners'
+        )->get();
+
+        return FirmResource::collection($firms);
     }
 
     /**
@@ -27,9 +37,11 @@ class FirmController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(StoreFirmRequest $request)
     {
-        //
+        $firm = FirmAction::store($request->toArray());
+//        return response()->json(['message' => 'Business created successfully', 'data' => new FirmResource($firm)], 201);
     }
 
     /**

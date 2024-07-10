@@ -448,7 +448,8 @@ const GNDivisionOptions = ref([]);
 //     partner_details: [],
 //     checked_date: "",
 //     comment: "",
-//     status: ""
+//     status: "",
+//     ownership_of_land_checked_value: ""
 // });
 //
 // const partnerDetailsForm = ref({
@@ -463,10 +464,10 @@ const GNDivisionOptions = ref([]);
 //     is_other_occupation_value: "",
 //     occupation: "",
 //     is_other_business_value: "",
-//     other_businesses: [],
+//     other_partnered_businesses: [],
 //     is_director: "",
-//     director_details: [],
-//     ownership_of_land_checked_value: ""
+//     director_details: []
+// submission_timestamp:"",
 // });
 //
 // const otherBusinessDetailsForm = ref({
@@ -479,24 +480,24 @@ const GNDivisionOptions = ref([]);
 //
 // const directorDetailsForm = ref({
 //     id:"",
-//     name:"",
+//     business_name:"",
 //     registration_no:""
 // });
 
 const formValue = ref({
-    id: "1",
+    id: "",
     business_name: "Tech Innovators",
     nature: "Technology",
     principal_place: "123 Tech Lane",
     initial_capital: "50000",
     addresses: [
-        { id: "1", name: "Main Office" },
-        { id: "2", name: "Branch Office" }
+        { id: "", name: "Main Office" },
+        { id: "", name: "Branch Office" }
     ],
     start_date: "2024-01-01",
     partner_details: [
         {
-            id: "1",
+            id: "",
             full_name: "John Doe",
             previous_name: "John Smith",
             government_officer_checked_value: "Yes",
@@ -504,26 +505,27 @@ const formValue = ref({
             nic: "A1234567",
             contact_number: "123-456-7890",
             residence: "456 Elm Street",
-            is_other_occupation_value: "No",
+            is_other_occupation_value: "1",
             occupation: "Engineer",
-            is_other_business_value: "Yes",
-            other_businesses: [
-                { id: "1", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
+            is_other_business_value: "1",
+            other_partnered_businesses: [
+                { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
             ],
-            is_director: "Yes",
+            is_director: "1",
             director_details: [
-                { id: "1", name: "Tech Holdings", registration_no: "D123" }
-            ],
-            ownership_of_land_checked_value: "No"
+                { id: "", business_name: "Tech Holdings", registration_no: "D123" }
+            ]
         }
     ],
     checked_date: "2024-07-01",
     comment: "All documents verified.",
-    status: "Approved"
+    status: "Submitted",
+    ownership_of_land_checked_value: "Rent",
+    submission_timestamp:"",
 });
 
 const partnerDetailsForm = ref({
-    id: "1",
+    id: "",
     full_name: "Jane Smith",
     previous_name: "Jane Doe",
     government_officer_checked_value: "Yes",
@@ -531,17 +533,16 @@ const partnerDetailsForm = ref({
     nic: "C9876543",
     contact_number: "987-654-3210",
     residence: "789 Maple Avenue",
-    is_other_occupation_value: "No",
+    is_other_occupation_value: "1",
     occupation: "Manager",
-    is_other_business_value: "No",
-    other_businesses: [],
-    is_director: "No",
-    director_details: [],
-    ownership_of_land_checked_value: "Yes"
+    is_other_business_value: "1",
+    other_partnered_businesses: [],
+    is_director: "1",
+    director_details: []
 });
 
 const otherBusinessDetailsForm = ref({
-    id: "1",
+    id: "",
     registration_no: "O456",
     business_name: "Creative Solutions",
     registered_date: "2023-03-10",
@@ -549,7 +550,7 @@ const otherBusinessDetailsForm = ref({
 });
 
 const directorDetailsForm = ref({
-    id: "1",
+    id: "",
     name: "Innovative Holdings",
     registration_no: "D789"
 });
@@ -601,10 +602,9 @@ const clearPartnerDetailsForm = () => {
         is_other_occupation_value: "",
         occupation: "",
         is_other_business_value: "",
-        other_businesses: [],
+        other_partnered_businesses: [],
         is_director: "",
-        director_details: [],
-        ownership_of_land_checked_value: ""
+        director_details: []
     };
 };
 

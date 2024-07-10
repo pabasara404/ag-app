@@ -57,7 +57,6 @@ class TimberCuttingPermitApplicationResource extends JsonResource
             "road_to_land"=> $this->road_to_land,
             "comment"=>$this->comment,
             "updated_at"=>$this->updated_at
-//            "reasons"=>
 
         ];
     }

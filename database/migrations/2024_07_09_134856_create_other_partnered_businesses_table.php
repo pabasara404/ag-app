@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('director_details', function (Blueprint $table) {
+        Schema::create('other_partnered_businesses', function (Blueprint $table) {
             $table->id();
             $table->string('registration_no');
             $table->string('business_name');
-            $table->foreignId('individual_business_id')->nullable()->references('id')->on('individual_businesses');
-            $table->foreignId('partner_id')->nullable()->references('id')->on('partners');
+            $table->string('nature');
+            $table->date('registered_date')->nullable();
+            $table->foreignId('partner_id')->nullable()->references('id')->on('partners')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('director_details');
+        Schema::dropIfExists('other_partnered_businesses');
     }
 };

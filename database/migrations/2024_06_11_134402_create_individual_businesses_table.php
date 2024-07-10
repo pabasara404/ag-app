@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('contact_number');
             $table->string('ownership_of_land_checked_value');
             $table->date('checked_date');
+            $table->string('status')->default('Submitted');
+            $table->string('comment')->nullable();
+            $table->timestamp('submission_timestamp')->nullable();
 //            $table->timestamps('checked_time');
             $table->foreignId('owner_detail_id')->nullable()->references('id')->on('owner_details');
             $table->foreignId('citizen_id')->nullable()->references('id')->on('citizens');

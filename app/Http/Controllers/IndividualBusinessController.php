@@ -15,12 +15,14 @@ class IndividualBusinessController extends Controller
      */
     public function index()
     {
-        return IndividualBusinessResource::collection(IndividualBusiness::with(
+        $individualBusinesses = IndividualBusiness::with(
             'addresses',
             'owner_detail',
             'other_businesses',
             'director_details'
-        ));
+        )->get();
+
+        return IndividualBusinessResource::collection($individualBusinesses);
     }
 
     /**

@@ -226,14 +226,23 @@ const routes = [
                 component: () => import("./views/Admin/BusinessRegistrationFirmApplicationView.vue"),
             },
             {
-                path: "businessRegistrationStatus",
-                name: "BusinessRegistrationStatus",
+                path: "individualBusinessRegistrationStatus",
+                name: "individualBusinessRegistrationStatus",
                 meta: {
                     middleware: "auth",
-                    title: `View Application Status`,
+                    title: `View Individual Business Application Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationStatusView.vue"),
+                component: () => import("./views/Admin/IndividualBusinessRegistrationStatusView.vue"),
+            },{
+                path: "firmBusinessRegistrationStatus",
+                name: "firmBusinessRegistrationStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `View Firm Application Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/FirmRegistrationStatusView.vue"),
             },
             {
                 path: "cessation",

@@ -372,7 +372,10 @@ const formValue = ref({
     contact_number: "+1234567890",
     ownership_of_land_checked_value: "Yes",
     checked_date: "2023-01-01",
-    checked_time: ""
+    status: "Submitted",
+    submission_timestamp:"",
+    checked_time: "",
+    comment:"",
 });
 
 const otherBusinessDetailsForm = ref({

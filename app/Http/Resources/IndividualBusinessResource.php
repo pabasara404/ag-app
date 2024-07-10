@@ -15,6 +15,7 @@ class IndividualBusinessResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id"=>$this['id'],
             "business_name"=>$this->business_name,
             "nature"=>$this->nature,
             "principal_place"=>$this->principal_place,
@@ -31,7 +32,11 @@ class IndividualBusinessResource extends JsonResource
             "addresses"=>$this->addresses,
             "owner_detail"=>$this->owner_detail,
             "other_businesses"=>$this->other_businesses,
-            "director_details"=>$this->director_details
+            "director_details"=>$this->director_details,
+            "comment"=>$this->comment,
+            "updated_at"=>$this->updated_at,
+            "status"=>$this->status,
+            "submission_timestamp"=>$this->submission_timestamp
         ];
     }
 }

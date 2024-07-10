@@ -27,6 +27,7 @@ class IndividualBusinessAction
     }
 
 
+
     public static function store(array $individualBusiness, User $authUser = null)
     {
         DB::beginTransaction();

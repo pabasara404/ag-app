@@ -13,10 +13,15 @@ class DirectorDetail extends Model
         'name',
         'registration_no',
         'business_name',
-        'individual_business_id'
+        'individual_business_id',
+        'partner_id'
     ];
 
     public function individual_business(){
         $this->belongsTo(IndividualBusiness::class);
+    }
+
+    public function partner(){
+        return $this->belongsTo(Partner::class);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('individual_business_id')->nullable()->references('id')->on('individual_businesses');
+            $table->foreignId('firm_id')->nullable()->references('id')->on('firms');
             $table->timestamps();
         });
     }

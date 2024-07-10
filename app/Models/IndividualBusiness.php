@@ -22,6 +22,8 @@ class IndividualBusiness extends Model
         'contact_number',
         'ownership_of_land_checked_value',
         'checked_date',
+        'status',
+        'submission_timestamp',
 //        'checked_time',
         'owner_detail_id',
         'citizen_id'

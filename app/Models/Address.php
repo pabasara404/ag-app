@@ -11,10 +11,15 @@ class Address extends Model
 
     protected $fillable = [
         'name',
-        'individual_business_id'
+        'individual_business_id',
+        'firm_id'
     ];
 
     public function individual_business(){
         return $this->belongsTo(IndividualBusiness::class);
+    }
+
+    public function firm(){
+        return $this->belongsTo(Firm::class);
     }
 }

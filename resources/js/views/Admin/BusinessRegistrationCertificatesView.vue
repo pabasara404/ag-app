@@ -29,7 +29,17 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('businessRegistrationStatus')" title="View Application Status" hoverable>
+            @click="handleCardClick('individualBusinessRegistrationStatus')" title="View Individual Business Application Status" hoverable>
+            <div class="flex justify-center ">
+                <img
+                    width="125"
+                    src="../../.././images/application status tracking black and white simple clipart.jpeg"
+                />
+            </div>
+        </n-card>
+        <n-card
+            class="my-6"
+            @click="handleCardClick('firmBusinessRegistrationStatus')" title="View Firm Application Status" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
