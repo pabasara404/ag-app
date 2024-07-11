@@ -69,6 +69,10 @@ const isShowingEditApplicationModal = ref(false);
 
 const columns = [
     {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
         title: "Name of the business",
         key: "business_name",
     },

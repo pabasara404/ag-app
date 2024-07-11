@@ -197,20 +197,30 @@ const routes = [
                 component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
             },
             {
-                path: "businessRegistrationCertificates",
-                name: "businessRegistrationCertificates",
+                path: "firmView",
+                name: "firmView",
                 meta: {
                     middleware: "auth",
-                    title: `Business Registration Certificates`,
+                    title: `Firm Registration`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationCertificatesView.vue"),
+                component: () => import("./views/Admin/FirmRegistrationView.vue"),
+            },
+            {
+                path: "individualView",
+                name: "individualView",
+                meta: {
+                    middleware: "auth",
+                    title: `Individual Business Registration`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IndividualBusinessRegistrationView.vue"),
             }, {
                 path: "individualBusiness",
                 name: "Individual Business",
                 meta: {
                     middleware: "auth",
-                    title: `Timber Transportation Permit Renewal`,
+                    title: `Individual Business Registration Management`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/BusinessRegistrationIndividualApplicationView.vue"),
@@ -245,33 +255,61 @@ const routes = [
                 component: () => import("./views/Admin/FirmRegistrationStatusView.vue"),
             },
             {
-                path: "cessation",
-                name: "Cessation",
+                path: "individualCessation",
+                name: "IndividualCessation",
                 meta: {
                     middleware: "auth",
                     title: `Submit a Notice of Cessation of Business`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./components/BusinessRegistrationCessationApplicationModal.vue"),
+                component: () => import("./views/Admin/IndividualBusinessRegistrationCessationApplication.vue"),
             },
             {
-                path: "businessRegistrationReviewApplication",
-                name: "businessRegistrationReviewApplication",
+                path: "firmCessation",
+                name: "firmCessation",
+                meta: {
+                    middleware: "auth",
+                    title: `Submit a Notice of Cessation of Business`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/FirmRegistrationCessationApplication.vue"),
+            },
+            {
+                path: "firmRegistrationReviewApplication",
+                name: "firmRegistrationReviewApplication",
                 meta: {
                     middleware: "auth",
                     title: `Review the Applications`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationReviewApplicationsView.vue"),
+                component: () => import("./views/Admin/FirmRegistrationReviewApplicationsView.vue"),
             },{
-                path: "businessRegistrationIssuePermits",
-                name: "businessRegistrationIssuePermits",
+                path: "individualBusinessRegistrationReviewApplication",
+                name: "individualBusinessRegistrationReviewApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Review the Applications`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IndividualBusinessRegistrationReviewApplicationsView.vue"),
+            },{
+                path: "firmRegistrationIssuePermits",
+                name: "firmRegistrationIssuePermits",
                 meta: {
                     middleware: "auth",
                     title: `Issue the Certificates`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationIssuePermitsView.vue"),
+                component: () => import("./views/Admin/FirmRegistrationIssuePermitsView.vue"),
+            },{
+                path: "individualBusinessRegistrationIssuePermits",
+                name: "individualBusinessRegistrationIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Issue the Certificates`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IndividualBusinessRegistrationIssuePermitsView.vue"),
             },
             {
                 path: "requestingAndIssuingIncomeCertificates",

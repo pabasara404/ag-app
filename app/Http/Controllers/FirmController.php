@@ -7,8 +7,10 @@ use App\Http\Resources\FirmResource;
 use App\Models\Firm;
 use App\Http\Requests\StoreFirmRequest;
 use App\Http\Requests\UpdateFirmRequest;
+use App\Http\Requests\SearchFirmRequest;
 use App\Models\OtherPartneredBusiness;
 use App\Models\Partner;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FirmController extends Controller
@@ -74,5 +76,13 @@ class FirmController extends Controller
     public function destroy(Firm $firm)
     {
         //
+    }
+
+    public function searchByReferenceNo(SearchFirmRequest $request)
+    {
+        $applicationCode = $request->input('application_code');
+        $firms = Firm::where('application_code', 'like', "%$applicationCode%")->get();
+
+        return FirmResource::collection($firms);
     }
 }

@@ -227,19 +227,40 @@ const menuOptions = [
         icon: renderIcon(CarIcon),
     },
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: "businessRegistrationCertificates",
-                    },
-                },
-                { default: () => "Business Registration Certificates" }
-            ),
+        label: "Business Registration Certificates",
         key: "businessRegistrationCertificates",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(BusinessIcon),
+        children: [
+            {
+                label: () =>
+                    h(
+                        RouterLink,
+                        {
+                            to: {
+                                name: "individualView",
+                            },
+                        },
+                        { default: () => "Individual Business Registration" }
+                    ),
+                key: "individualBusinessRegistration",
+                authorizedBy: ["Employee", "Admin"],
+            },
+            {
+                label: () =>
+                    h(
+                        RouterLink,
+                        {
+                            to: {
+                                name: "firmView",
+                            },
+                        },
+                        { default: () => "Firm Registration" }
+                    ),
+                key: "firmRegistration",
+                authorizedBy: ["Employee", "Admin"],
+            }
+        ],
     },
     {
         label: () =>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('government_officer_checked_value');
             $table->string('contact_number');
             $table->string('ownership_of_land_checked_value');
+            $table->string('application_code')->unique();
             $table->date('checked_date');
             $table->string('status')->default('Submitted');
             $table->string('comment')->nullable();

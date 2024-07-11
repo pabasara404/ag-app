@@ -3,33 +3,19 @@
 namespace App\Actions;
 
 use App\DTO\FirmDTO;
-use App\DTO\IndividualBusinessDTO;
 use App\Models\Address;
-use App\Models\Boundaries;
-use App\Models\Citizen;
-use App\Models\DeedDetail;
-use App\Models\DirectorDetail;
 use App\Models\Firm;
-use App\Models\OtherBusiness;
 use App\Models\OtherPartneredBusiness;
-use App\Models\OwnerDetail;
-use App\Models\LandDetail;
-use App\Models\IndividualBusiness;
 use App\Models\Partner;
-use App\Models\TreeCuttingReason;
-use App\Models\TreeDetail;
-use App\Models\User;
-use Exception;
-use Illuminate\Support\Collection;
+use App\Models\DirectorDetail;
 use Illuminate\Support\Facades\DB;
 
 class FirmAction
 {
-    public static function all(): Collection
+    public static function all()
     {
         return Firm::query()->all();
     }
-
 
     public static function store(array $firmData)
     {
@@ -37,8 +23,13 @@ class FirmAction
 
         try {
             $dto = new FirmDTO($firmData);
+            $dto->application_code = Firm::generateApplicationCode();
 
-            $firm = Firm::create((array) $dto);
+            $firmArray = (array) $dto;
+
+            unset($firmArray['addresses'], $firmArray['partner_details']);
+
+            $firm = Firm::create($firmArray);
 
             foreach ($dto->addresses as $addressData) {
                 $address = new Address($addressData);
@@ -67,6 +58,4 @@ class FirmAction
             throw $exception;
         }
     }
-
-
 }

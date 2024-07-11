@@ -1,20 +1,7 @@
 <template>
     <PageHeader title="Business Registration Management" />
     <div class="flex justify-evenly flex-wrap px-20">
-        <n-card
-            @click="handleCardClick('individualBusiness')"
-            title="Apply to a Registration of a Business Owned by an Individual"
-            hoverable
-            class="my-6"
-        >
-            <div class="flex justify-center">
-                <img
-                    width="125"
-                    src="../../.././images/Timber%20cutting%20permit%20req4.jpeg"
-                />
-            </div>
-        </n-card>
-        <n-card
+       <n-card
             @click="handleCardClick('firm')"
             title="Apply to a Registration by a Firm"
             hoverable
@@ -24,16 +11,6 @@
                 <img
                     width="125"
                     src="../../.././images/Timber%20cutting%20permit%20req4.jpeg"
-                />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('individualBusinessRegistrationStatus')" title="View Individual Business Application Status" hoverable>
-            <div class="flex justify-center ">
-                <img
-                    width="125"
-                    src="../../.././images/application status tracking black and white simple clipart.jpeg"
                 />
             </div>
         </n-card>
@@ -49,21 +26,21 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('cessation')" title="Submit a Notice of Cessation of Business" hoverable>
+            @click="handleCardClick('firmCessation')" title="Submit a Notice of Cessation of Business" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('businessRegistrationReviewApplication')" title="Review the Applications" hoverable>
+            @click="handleCardClick('firmRegistrationReviewApplication')" title="Review the Applications" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img_1.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('businessRegistrationIssuePermits')"
+            @click="handleCardClick('firmRegistrationIssuePermits')"
             title="Issue the Certificates" hoverable>
             <div class="flex justify-center ">
                 <img

@@ -21,7 +21,8 @@ class Firm extends Model
         'is_other_occupation_value',
         'ownership_of_land_checked_value',
         'status',
-        'submission_timestamp'
+        'submission_timestamp',
+        'application_code',
     ];
 
     public function addresses()
@@ -33,4 +34,12 @@ class Firm extends Model
     {
         return $this->hasMany(Partner::class);
     }
+
+    public static function generateApplicationCode()
+{
+    $lastBusiness = self::orderBy('id', 'desc')->first();
+    $lastCode = $lastBusiness ? (int)substr($lastBusiness->application_code, -6) : 0;
+    $newCode = str_pad($lastCode + 1, 6, '0', STR_PAD_LEFT);
+    return "WP/KTN/FR/{$newCode}";
+}
 }

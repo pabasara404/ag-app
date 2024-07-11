@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('ownership_of_land_checked_value');
             $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp')->nullable();
+            $table->string('application_code')->unique();
             $table->timestamps();
         });
     }

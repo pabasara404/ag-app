@@ -24,7 +24,7 @@ class IndividualBusiness extends Model
         'checked_date',
         'status',
         'submission_timestamp',
-//        'checked_time',
+        'application_code',
         'owner_detail_id',
         'citizen_id'
     ];
@@ -43,5 +43,13 @@ class IndividualBusiness extends Model
 
     public function director_details(){
         return $this->hasMany(DirectorDetail::class);
+    }
+
+    public static function generateApplicationCode()
+    {
+        $lastBusiness = self::orderBy('id', 'desc')->first();
+        $lastCode = $lastBusiness ? (int)substr($lastBusiness->application_code, -6) : 0;
+        $newCode = str_pad($lastCode + 1, 6, '0', STR_PAD_LEFT);
+        return "WP/KTN/IBR/{$newCode}";
     }
 }

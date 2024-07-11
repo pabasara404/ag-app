@@ -72,12 +72,19 @@ Route::delete('timberTransportingPermitApplication/{timberTransportingPermitAppl
 Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
 
 //routes for individualBusiness
+//Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
 Route::get('individualBusiness', [individualBusinessController::class, 'index']);
 Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
 Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
 Route::post('individualBusiness', [individualBusinessController::class, 'store']);
 
+// Example routes in api.php
+Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);
+Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
+
+
 //routes for firms
+//Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);
 Route::get('firmApplication', [FirmController::class, 'index']);
 Route::get('firmByStatus', [FirmController::class, 'show']);
 Route::put('firmApplication/{firmApplication}', [FirmController::class, 'update']);

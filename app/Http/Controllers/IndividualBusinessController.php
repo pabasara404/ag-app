@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Actions\IndividualBusinessAction;
+use App\Http\Requests\SearchIndividualBusinessRequest;
 use App\Http\Resources\IndividualBusinessResource;
 use App\Models\IndividualBusiness;
 use App\Http\Requests\StoreIndividualBusinessRequest;
 use App\Http\Requests\UpdateIndividualBusinessRequest;
+use Illuminate\Http\Request;
 
 class IndividualBusinessController extends Controller
 {
@@ -73,5 +75,13 @@ class IndividualBusinessController extends Controller
     {
         $individualBusiness->delete();
         return response()->noContent();
+    }
+
+    public function searchByReferenceNo(SearchIndividualBusinessRequest $request)
+    {
+        $applicationCode = $request->input('application_code');
+        $individualBusinesses = IndividualBusiness::where('application_code', 'like', "%$applicationCode%")->get();
+
+        return IndividualBusinessResource::collection($individualBusinesses);
     }
 }

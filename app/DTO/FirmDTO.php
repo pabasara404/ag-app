@@ -16,6 +16,7 @@ class FirmDTO
     public ?string $submission_timestamp;
     public ?string $comment;
     public ?string $status;
+    public ?string $application_code;
     public string $ownership_of_land_checked_value;
     public function __construct(array $data)
     {
