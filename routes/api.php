@@ -57,6 +57,14 @@ Route::put('citizen/{citizen}', [CitizenController::class, 'update']);
 Route::delete('citizen/{citizen}', [CitizenController::class, 'destroy']);
 Route::post('citizen', [CitizenController::class, 'store']);
 
+//routes for individualBusiness
+//Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
+Route::get('individualBusiness', [individualBusinessController::class, 'index']);
+Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
+Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
+Route::post('individualBusiness', [individualBusinessController::class, 'store']);
+Route::put('individualBusiness/{id}', [individualBusinessController::class, 'updateStatus']);
+
 //routes for timberCuttingPermitApplications
 Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 Route::get('timberCuttingPermitApplicationByStatus', [TimberCuttingPermitApplicationController::class, 'show']);
@@ -70,14 +78,6 @@ Route::get('timberTransportingPermitApplication', [TimberTransportingPermitAppli
 Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
 Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
 Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
-
-//routes for individualBusiness
-//Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
-Route::get('individualBusiness', [individualBusinessController::class, 'index']);
-Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
-Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
-Route::post('individualBusiness', [individualBusinessController::class, 'store']);
-Route::put('individualBusiness/{id}', [individualBusinessController::class, 'updateStatus']);
 
 // Example routes in api.php
 Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);
