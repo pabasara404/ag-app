@@ -77,6 +77,7 @@ Route::get('individualBusiness', [individualBusinessController::class, 'index'])
 Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
 Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
 Route::post('individualBusiness', [individualBusinessController::class, 'store']);
+Route::put('individualBusiness/{id}', [individualBusinessController::class, 'updateStatus']);
 
 // Example routes in api.php
 Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);

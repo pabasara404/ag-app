@@ -8,6 +8,7 @@ use App\Http\Resources\IndividualBusinessResource;
 use App\Models\IndividualBusiness;
 use App\Http\Requests\StoreIndividualBusinessRequest;
 use App\Http\Requests\UpdateIndividualBusinessRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class IndividualBusinessController extends Controller
@@ -83,5 +84,14 @@ class IndividualBusinessController extends Controller
         $individualBusinesses = IndividualBusiness::where('application_code', 'like', "%$applicationCode%")->get();
 
         return IndividualBusinessResource::collection($individualBusinesses);
+    }
+
+    public function updateStatus(Request $request, $id): JsonResponse
+    {
+        $application = IndividualBusiness::findOrFail($id);
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }
