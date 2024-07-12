@@ -44,6 +44,7 @@ const isShowingEditApplicationModal = ref(false);
 const selectedApplication = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
+const applications = ref([]);
 const options = [
     {
         label: "Sort By Recently Added",
@@ -54,7 +55,6 @@ const options = [
         key: "2",
     },
 ];
-const applications = ref([]);
 const columns = [
     {
         title: "Name of Applicant",
@@ -161,8 +161,7 @@ function addNewApplication() {
             east: "",
             west: "",
         },
-        tree_details: [
-        ],
+        tree_details: [],
         tree_cutting_reasons: [],
         trees_cut_before: "",
         planted_tree_count: "",

@@ -344,7 +344,7 @@
           of trees and that there is no dispute, that the above information is
           true and that I will take full responsibility if any problem
           arises.</n-p
-        >
+        ><br/>
           <n-card v-if="!isNewTimberCuttingPermitApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="checked_date">

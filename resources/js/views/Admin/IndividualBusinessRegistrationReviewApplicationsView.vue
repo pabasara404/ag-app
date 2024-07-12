@@ -1,7 +1,7 @@
 <template>
     <n-layout style="height: 540px" has-sider>
         <n-layout style="padding-left: 8px" :inverted="inverted">
-            <PageHeader title="Application Details Management" />
+            <PageHeader title="Application Review Management" />
             <div class="flex justify-end pb-6">
                 <n-space>
                     <n-dropdown :options="options" placement="bottom-start">
@@ -38,12 +38,14 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditApplicationModal from "@/components/EditTimberCuttingApplicationModal.vue";
+import EditApplicationModal from "@/components/BusinessIndividualApplicationModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditApplicationModal = ref(false);
 const selectedApplication = ref(false);
+const applications = ref([]);
 const inverted = ref(false);
 const isLoading = ref(false);
+
 const options = [
     {
         label: "Sort By Recently Added",
@@ -54,31 +56,35 @@ const options = [
         key: "2",
     },
 ];
-const applications = ref([]);
+
 const columns = [
     {
-        title: "Name of Applicant",
-        key: "name",
+        title: "Reference No.",
+        key: "application_code",
     },
     {
-        title: "Tree count",
-        key: "nic",
+        title: "Name of the business",
+        key: "business_name",
     },
     {
-        title: "Address",
-        key: "address",
+        title: "Nature of the Business",
+        key: "nature",
+    },
+    {
+        title: "Initial Capital",
+        key: "initial_capital",
     },
     {
         title: "Status",
-        key: "contact_number",
+        key: "status",
     },
-    // {
-    //   title: "Role",
-    //   key: "role",
-    // },
     {
         title: "Submitted date",
-        key: "date_of_birth",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
     },
     {
         title: "",
@@ -132,47 +138,33 @@ onMounted(() => {
 function addNewApplication() {
     selectedApplication.value = {
         id: "",
-        name: "",
-        address: "",
-        contact_number: "",
-        timber_seller_checked_value: "",
-        non_commercial_use_checked_value: "",
-        grama_niladari_division: {
-            id: "",
-            gn_code: "",
+        business_name: "",
+        nature: "",
+        principal_place: "",
+        initial_capital: "",
+        addresses: [],
+        start_date: "",
+        owner_detail: {
             name: "",
-            mpa_code: "",
+            previous_name: "",
+            nationality: "",
+            nic: "",
+            residence: ""
         },
-        deed_details: {
-            land_deed_number: "",
-            land_deed_date: "",
-        },
+        is_other_business_value: "",
+        other_businesses: [],
+        is_director: "",
+        director_details: [],
+        other_business_name: "",
+        government_officer_checked_value: "",
+        contact_number: "",
         ownership_of_land_checked_value: "",
-        land_details: {
-            land_name: "",
-            land_size: "",
-            plan_number: "",
-            plan_date: "",
-            plan_plot_number: "",
-        },
-        boundaries: {
-            north: "",
-            south: "",
-            east: "",
-            west: "",
-        },
-        tree_count: {
-            breadfruit: "",
-            coconut: "",
-            jackfruit: "",
-            palmyra: "",
-        },
-        tree_details: [
-        ],
-        tree_cutting_reasons: [],
-        trees_cut_before: "",
-        planted_tree_count: "",
-        road_to_land: "",
+        checked_date: "",
+        status: "",
+        submission_timestamp: "",
+        checked_time: "",
+        comment: "",
+        application_code: "",
     };
 
     isShowingEditApplicationModal.value = true;
@@ -183,7 +175,7 @@ function renderIcon(icon) {
 }
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("timberCuttingPermitApplication");
+    const { data } = await Http.get("individualBusiness");
     isLoading.value = false;
     applications.value = data.data;
 }

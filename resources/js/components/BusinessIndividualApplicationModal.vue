@@ -13,13 +13,20 @@
       </n-page-header>
 
       <n-form ref="formRef" :model="formValue">
-        <n-form-item label="The Business Name" path="business_name">
+<!--          v-if="formValue.status === 'issued'"-->
+          <n-form-item label="Application Reference Number" path="application_code">
           <n-input
-            v-model:value="formValue.business_name"
-            placeholder="Enter Name of the Business"
+              :disabled="true"
+              v-model:value="formValue.application_code"
           />
         </n-form-item>
-        <n-form-item label="The General Nature Of the Business" path="nature">
+          <n-form-item label="The Business Name" path="business_name">
+              <n-input
+                  v-model:value="formValue.business_name"
+                  placeholder="Enter Name of the Business"
+              />
+          </n-form-item>
+          <n-form-item label="The General Nature Of the Business" path="nature">
           <n-input
             v-model:value="formValue.nature"
             placeholder="The General Nature Of the Business"
@@ -212,8 +219,8 @@
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
-          <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p>
-          <n-card>
+          <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p><br/>
+          <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Ownership of land" path="ownershipOfLand">
                   <n-radio-group
@@ -236,6 +243,34 @@
                       <n-date-picker v-model:value="selectedCheckedDate" type="date" />
 <!--                      <n-time-picker v-model:value="checked_time" />-->
 <!--                  </n-input-group>-->
+              </n-form-item><n-form-item
+              label="Any comment about application"
+          >
+              <n-input
+                  type="textarea"
+                  v-model:value="formValue.comment"
+                  placeholder="Any comment about application"
+              />
+          </n-form-item>
+              <n-form-item
+                  label="Status"
+                  path="status"
+              >
+                  <n-dropdown
+                      trigger="hover"
+                      placement="bottom-start"
+                      :options="statusOptions"
+                      @select="handleStatusSelect"
+                  >
+                      <n-button
+                      >{{
+                              selectedStatus
+                                  ? selectedStatus.label
+                                  : "Change the Status"
+                          }}
+                          <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                      </n-button>
+                  </n-dropdown>
               </n-form-item>
               <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
           </n-card>
@@ -295,9 +330,11 @@
           arises.</n-p
         >
         <div class="flex justify-end">
-          <n-form-item>
-            <n-button @click="certifyAndSubmit"> Certify and Submit </n-button>
-          </n-form-item>
+            <n-form-item>
+                <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
+            </n-form-item>
         </div>
       </n-form>
     </n-layout>
@@ -330,6 +367,8 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
   isShowing: Boolean,
+    application: Object,
+    initialStatus: String
 });
 const non_commercial_use_checked_value = ref(false);
 const timber_seller_checked_value = ref(false);
@@ -376,6 +415,7 @@ const formValue = ref({
     submission_timestamp:"",
     checked_time: "",
     comment:"",
+    application_code:"",
 });
 
 const otherBusinessDetailsForm = ref({
@@ -387,6 +427,23 @@ const directorDetailsForm = ref({
     registration_no: "",
     name: "",
 });
+
+const statusOptions = [
+    { label: 'Pending', key: 'Pending' },
+    { label: 'Escalated', key: 'Escalated' },
+];
+
+const selectedStatus = computed(() => {
+    if (!formValue.value.status) {
+        return { label: "Submitted" };
+    }
+    return statusOptions.find(statusOption => statusOption.label === formValue.value.status) || { label: formValue.value.status };
+});
+
+function handleStatusSelect(selected) {
+    console.log(selected);
+    formValue.value.status = selected;
+}
 
 const rules = {
   user: {
@@ -431,20 +488,41 @@ onMounted(async () => {
         //         user_id: getLocalAuthUser().id
         //     }
         // })
+    console.log(formValue.value.application_code);
     }
 );
 watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
+    formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
-  console.log(formValue.value);
-  await Http.post("individualBusiness", formValue.value);
-  isShowing.value = false;
-  emit("close", false);
+    if (isNewApplication.value) {
+        formValue.value.status = "Submitted";
+        await Http.post("individualBusiness", formValue.value);
+        emit("close", false);
+        return;
+    }
+    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+        formValue.value.status = "Resubmitted";
+    }
+    await Http.put(`individualBusiness/${formValue.value.id}`, formValue.value);
+    emit("close", false);
 }
+
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`individualBusiness/${props.application.id}`, {
+            status: status
+        });
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+    }
+};
 
 const selectedStartDate = computed({
   get: () => {
@@ -486,7 +564,7 @@ const selectedCheckedTime = computed({
     }
 });
 
-const isNewTimberCuttingPermitApplication = computed(() => {
+const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
 
@@ -542,7 +620,7 @@ onMounted(() => {
 });
 
 async function save() {f
-  if (isNewTimberCuttingPermitApplication.value) {
+  if (isNewApplication.value) {
     await Http.post(`individualBusiness`, formValue.value);
     emit("save");
 

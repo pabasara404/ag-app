@@ -26,7 +26,7 @@ class IndividualBusinessDTO
     public ?string $checked_time;
     public ?string $comment;
     public string $status;
-    public string $application_code;
+    public ?string $application_code;
 
     public function __construct(array $data)
     {
