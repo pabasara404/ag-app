@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Firm Registration Application Status Management" />
+    <PageHeader title="Income Certificate Application Status Management" />
     <n-card title="What is Status means?" content-style="padding: 0;">
         <n-tabs
             type="line"
@@ -59,7 +59,7 @@ import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
-import EditApplicationModal from "@/components/BusinessFirmApplicationModal.vue";
+import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -73,16 +73,16 @@ const columns = [
         key: "application_code",
     },
     {
-        title: "Name of the business",
-        key: "business_name",
+        title: "Name of the Applicant",
+        key: "name",
     },
     {
-        title: "Nature of the Business",
-        key: "nature",
+        title: "Total Annual Income",
+        key: "total_annual_income",
     },
     {
-        title: "Initial Capital",
-        key: "initial_capital",
+        title: "Reason",
+        key: "purpose",
     },
     {
         title: "Status",
@@ -147,7 +147,7 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("firmApplication");
+    const {data} = await Http.get("incomeCertificate");
     isLoading.value = false;
     applications.value = data.data;
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\IncomeCertificateAction;
+use App\Http\Resources\IncomeCertificateResource;
 use App\Http\Resources\IndividualBusinessResource;
 use App\Models\IncomeCertificate;
 use App\Http\Requests\StoreIncomeCertificateRequest;
@@ -23,7 +24,7 @@ class IncomeCertificateController extends Controller
             'samurdhi_details',
             'incomes')->get();
 
-        return IndividualBusinessResource::collection($incomeCertificates);
+        return IncomeCertificateResource::collection($incomeCertificates);
     }
 
     /**

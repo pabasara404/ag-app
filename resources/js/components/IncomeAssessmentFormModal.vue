@@ -332,7 +332,7 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
-    // application: Object,
+    application: Object,
     initialStatus: String
 });
 
@@ -394,8 +394,7 @@ const incomeDetailsForm = ref({
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
-    { label: 'Escalated', key: 'Escalated' },
-    { label: 'Escalated', key: 'Escalated' },
+    { label: 'Escalated', key: 'Escalated' }
 ];
 
 const selectedStatus = computed(() => {
@@ -434,7 +433,7 @@ watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
-    // formValue.value = {...props.application };
+    formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
@@ -444,7 +443,7 @@ async function certifyAndSubmit() {
         emit("close", false);
         return;
     }
-    if ((props.initialStatus === "Pending" && formValue.value.status === "Pending") || props.initialStatus === "Need to Reviewed By Samurdhi Officer") {
+    if ((props.initialStatus === "Pending" && formValue.value.status === "Pending") || (props.initialStatus === "Need to Reviewed By Samurdhi Officer" && props.initialStatus === "Need to Reviewed By Samurdhi Officer")) {
         formValue.value.status = "Resubmitted";
     }
     await Http.put(`incomeCertificate/${formValue.value.id}`, formValue.value);

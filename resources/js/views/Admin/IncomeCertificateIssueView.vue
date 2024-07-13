@@ -17,9 +17,10 @@
 
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
-import {h, ref} from "vue";
+import {h, onMounted, ref} from "vue";
 import {NButton} from "naive-ui";
-import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import Http from "@/services/http.js";
 
 const applications = ref([]);
 const isLoading = ref(false);
@@ -30,16 +31,20 @@ const isShowingEditApplicationModal = ref(false);
 
 const columns = [
     {
-        title: "Name of Applicant",
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
         key: "name",
     },
     {
-        title: "Tree count",
-        key: "tree_count",
+        title: "Total Annual Income",
+        key: "total_annual_income",
     },
     {
-        title: "Address",
-        key: "address",
+        title: "Reason",
+        key: "purpose",
     },
     {
         title: "Status",
@@ -50,10 +55,14 @@ const columns = [
         key: "submission_timestamp",
     },
     {
+        title: "Last updated date",
+        key: "updated_at",
+    },
+    {
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return h(
                 NButton,
                 {
                     round: true,
@@ -67,20 +76,52 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "View Application" }
-            ) : null;
+                { default: () => "Review" }
+            );
         }
-    }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: async () => {
+                        await deleteApplication(row);
+                        await fetchApplication();
+                    },
+                },
+                { default: () => "Delete" }
+            );
+        },
+    },
 ];
 
 
+onMounted(() => {
+    fetchApplication();
+});
+
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("timberCuttingPermitApplication");
+    const { data } = await Http.get("incomeCertificateByStatus", {
+        params: {
+            status: 'Escalated'
+        }
+    });
     isLoading.value = false;
     applications.value = data.data;
 }
-
+async function deleteApplication(application) {
+    isLoading.value = true;
+    await Http.delete(`incomeCertificate/${application.id}`);
+    isLoading.value = false;
+}
 </script>
 
 <style scoped>
