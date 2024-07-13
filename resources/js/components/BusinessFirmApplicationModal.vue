@@ -12,6 +12,13 @@
                 </div>
             </n-page-header>
 
+            <n-form-item
+                label="Application Reference Number" path="application_code">
+                <n-input
+                    :disabled="true"
+                    v-model:value="formValue.application_code"
+                />
+            </n-form-item>
             <n-form ref="formRef" :model="formValue">
                 <n-form-item label="The Business Name" path="business_name">
                     <n-input
@@ -431,7 +438,7 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
-    // application: Object,
+    application: Object,
     initialStatus: String
 });
 const GNDivisionOptions = ref([]);
@@ -565,22 +572,29 @@ watch(
     () => props.isShowing,
     (newValue) => {
         isShowing.value = newValue;
-        // formValue.value = {...props.application };
+        formValue.value = {...props.application };
     }
 );
 async function certifyAndSubmit() {
+    console.log("Submitting form:", formValue.value);
+
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
         await Http.post("firmApplication", formValue.value);
         emit("close", false);
         return;
     }
+
     if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
+
+    console.log(`Updating firmApplication/${formValue.value.id} with data:`, formValue.value);
+
     await Http.put(`firmApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
+
 
 const partnerDetails = ref([]);
 
@@ -648,17 +662,6 @@ const removeDirectorRow = (index) => {
 };
 
 
-const updateStatus = async (status) => {
-    try {
-        await Http.put(`firmApplication/${props.application.id}`, {
-            status: status
-        });
-        emit('save');
-        emit('close', false);
-    } catch (error) {
-        console.error("Failed to update status:", error);
-    }
-};
 
 const selectedStartDate = computed({
     get: () => {
@@ -714,6 +717,18 @@ function handleStatusSelect(selected) {
     console.log(selected);
     formValue.value.status = selected;
 }
+
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`firmApplication/${props.application.id}`, {
+            status: status
+        });
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+    }
+};
 
 const addresses = ref(['']);
 

@@ -9,6 +9,7 @@ use App\Models\OwnerDetail;
 use App\Models\OtherBusiness;
 use App\Models\DirectorDetail;
 use App\Models\User;
+use App\QueryBuilders\IndividualBusinessBuilder;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,19 @@ class IndividualBusinessAction
     public static function all(): Collection
     {
         return IndividualBusiness::query()->all();
+    }
+
+    public static function getApplicationByStatus(string $statuses): array|\Illuminate\Database\Eloquent\Collection
+    {
+        $statusArray = explode(',', $statuses);
+        return IndividualBusinessBuilder::whereStatus($statusArray)
+            ->with([
+                'addresses',
+                'owner_detail',
+                'other_businesses',
+                'director_details'
+            ])
+            ->get();
     }
 
     public static function store(array $individualBusiness, User $authUser = null)

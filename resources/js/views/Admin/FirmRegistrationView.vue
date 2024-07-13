@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Business Registration Management" />
+    <PageHeader title="Firm Registration Management" />
     <div class="flex justify-evenly flex-wrap px-20">
        <n-card
             @click="handleCardClick('firm')"

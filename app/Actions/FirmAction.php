@@ -8,6 +8,8 @@ use App\Models\Firm;
 use App\Models\OtherPartneredBusiness;
 use App\Models\Partner;
 use App\Models\DirectorDetail;
+use App\QueryBuilders\FirmBuilder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class FirmAction
@@ -15,6 +17,17 @@ class FirmAction
     public static function all()
     {
         return Firm::query()->all();
+    }
+
+    public static function getApplicationByStatus(string $statuses): array|Collection
+    {
+        $statusArray = explode(',', $statuses);
+        return FirmBuilder::whereStatus($statusArray)
+            ->with([
+                'addresses',
+                'partners'
+            ])
+            ->get();
     }
 
     public static function store(array $firmData)

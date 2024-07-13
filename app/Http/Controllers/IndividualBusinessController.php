@@ -47,9 +47,10 @@ class IndividualBusinessController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(IndividualBusiness $individualBusiness)
+    public function show(Request $request)
     {
-        //
+        $applications = IndividualBusinessAction::getApplicationByStatus($request->status);
+        return response()->json(['data' => $applications]);
     }
 
     /**

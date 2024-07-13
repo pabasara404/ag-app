@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFirmRequest extends FormRequest
@@ -11,18 +12,30 @@ class UpdateFirmRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'business_name' => 'required|string|max:255',
+            'nature' => 'required|string|max:255',
+            'principal_place' => 'required|string|max:255',
+            'initial_capital' => 'required|numeric',
+            'start_date' => 'required|date',
+            'checked_date' => 'nullable|date',
+            'comment' => 'nullable|string|max:255',
+            'is_other_business_value' => 'required|boolean',
+            'is_other_occupation_value' => 'required|boolean',
+            'ownership_of_land_checked_value' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'submission_timestamp' => 'nullable|date',
+            'application_code' => 'required|string|max:255',
         ];
     }
 }

@@ -320,6 +320,45 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/RequestingAndIssuingIncomeCertificatesView.vue"),
+            },{
+                path: "incomeCertificateStatus",
+                name: "IncomeCertificateStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Income Certificate Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IncomeCertificateStatusView.vue"),
+            },
+            {
+                path: "incomeCertificateIssue",
+                name: "IncomeCertificateIssue",
+                meta: {
+                    middleware: "auth",
+                    title: `Income Certificate Issuance`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IncomeCertificateIssueView.vue"),
+            },
+            {
+                path: "incomeCertificateApplication",
+                name: "IncomeCertificateApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Income Certificate Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IncomeCertificateApplicationView.vue"),
+            },
+            {
+                path: "incomeCertificateReview",
+                name: "IncomeCertificateReview",
+                meta: {
+                    middleware: "auth",
+                    title: `Income Certificate Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/IncomeCertificateReviewView.vue"),
             },
             {
                 path: "welfareInformationVerification",

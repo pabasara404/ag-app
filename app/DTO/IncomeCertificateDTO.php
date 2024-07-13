@@ -2,22 +2,27 @@
 
 namespace App\DTO;
 
-class FirmDTO
+class IncomeCertificateDTO
 {
-    public ?int $id;
-    public string $business_name;
-    public string $nature;
-    public string $principal_place;
-    public string $initial_capital;
-    public array $addresses;
-    public string $start_date;
-    public array $partner_details;
-    public ?string $checked_date;
-    public ?string $submission_timestamp;
+    public string $name;
+    public string $address;
+    public string $nic;
+    public string $contact_number;
+    public array $gn_division;
+    public string $purpose;
+    public string $submitting_institute;
+    public array $incomes;
+    public string $total_annual_income;
+    public string $income_tax_number;
+    public string $is_samurdhi_beneficiary;
+    public array $samurdhi_details;
+    public string $checked_date;
+    public ?string $checked_time;
     public ?string $comment;
     public string $status;
+    public ?string $submission_timestamp;
     public ?string $application_code;
-    public string $ownership_of_land_checked_value;
+
     public function __construct(array $data)
     {
         collect($data)->each(function ($value, $key) {

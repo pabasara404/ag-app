@@ -129,54 +129,54 @@ onMounted(() => {
     fetchApplication();
 });
 
-function addNewApplication() {
-    selectedApplication.value = {
-        id: "",
-        name: "",
-        address: "",
-        contact_number: "",
-        timber_seller_checked_value: "",
-        non_commercial_use_checked_value: "",
-        grama_niladari_division: {
-            id: "",
-            gn_code: "",
-            name: "",
-            mpa_code: "",
-        },
-        deed_details: {
-            land_deed_number: "",
-            land_deed_date: "",
-        },
-        ownership_of_land_checked_value: "",
-        land_details: {
-            land_name: "",
-            land_size: "",
-            plan_number: "",
-            plan_date: "",
-            plan_plot_number: "",
-        },
-        boundaries: {
-            north: "",
-            south: "",
-            east: "",
-            west: "",
-        },
-        tree_count: {
-            breadfruit: "",
-            coconut: "",
-            jackfruit: "",
-            palmyra: "",
-        },
-        tree_details: [
-        ],
-        tree_cutting_reasons: [],
-        trees_cut_before: "",
-        planted_tree_count: "",
-        road_to_land: "",
-    };
-
-    isShowingEditApplicationModal.value = true;
-}
+// function addNewApplication() {
+//     selectedApplication.value = {
+//         id: "",
+//         name: "",
+//         address: "",
+//         contact_number: "",
+//         timber_seller_checked_value: "",
+//         non_commercial_use_checked_value: "",
+//         grama_niladari_division: {
+//             id: "",
+//             gn_code: "",
+//             name: "",
+//             mpa_code: "",
+//         },
+//         deed_details: {
+//             land_deed_number: "",
+//             land_deed_date: "",
+//         },
+//         ownership_of_land_checked_value: "",
+//         land_details: {
+//             land_name: "",
+//             land_size: "",
+//             plan_number: "",
+//             plan_date: "",
+//             plan_plot_number: "",
+//         },
+//         boundaries: {
+//             north: "",
+//             south: "",
+//             east: "",
+//             west: "",
+//         },
+//         tree_count: {
+//             breadfruit: "",
+//             coconut: "",
+//             jackfruit: "",
+//             palmyra: "",
+//         },
+//         tree_details: [
+//         ],
+//         tree_cutting_reasons: [],
+//         trees_cut_before: "",
+//         planted_tree_count: "",
+//         road_to_land: "",
+//     };
+//
+//     isShowingEditApplicationModal.value = true;
+// }
 
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });

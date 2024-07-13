@@ -11,10 +11,25 @@
           <n-h2>Application for Registration of a Business Name By an Individual</n-h2>
         </div>
       </n-page-header>
+<!--        v-if="props.initialStatus === 'issued'"-->
+        <n-watermark
 
+            image="../../images/Emblem_of_Sri_Lanka.svg.png"
+            cross
+            fullscreen
+            :font-size="16"
+            :line-height="16"
+            :width="384"
+            :height="384"
+            :x-offset="12"
+            :y-offset="0"
+            :image-width="64"
+            :image-opacity="0.24"
+        />
+<!--   v-if="initialStatus === 'issued'"-->
       <n-form ref="formRef" :model="formValue">
-<!--          v-if="formValue.status === 'issued'"-->
-          <n-form-item label="Application Reference Number" path="application_code">
+          <n-form-item
+              label="Application Reference Number" path="application_code">
           <n-input
               :disabled="true"
               v-model:value="formValue.application_code"
@@ -188,7 +203,7 @@
                   <tbody>
                   <tr :key="key" v-for="(director_detail, key) in formValue.director_details">
                       <td>{{ director_detail.registration_no}}</td>
-                      <td>{{ director_detail.name}}</td>
+                      <td>{{ director_detail.business_name}}</td>
                       <td><n-button @click="removeDirRow(key)">
                           <n-icon>
                               <clear-outlined-icon/>
@@ -356,9 +371,6 @@ import {
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
-import axios from "axios";
-
-import TableRow from "./TableRow.vue";
 import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
@@ -366,7 +378,7 @@ const message = useMessage();
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
-  isShowing: Boolean,
+    isShowing: Boolean,
     application: Object,
     initialStatus: String
 });
@@ -488,7 +500,7 @@ onMounted(async () => {
         //         user_id: getLocalAuthUser().id
         //     }
         // })
-    console.log(formValue.value.application_code);
+    console.log(props.initialStatus);
     }
 );
 watch(
