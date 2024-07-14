@@ -67,24 +67,28 @@ const columns = [
         key: "name",
     },
     {
-        title: "Total Annual Income",
-        key: "total_annual_income",
+        title: "Total Animals",
+        key: "total_animal_count",
     },
     {
         title: "Reason",
-        key: "purpose",
+        key: "reason_to_transport",
     },
     {
         title: "Status",
         key: "status",
     },
     {
-        title: "Submitted date",
-        key: "submission_timestamp",
+        title: "issued Date",
+        key: "issued_date",
     },
     {
-        title: "Last updated date",
+        title: "Last updated Date",
         key: "updated_at",
+    },
+    {
+        title: "Expire Date",
+        key: "expire_date",
     },
     {
         title: "",
@@ -176,14 +180,19 @@ function renderIcon(icon) {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
+    const {data} = await Http.get("animalTransportation");
     isLoading.value = false;
-    applications.value = data.data;
+
+    // Add total_animal_count to each application
+    applications.value = data.data.map(application => ({
+        ...application,
+        total_animal_count: application.animals.length
+    }));
 }
 
 async function deleteApplication(application) {
     isLoading.value = true;
-    await Http.delete(`incomeCertificate/${application.id}`);
+    await Http.delete(`animalTransportation/${application.id}`);
     isLoading.value = false;
 }
 </script>

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\AnimalTransportationAction;
+use App\Http\Resources\AnimalTransportationResource;
 use App\Models\AnimalTransportation;
 use App\Http\Requests\StoreAnimalTransportationRequest;
 use App\Http\Requests\UpdateAnimalTransportationRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AnimalTransportationController extends Controller
 {
@@ -13,7 +17,9 @@ class AnimalTransportationController extends Controller
      */
     public function index()
     {
-        //
+        $animalTransportations = AnimalTransportation::with('animals')->get();
+
+        return AnimalTransportationResource::collection($animalTransportations);
     }
 
     /**
@@ -29,15 +35,17 @@ class AnimalTransportationController extends Controller
      */
     public function store(StoreAnimalTransportationRequest $request)
     {
-        //
+        AnimalTransportationAction::store($request->toArray());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AnimalTransportation $animalTransportation)
+    public function show(Request $request)
     {
-        //
+        $statuses = $request->query('statuses');
+        $animalTransportations = AnimalTransportationAction::getApplicationByStatus($statuses);
+        return response()->json(['data' => $animalTransportations]);
     }
 
     /**
@@ -53,7 +61,8 @@ class AnimalTransportationController extends Controller
      */
     public function update(UpdateAnimalTransportationRequest $request, AnimalTransportation $animalTransportation)
     {
-        //
+        $animalTransportation->update($request->toArray());
+        return response()->noContent();
     }
 
     /**
@@ -61,6 +70,31 @@ class AnimalTransportationController extends Controller
      */
     public function destroy(AnimalTransportation $animalTransportation)
     {
-        //
+        $animalTransportation->delete();
+        return response()->noContent();
+    }
+
+    public function updateStatus(Request $request, $id): JsonResponse
+    {
+        $application = AnimalTransportation::findOrFail($id);
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
+    }
+
+    public function filterByStatus(Request $request): JsonResponse
+    {
+
+        // Retrieve the statuses query parameter
+        $statuses = $request->query('statuses', '');
+
+        // Ensure that the statuses parameter is not null or empty
+        if (empty($statuses)) {
+            return response()->json(['error' => 'Statuses parameter is required'], 400);
+        }
+
+        $animalTransportations = AnimalTransportationAction::getApplicationByStatus($statuses);
+        return response()->json(['data' => $animalTransportations]);
     }
 }

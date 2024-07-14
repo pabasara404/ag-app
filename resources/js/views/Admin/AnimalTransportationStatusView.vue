@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Income Certificate Application Status Management" />
+    <PageHeader title="Animal Transportation Permit Status Management" />
     <n-card title="What is Status means?" content-style="padding: 0;">
         <n-tabs
             type="line"
@@ -59,7 +59,7 @@ import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
-import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import EditApplicationModal from "@/components/AnimalTranportationModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -77,24 +77,28 @@ const columns = [
         key: "name",
     },
     {
-        title: "Total Annual Income",
-        key: "total_annual_income",
+        title: "Total Animals",
+        key: "total_animal_count",
     },
     {
         title: "Reason",
-        key: "purpose",
+        key: "reason_to_transport",
     },
     {
         title: "Status",
         key: "status",
     },
     {
-        title: "Submitted date",
-        key: "submission_timestamp",
+        title: "issued Date",
+        key: "issued_date",
     },
     {
-        title: "Last updated date",
+        title: "Last updated Date",
         key: "updated_at",
+    },
+    {
+        title: "Expire Date",
+        key: "expire_date",
     },
     {
         title: "",
@@ -147,9 +151,14 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
+    const {data} = await Http.get("animalTransportation");
     isLoading.value = false;
-    applications.value = data.data;
+
+    // Add total_animal_count to each application
+    applications.value = data.data.map(application => ({
+        ...application,
+        total_animal_count: application.animals.length
+    }));
 }
 </script>
 

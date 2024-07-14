@@ -16,7 +16,7 @@ class Animal extends Model
         'species',
         'breed',
         'age',
-        'ex',
+        'sex',
         'color',
         'specific_marks',
         'health_certificate_no',

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->string('ownership_of_land_checked_value');
             $table->string('application_code')->unique();
-            $table->date('checked_date');
+            $table->date('checked_date')->nullable();
             $table->string('status')->default('Submitted');
             $table->string('comment')->nullable();
             $table->timestamp('submission_timestamp')->nullable();

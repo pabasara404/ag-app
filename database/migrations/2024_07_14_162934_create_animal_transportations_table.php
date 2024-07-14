@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('animal_transportations', function (Blueprint $table) {
             $table->id();
-            $table->string('application_code');
+            $table->string('application_code')->unique();
             $table->string('name');
             $table->string('address');
             $table->string('contact_number');
@@ -21,13 +21,12 @@ return new class extends Migration
             $table->string('start_point');
             $table->string('destination');
             $table->integer('cost_per_animal');
-            $table->date('issued_date');
-            $table->date('expire_date');
-            $table->date('checked_date');
-            $table->string('status');
-            $table->timestamp('submission_timestamp');
-            $table->time('checked_time');
-            $table->string('comment');
+            $table->date('issued_date')->nullable();
+            $table->date('expire_date')->nullable();
+            $table->date('checked_date')->nullable();
+            $table->string('status')->default('Submitted');
+            $table->timestamp('submission_timestamp')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

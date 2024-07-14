@@ -1,8 +1,7 @@
 <template>
     <n-layout class="pl-2">
-        <PageHeader title="Application for Request an Animal Transportation Permit Divisional Secretariat Area.
-(In foil and counter foil)"/>
-        <n-h4><i><u>ANIMAL'S ACT, No. 29 of 1958</u></i></n-h4>
+        <PageHeader title="Application for Request an Animal Transportation Permit Divisional Secretariat Area."/>
+        <n-h4 class="text-center"><i><u>ANIMAL'S ACT, No. 29 of 1958</u></i></n-h4>
             <n-p>To get a animal transportation permit please fill out the form below.The original copies of relevant documents must be submitted.</n-p>
             <n-p>Required documents to obtain an animal transportation permit:</n-p>
             <n-ul>

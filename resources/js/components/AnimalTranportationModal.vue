@@ -171,6 +171,10 @@
           <n-form-item label="Cost Per Animal" path="nature">
               <n-input
                   :disabled="true"
+                  v-model:value="totalAnimals"
+              /></n-form-item><n-form-item label="Cost Per Animal" path="nature">
+              <n-input
+                  :disabled="true"
                   v-model:value="costPerAnimal"
               /></n-form-item>
         <div>
@@ -286,7 +290,7 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
-    // application: Object,
+    application: Object,
     initialStatus: String
 });
 const non_commercial_use_checked_value = ref(false);
@@ -332,12 +336,13 @@ const formValue = ref({
         vehicle_registration_no: "WP DEF 5678"
     }],
     cost_per_animal: "5000",
+    total_animal_count: "",
     issued_date: "2023-01-01",
     expire_date: "2023-01-31",
     checked_date: "2023-01-01",
     status: "",
     submission_timestamp: "",
-    checked_time: "",
+    // checked_time: "",
     comment: "This is a test comment"
 });
 
@@ -414,26 +419,26 @@ watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
-    // formValue.value = {...props.application };
+    formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
-        await Http.post("animalTransport", formValue.value);
+        await Http.post("animalTransportation", formValue.value);
         emit("close", false);
         return;
     }
     if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
-    await Http.put(`animalTransport/${formValue.value.id}`, formValue.value);
+    await Http.put(`animalTransportation/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`animalTransport/${props.application.id}`, {
+        await Http.put(`animalTransportation/${props.application.id}`, {
             status: status
         });
         emit('save');
@@ -487,7 +492,14 @@ const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
 
-const totalAnimals = computed(() => formValue.value.animals.length);
+const totalAnimals = computed({
+    get: () => {
+        return formValue.value.animals ? formValue.value.animals.length : 0;
+    },
+    set: (value) => {
+        formValue.value.total_animal_count = value;
+    }
+});
 const costPerAnimal = computed({
     get: () => totalAnimals.value * 50,
     set: (value) => {
@@ -508,7 +520,10 @@ function handleValidateClick(e) {
 }
 
 const addAnimalDetails = () => {
-    formValue.value.animals.push({...animalDetailsForm.value});
+    if (!Array.isArray(formValue.value.animals)) {
+        formValue.value.animals = [];
+    }
+    formValue.value.animals.push({ ...animalDetailsForm.value });
     clearDetailsForm();
 };
 

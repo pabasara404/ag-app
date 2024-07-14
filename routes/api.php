@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnimalTransportationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
@@ -81,6 +82,14 @@ Route::put('firmApplication/{firmApplication}', [FirmController::class, 'update'
 Route::delete('firmApplication/{firmApplication}', [FirmController::class, 'destroy']);
 Route::post('firmApplication', [FirmController::class, 'store']);
 Route::put('firmApplication/{id}', [FirmController::class, 'updateStatus']);
+
+//routes for animalTransportations
+Route::get('animalTransportation', [animalTransportationController::class, 'index']);
+Route::get('animalTransportationByStatus', [animalTransportationController::class, 'filterByStatus']);
+Route::post('animalTransportation', [animalTransportationController::class, 'store']);
+Route::put('animalTransportation/{animalTransportation}', [animalTransportationController::class, 'update']);
+Route::put('animalTransportation/{id}', [animalTransportationController::class, 'updateStatus']);
+Route::delete('animalTransportation/{animalTransportation}', [animalTransportationController::class, 'destroy']);
 
 //routes for incomeCertificates
 Route::get('incomeCertificate', [IncomeCertificateController::class, 'index']);
