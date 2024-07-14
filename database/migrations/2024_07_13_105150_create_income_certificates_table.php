@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('submitting_institute');
             $table->string('total_annual_income');
             $table->string('income_tax_number')->nullable();
-            $table->boolean('is_samurdhi_beneficiary');
+            $table->string('is_samurdhi_beneficiary');
             $table->date('checked_date');
             $table->string('status');
             $table->timestamp('submission_timestamp')->useCurrent();

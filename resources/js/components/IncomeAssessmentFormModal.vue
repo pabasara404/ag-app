@@ -154,7 +154,7 @@
           <n-form-item label="Total of Annual Income" path="principal_place">
               <n-input
                   :disabled="true"
-                  v-model:value="formValue.total_annual_income"
+                  v-model:value="totalAnnualIncome"
                   placeholder="Total of Annual Income" />
           </n-form-item>
           <n-form-item label="File No. if paying income tax" path="principal_place">
@@ -366,11 +366,11 @@ const formValue = ref({
     ],
     total_annual_income: "1800000",
     income_tax_number: "TAX123",
-    is_samurdhi_beneficiary: true,
+    is_samurdhi_beneficiary: "Yes",
     samurdhi_details: {
         id: "1",
         subside_amount: "5000",
-        is_subsidiaries_returned: false,
+        is_subsidiaries_returned: "No",
         recommendation: "Approved",
         checked_date: "2023-05-15"
     },
@@ -522,16 +522,22 @@ const fetchGnDivisions = async () => {
 };
 
 function selectGramaNiladariDivision(key) {
-  formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
+  formValue.value.gn_division = GNDivisionOptions.value.find(
     (GNDivisionOption) => {
       return GNDivisionOption.id === key;
     }
   );
 }
 
+
+const totalAnnualIncome = computed(() => {
+    return formValue.value.incomes.reduce((acc, income) => acc + parseInt(income.annual_income), 0);
+});
+
 const addIncomeDetails = () => {
     formValue.value.incomes.push({...incomeDetailsForm.value});
-    clearDetailsForm(); // Clear the form after adding tree details
+    formValue.value.total_annual_income = totalAnnualIncome.value;
+    clearDetailsForm();
 };
 
 const clearDetailsForm = () => {
@@ -546,7 +552,9 @@ const clearDetailsForm = () => {
 
 const removeIncomeRow = (index) => {
     formValue.value.incomes.splice(index, 1);
+    formValue.value.total_annual_income = totalAnnualIncome.value;
 };
+
 
 </script>
 

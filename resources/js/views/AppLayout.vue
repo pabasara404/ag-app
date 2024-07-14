@@ -3,14 +3,14 @@
         <n-layout>
             <n-layout-header :inverted="inverted" bordered class="h-20">
                 <div class="flex w-full justify-between nav-bar">
-                    <div class="flex w-full">
+                    <div class="flex w-full cursor-pointer" @click="handleCardClick('home')">
                         <div>
                             <img
                                style="
-                  display: inline;
-                  padding: 10px 10px 10px 15px;
-                  width: 60px;
-                "
+                                  display: inline;
+                                  padding: 10px 10px 10px 15px;
+                                  width: 60px;
+                                "
                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Emblem_of_Sri_Lanka.svg/150px-Emblem_of_Sri_Lanka.svg.png"
                             />
                         </div>
@@ -414,6 +414,12 @@ onMounted(async () => {
         }
     }
 });
+
+
+
+const handleCardClick = (route) => {
+    router.push(`${route}`);
+};
 
 const handleLogout = () => {
     logout();

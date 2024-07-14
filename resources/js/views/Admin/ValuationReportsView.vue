@@ -1,9 +1,9 @@
 <template>
-    <PageHeader title="Animal Transportation Permit Management" />
+    <PageHeader title="Valuation Report Management" />
     <div class="flex justify-evenly flex-wrap px-20">
         <n-card
-            @click="handleCardClick('animalTransportationApplication')"
-            title="Apply to a Animal Transportation Permit"
+            @click="handleCardClick('valuationReportApplication')"
+            title="Apply to a Valuation Report"
             hoverable
             class="my-6"
         >
@@ -16,7 +16,7 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('animalTransportationStatus')" title="View Animal Transportation Permit Status" hoverable>
+            @click="handleCardClick('valuationReportStatus')" title="View Valuation Report Status" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"
@@ -26,15 +26,15 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('animalTransportationReview')" title="Review the Animal Transportation Permit" hoverable>
+            @click="handleCardClick('valuationReportReview')" title="Review the Valuation Report" hoverable>
             <div class="flex justify-center ">
                 <img width="125" src="../../.././images/img_1.png" />
             </div>
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('animalTransportationIssue')"
-            title="Issue the Permit" hoverable>
+            @click="handleCardClick('valuationReportIssue')"
+            title="Issue the Report" hoverable>
             <div class="flex justify-center ">
                 <img
                     width="125"

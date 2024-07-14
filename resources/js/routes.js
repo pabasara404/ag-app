@@ -401,6 +401,46 @@ const routes = [
                 component: () => import("./views/Admin/AnimalTransportationPermitView.vue"),
             },
             {
+                path: "animalTransportationStatus",
+                name: "animalTransportationStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Animal Transportation Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/AnimalTransportationStatusView.vue"),
+            },
+            {
+                path: "animalTransportationIssue",
+                name: "animalTransportationIssue",
+                meta: {
+                    middleware: "auth",
+                    title: `Animal Transportation Issuance`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/AnimalTransportationIssueView.vue"),
+            },
+            {
+                path: "animalTransportationApplication",
+                name: "animalTransportationApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Animal Transportation Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/AnimalTransportationApplicationView.vue"),
+            },
+            {
+                path: "animalTransportationReview",
+                name: "animalTransportationReview",
+                meta: {
+                    middleware: "auth",
+                    title: `Animal Transportation Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/AnimalTransportationReviewView.vue"),
+            },
+            {
                 path: "exciseLicensing",
                 name: "exciseLicensing",
                 meta: {
@@ -418,7 +458,47 @@ const routes = [
                     title: `Valuation Report Issuing`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportIssuingView.vue"),
+                component: () => import("./views/Admin/ValuationReportsView.vue"),
+            },
+            {
+                path: "valuationReportStatus",
+                name: "valuationReportStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Valuation Report Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ValuationReportStatusView.vue"),
+            },
+            {
+                path: "valuationReportIssue",
+                name: "valuationReportIssue",
+                meta: {
+                    middleware: "auth",
+                    title: `Valuation Report Issuance`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ValuationReportIssueView.vue"),
+            },
+            {
+                path: "valuationReportApplication",
+                name: "valuationReportApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Valuation Report Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ValuationReportApplicationView.vue"),
+            },
+            {
+                path: "valuationReportReview",
+                name: "valuationReportReview",
+                meta: {
+                    middleware: "auth",
+                    title: `Valuation Report Review Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ValuationReportReviewView.vue"),
             },
             {
                 path: "paymentManagement",

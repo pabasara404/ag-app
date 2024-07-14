@@ -13,7 +13,7 @@ class IncomeCertificateDTO
     public string $submitting_institute;
     public array $incomes;
     public string $total_annual_income;
-    public string $income_tax_number;
+    public ?string $income_tax_number;
     public string $is_samurdhi_beneficiary;
     public array $samurdhi_details;
     public string $checked_date;
