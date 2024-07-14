@@ -278,16 +278,7 @@ const menuOptions = [
         icon: renderIcon(BusinessIcon),
     },
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: "welfareInformationVerification",
-                    },
-                },
-                { default: () => "Welfare Information Verification" }
-            ),
+        label: "Welfare Information Verification",
         key: "welfareInformationVerification",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(LogoBitcoinIcon),
