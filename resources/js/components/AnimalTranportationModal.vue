@@ -2,13 +2,13 @@
   <n-modal
     v-model:show="isShowing"
     preset="card"
-    style="width: 800px"
+    style="width: 900px"
     :on-update:show="(value) => emit('close', value)"
   >
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>Application for Registration of a Business Name By an Individual</n-h2>
+          <n-h2>Application for Request an Animal Transportation Permit</n-h2>
         </div>
       </n-page-header>
 <!--        v-if="props.initialStatus === 'issued'"-->
@@ -35,232 +35,158 @@
               v-model:value="formValue.application_code"
           />
         </n-form-item>
-          <n-form-item label="The Business Name" path="business_name">
+
+
+          <n-form-item label="The Applicant Name" path="name">
               <n-input
-                  v-model:value="formValue.business_name"
-                  placeholder="Enter Name of the Business"
+                  v-model:value="formValue.name"
+                  placeholder="Enter Name of the Applicant"
               />
           </n-form-item>
-          <n-form-item label="The General Nature Of the Business" path="nature">
-          <n-input
-            v-model:value="formValue.nature"
-            placeholder="The General Nature Of the Business"
-          /> <n-tooltip trigger="hover">
-            <template #trigger>
-                <n-icon><InformationCircleOutlineIcon /></n-icon>
-            </template>
-            <span>If trading. / export of manufacture. state clearly the of goods that are being traded imported/ exported or manufactured</span>
-        </n-tooltip></n-form-item
-        ><n-form-item label="The Principal Place of the Business" path="principal_place">
-          <n-input
-            v-model:value="formValue.principal_place"
-            placeholder="The Principal Place of the Business" /></n-form-item>
-          <n-form-item label="Initial Capital of the Business" path="initial_capital">
-          <n-input
-              v-model:value="formValue.initial_capital"
-              placeholder="Initial Capital of the Business" /></n-form-item>
-          <n-form-item label="If any Branch Office/ Store / Stores Warehouse is prevailing the address">
-              <div v-for="(address, index) in formValue.addresses" :key="index">
-                  <n-input
-                      v-model:value="formValue.addresses[index].name"
-                      placeholder="If any Branch Office/Store/Stores Warehouse is prevailing the address"
-                  />
-              </div>
-          </n-form-item>
-          <n-button @click="addAddress">Add Another Address</n-button>
-          <br /><br />
-          <n-form-item label="The Date of Commencement of the Business" path="nature">
-              <n-date-picker v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>State here the actual date of commencement of Business activities.</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="Full Name of Owner" path="ownerName">
+          <n-form-item label="Address of the Applicant" path="destination">
               <n-input
-                  v-model:value="formValue.owner_detail.name"
-                  placeholder="Full Name of Owner"
-              /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>Full Name With names denoted by initials.</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="If any previous Name for the Owner Name in full" path="ownerName">
-              <n-input
-                  v-model:value="formValue.owner_detail.previous_name"
-                  placeholder="If any previous Name for the Owner Name in full"
-              /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>Any other Name (In full) used In addition to the usual name. In case of a married woman the maiden name (in full)</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="The Nationality of the Owner" path="ownerNationality">
-              <n-input
-                  v-model:value="formValue.owner_detail.nationality"
-                  placeholder="The Nationality of the Owner" />
-          </n-form-item>
-          <n-form-item label="National Identity Card Number" path="ownerNic">
-              <n-input
-                  v-model:value="formValue.owner_detail.nic"
-                  placeholder="National Identity Card Number" />
-          </n-form-item>
-          <n-form-item label="The Usual residence of the Owner" path="ownerResidence">
-              <n-input
-                  v-model:value="formValue.owner_detail.residence"
-                  placeholder="The Usual residence of the Owner" />
-          </n-form-item>
-          <n-form-item label="If the Owner in any other business?" path="otherBusiness">
-              <n-radio-group
-                  v-model:value="formValue.is_other_business_value"
-                  name="otherBusiness"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
-          </n-form-item>
-          <div v-if="formValue.is_other_business_value">
-              <n-card>
-                  <n-form-item label="Business Registration no" path="registration_no">
-                      <n-input
-                          v-model:value="otherBusinessDetailsForm.registration_no"
-                          placeholder="Business Registration number" />
-                  </n-form-item>
-                  <n-form-item label="Business Name">
-                      <n-input
-                          v-model:value="otherBusinessDetailsForm.business_name"
-                          placeholder="Business Name"
-                      />
-                  </n-form-item>
-              </n-card>
-              <br/>
-              <n-button @click="addOtherBusinessDetails">Add Another Business</n-button>
-          </div>
-          <br/>
-          <n-form-item>
-              <n-table :bordered="false" :single-line="false">
-                  <thead>
-                  <tr>
-                      <th>Business Registration No</th>
-                      <th>Business Name</th>
-                      <th>Remove</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr :key="key" v-for="(other_business, key) in formValue.other_businesses">
-                      <td>{{ other_business.registration_no}}</td>
-                      <td>{{ other_business.business_name}}</td>
-                      <td><n-button @click="removeBusinessRow(key)">
-                          <n-icon>
-                              <clear-outlined-icon/>
-                          </n-icon>
-                      </n-button></td>
-                  </tr>
-                  </tbody>
-              </n-table>
-          </n-form-item>
-          <n-form-item label="If the owner is a director of a cooperation?" path="is_director">
-              <n-radio-group
-                  v-model:value="formValue.is_director"
-                  name="otherBusiness"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
-          </n-form-item>
-          <div v-if="formValue.is_director">
-              <n-card>
-                  <n-form-item label="Registration no" path="registration_no">
-                      <n-input
-                          v-model:value="directorDetailsForm.registration_no"
-                          placeholder="Registration number" />
-                  </n-form-item>
-                  <n-form-item label="Name">
-                      <n-input
-                          v-model:value="directorDetailsForm.name"
-                          placeholder="Name"
-                      />
-                  </n-form-item>
-              </n-card>
-              <br/>
-              <n-button @click="addDirectorDetails">Add Director Details</n-button>
-          </div>
-          <br/>
-          <n-form-item>
-              <n-table :bordered="false" :single-line="false">
-                  <thead>
-                  <tr>
-                      <th>Registration No</th>
-                      <th>Name</th>
-                      <th>Remove</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr :key="key" v-for="(director_detail, key) in formValue.director_details">
-                      <td>{{ director_detail.registration_no}}</td>
-                      <td>{{ director_detail.business_name}}</td>
-                      <td><n-button @click="removeDirRow(key)">
-                          <n-icon>
-                              <clear-outlined-icon/>
-                          </n-icon>
-                      </n-button></td>
-                  </tr>
-                  </tbody>
-              </n-table>
-          </n-form-item>
-          <n-form-item label="If the Business is carried on under any other name, such other business name" path="ownerNic">
-              <n-input
-                  v-model:value="formValue.other_business_name"
-                  placeholder="If the Business is carried on under any other name, such other business name" />
-          </n-form-item>
-          <n-form-item label="If the owner is a government officer?" path="timberSeller">
-              <n-radio-group
-                  v-model:value="formValue.government_officer_checked_value"
-                  name="governmentOfficer"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
+                  v-model:value="formValue.address"
+                  placeholder="Address of the Applicant" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
-          <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p><br/>
+          <n-form-item label="Reason to Transport" path="nature">
+          <n-input
+              type="textarea"
+            v-model:value="formValue.reason_to_transport"
+            placeholder="Reason to Transport"
+          /> </n-form-item
+        ><n-form-item label="Start Point" path="start_point">
+          <n-input
+            v-model:value="formValue.start_point"
+            placeholder="Start Point" /><n-tooltip trigger="hover">
+          <template #trigger>
+              <n-icon><InformationCircleOutlineIcon /></n-icon>
+          </template>
+          <span>From where animals are transported</span>
+      </n-tooltip></n-form-item>
+          <n-form-item label="Destination" path="destination">
+          <n-input
+              v-model:value="formValue.destination"
+              placeholder="Destination" /></n-form-item>
+              <n-card title="Animal Details">
+                  <n-form-item label="Serial No" path="registration_no">
+                      <n-input
+                          v-model:value="animalDetailsForm.serial_no"
+                          placeholder="Serial No" />
+                  </n-form-item>
+                  <n-form-item label="Identification No./ Brand Marks">
+                      <n-input
+                          v-model:value="animalDetailsForm.identification_no"
+                          placeholder="Identification No./ Brand Marks"
+                      />
+                  </n-form-item>
+                  <n-form-item label="Animal Species">
+                      <n-input
+                          v-model:value="animalDetailsForm.species"
+                          placeholder="Animal Species"
+                      />
+                  </n-form-item><n-form-item label="Breed">
+                      <n-input
+                          v-model:value="animalDetailsForm.breed"
+                          placeholder="Breed"
+                      />
+                  </n-form-item><n-form-item label="Age (approx.)">
+                      <n-input
+                          v-model:value="animalDetailsForm.age"
+                          placeholder="Age (approx.)"
+                      />
+                  </n-form-item><n-form-item label="Sex">
+                      <n-input
+                          v-model:value="animalDetailsForm.sex"
+                          placeholder="Sex"
+                      />
+                  </n-form-item><n-form-item label="Color">
+                      <n-input
+                          v-model:value="animalDetailsForm.color"
+                          placeholder="Color"
+                      />
+                  </n-form-item><n-form-item label="Other specific Marks">
+                      <n-input
+                          v-model:value="animalDetailsForm.specific_marks"
+                          placeholder="Other specific Marks"
+                      />
+                  </n-form-item><n-form-item label="Health Certificate no">
+                      <n-input
+                          v-model:value="animalDetailsForm.health_certificate_no"
+                          placeholder="Health Certificate no"
+                      />
+                  </n-form-item>
+                  <n-form-item label="Registration No. of the Vehicle ">
+                      <n-input
+                          v-model:value="animalDetailsForm.vehicle_registration_no"
+                          placeholder="Registration No. of the Vehicle "
+                      />
+                  </n-form-item>
+              </n-card>
+              <br/>
+              <n-button @click="addAnimalDetails">Add Another Animal</n-button>
+          <br/>
+          <n-form-item>
+              <n-table :bordered="false" :single-line="false">
+                  <thead>
+                  <tr>
+                      <th>Serial<br/> No</th>
+                      <th>Identification <br/>No./ Brand <br/>Marks</th>
+                      <th>Animal <br/>Species</th>
+                      <th>Breed</th>
+                      <th>Age<br/>(approx.)</th>
+                      <th>Sex</th>
+                      <th>Color</th>
+                      <th>Other <br/>specific<br/> Marks</th>
+                      <th>Health<br/> Certificate <br/> No.</th>
+                      <th>Registration<br/> No. of the<br/> Vehicle</th>
+                      <th>Remove</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr :key="key" v-for="(animal, key) in formValue.animals">
+                      <td>{{ animal.serial_no}}</td>
+                      <td>{{ animal.identification_no}}</td>
+                      <td>{{ animal.species}}</td>
+                      <td>{{ animal.breed}}</td>
+                      <td>{{ animal.age}}</td>
+                      <td>{{ animal.sex}}</td>
+                      <td>{{ animal.color}}</td>
+                      <td>{{ animal.specific_marks}}</td>
+                      <td>{{ animal.health_certificate_no}}</td>
+                      <td>{{ animal.vehicle_registration_no}}</td>
+                      <td><n-button @click="removeAnimalRow(key)">
+                          <n-icon>
+                              <clear-outlined-icon/>
+                          </n-icon>
+                      </n-button></td>
+                  </tr>
+                  </tbody>
+              </n-table>
+          </n-form-item>
+          <n-form-item label="Cost Per Animal" path="nature">
+              <n-input
+                  :disabled="true"
+                  v-model:value="costPerAnimal"
+              /></n-form-item>
+        <div>
+            <n-form-item label="Date of Issue" path="nature">
+              <n-date-picker v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
+          <n-form-item label="Date  of Expire" path="nature">
+              <n-date-picker v-model:value="selectedExpireDate" type="date" /> </n-form-item>
+          </div>
+
+          <p>By subtting this application i certify this details in this application is correct.</p><br/>
           <n-card v-if="!isNewApplication">
-              <n-h3>By GN Officer</n-h3>
-              <n-form-item label="Ownership of land" path="ownershipOfLand">
-                  <n-radio-group
-                      v-model:value="formValue.ownership_of_land_checked_value"
-                      name="ownershipOfLand"
-                  >
-                      <n-space>
-                          <n-radio :value="'Freehold(Sinnakkara)'" label="Freehold(Sinnakkara)">Freehold(Sinnakkara)</n-radio>
-                          <n-radio :value="'Co-owner'" label="Co-owner">Co-owner</n-radio>
-                          <n-radio :value="'Granted by Government(Swarnabhumi)'" label="Granted by Government(Swarnabhumi)">Granted by Government(Swarnabhumi)</n-radio>
-                          <n-radio :value="'Lease'" label="Lease">Lease</n-radio>
-                          <n-radio :value="'Rent'" label="Rent">Rent</n-radio>
-                          <n-radio :value="'Government Permitted'" label="Government Permitted">Government Permitted</n-radio>
-                          <n-radio :value="'Illegal'" label="Illegal">Illegal</n-radio>
-                      </n-space>
-                  </n-radio-group>
-              </n-form-item>
+              <n-h3>By Government Veterinary Office</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-<!--                  <n-input-group>-->
                       <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-<!--                      <n-time-picker v-model:value="checked_time" />-->
-<!--                  </n-input-group>-->
               </n-form-item><n-form-item
-              label="Any comment about application"
-          >
+              label="Any comment about application">
               <n-input
                   type="textarea"
                   v-model:value="formValue.comment"
@@ -287,34 +213,15 @@
                       </n-button>
                   </n-dropdown>
               </n-form-item>
-              <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
+              <p>I certify above details are correct.</p>
           </n-card>
-          <n-p
-          >Upload following documents:<n-ul>
-            <n-li>Duly Filled application</n-li>
-            <n-li>
-              Copy of the deed of the relevant land (Should've certified by the
-              Grama Niladhari)
-            </n-li>
-            <n-li
-              >Copy of the plan (Should've certified by the Grama Niladhari )
-            </n-li>
-            <n-li> Extract for the relevant deed issued within a week. </n-li>
-            <n-li>
-              If the deed has life interest owner/ owners, a letter of consent
-              regarding timber cutting ( Should've certified by the Grama
-              Niladhari )
-            </n-li>
-            <n-li>
-              If the life interest owner/owners have died applicant should
-              present certified copy of the death certificate.
-            </n-li>
-            <n-li>
-              If you are presenting a deed of declaration, it should submit with
-              a grama niladhari report stating the clear holding of the land.
-            </n-li>
+          <n-p>To get a animal transportation permit please fill out the form below.The original copies of relevant documents must be submitted.</n-p>
+          <n-p>Required documents to obtain an animal transportation permit:</n-p>
+          <n-ul>
+              <n-li>1. Cattle Voucher </n-li>
+              <n-li>2. Health Certificate issued by Government Veterinary Surgeon Officer</n-li>
+              <n-li>3. Vehicle Revenue License</n-li>
           </n-ul>
-        </n-p>
         <n-form-item>
           <n-upload
             multiple
@@ -359,7 +266,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onMounted } from "vue";
+import { computed, ref, watch, onMounted, defineEmits } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
@@ -379,7 +286,7 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
-    application: Object,
+    // application: Object,
     initialStatus: String
 });
 const non_commercial_use_checked_value = ref(false);
@@ -392,52 +299,60 @@ const treeCuttingReasons = ref([]);
 
 const formValue = ref({
     id: "",
-    business_name: "Tech Innovators Ltd.",
-    nature: "Software Development",
-    principal_place: "123 Silicon Valley, Tech City",
-    initial_capital: "500000 USD",
-    addresses: [
-        {id:"", name: "123 Silicon Valley, Tech City"},
-        {id:"", name: "456 Innovation Drive, Tech City"}
-    ],
-    start_date: "2023-01-01",
-    owner_detail: {
-        name: "John Doe",
-        previous_name: "Jonathan Doe",
-        nationality: "American",
-        nic: "A1234567",
-        residence: "789 Main Street, Hometown, USA"
-    },
-    is_other_business_value: "Yes",
-    other_businesses: [{
-        registration_no: "987654",
-        business_name: "Future Enterprises"
+    application_code: "",
+    name: "John Doe",
+    address: "123 Main St, Colombo",
+    contact_number: "0712345678",
+    reason_to_transport: "Transporting animals for sale",
+    start_point: "Colombo",
+    destination: "Kandy",
+    animals: [{
+        id:"",
+        serial_no: "AN001",
+        identification_no: "ID001",
+        species: "Cow",
+        breed: "Angus",
+        age: "2 years",
+        sex: "Male",
+        color: "Black",
+        specific_marks: "White patch on forehead",
+        health_certificate_no: "HC001",
+        vehicle_registration_no: "WP ABC 1234"
+    },{
+        id:"",
+        serial_no: "AN002",
+        identification_no: "ID002",
+        species: "Goat",
+        breed: "Boer",
+        age: "1 year",
+        sex: "Female",
+        color: "Brown",
+        specific_marks: "White spot on nose",
+        health_certificate_no: "HC002",
+        vehicle_registration_no: "WP DEF 5678"
     }],
-    is_director: "Yes",
-    director_details: [{
-        registration_no: "555333",
-        business_name: "John Doe"
-    }],
-    other_business_name: "Innovative Solutions Inc.",
-    government_officer_checked_value: "No",
-    contact_number: "+1234567890",
-    ownership_of_land_checked_value: "Yes",
+    cost_per_animal: "5000",
+    issued_date: "2023-01-01",
+    expire_date: "2023-01-31",
     checked_date: "2023-01-01",
-    status: "Submitted",
-    submission_timestamp:"",
+    status: "",
+    submission_timestamp: "",
     checked_time: "",
-    comment:"",
-    application_code:"",
+    comment: "This is a test comment"
 });
 
-const otherBusinessDetailsForm = ref({
-    registration_no: "",
-    business_name: "",
-});
-
-const directorDetailsForm = ref({
-    registration_no: "",
-    name: "",
+const animalDetailsForm = ref({
+    id:"",
+    serial_no: "AN003",
+    identification_no: "ID003",
+    species: "Sheep",
+    breed: "Dorper",
+    age: "3 years",
+    sex: "Male",
+    color: "White",
+    specific_marks: "Black spot on ear",
+    health_certificate_no: "HC003",
+    vehicle_registration_no: "WP GHI 9012"
 });
 
 const statusOptions = [
@@ -494,39 +409,31 @@ const options = [
     key: "The Beverly Hills Hotel, Los Angeles",
   },
 ];
-onMounted(async () => {
-        // await Http.get('citizen-by-user-id', {
-        //     params:{
-        //         user_id: getLocalAuthUser().id
-        //     }
-        // })
-    console.log(props.initialStatus);
-    }
-);
+
 watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
-    formValue.value = {...props.application };
+    // formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
-        await Http.post("individualBusiness", formValue.value);
+        await Http.post("animalTransport", formValue.value);
         emit("close", false);
         return;
     }
     if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
-    await Http.put(`individualBusiness/${formValue.value.id}`, formValue.value);
+    await Http.put(`animalTransport/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`individualBusiness/${props.application.id}`, {
+        await Http.put(`animalTransport/${props.application.id}`, {
             status: status
         });
         emit('save');
@@ -536,15 +443,29 @@ const updateStatus = async (status) => {
     }
 };
 
-const selectedStartDate = computed({
+const selectedIssuedDate = computed({
   get: () => {
-    const startDate = formValue.value.start_date;
-    return moment(startDate, "YYYY-MM-DD").isValid()
-      ? moment(startDate).valueOf()
+    const issuedDate = formValue.value.issued_date;
+    return moment(issuedDate, "YYYY-MM-DD").isValid()
+      ? moment(issuedDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.start_date = moment
+    formValue.value.issued_date = moment
+      .unix(epoch / 1000)
+      .format("YYYY-MM-DD");
+  },
+});
+
+const selectedExpireDate = computed({
+  get: () => {
+    const expireDate = formValue.value.expire_date;
+    return moment(expireDate, "YYYY-MM-DD").isValid()
+      ? moment(expireDate).valueOf()
+      : null;
+  },
+  set: (epoch) => {
+    formValue.value.expire_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
@@ -562,113 +483,18 @@ const selectedCheckedDate = computed({
     }
 });
 
-const selectedCheckedTime = computed({
-    get() {
-        const checkedTime = formValue.value.checked_time;
-        return checkedTime ? moment(checkedTime, "HH:mm").format("HH:mm") : "";
-    },
-    set(value) {
-        if (moment(value, "HH:mm").isValid()) {
-            formValue.value.checked_time = moment(value, "HH:mm").format("HH:mm");
-        } else {
-            formValue.value.checked_time = "";
-        }
-    }
-});
-
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
 
-const gnDivisionsForDropdown = computed(() => {
-  return GNDivisionOptions.value.map((gnDivisionOption) => {
-    return {
-      key: gnDivisionOption.id,
-      label: gnDivisionOption.name,
-    };
-  });
-});
-
-const selectedGramaNiladariDivision = computed(() => {
-  return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
-    return (
-      gnDivisionForDropdown.key === formValue.value.gn_division.id
-    );
-  });
-});
-
-const treeCuttingReasonsForSelect = computed(() => {
-  return treeCuttingReasons.value.map((treeCuttingReason) => {
-    return {
-      ...treeCuttingReason,
-      value: treeCuttingReason.id,
-    };
-  });
-});
-
-const selectedTreeCuttingReasons = computed({
-  get: () => {
-    if (!formValue.value.tree_cutting_reasons?.length) {
-      return [];
+const totalAnimals = computed(() => formValue.value.animals.length);
+const costPerAnimal = computed({
+    get: () => totalAnimals.value * 50,
+    set: (value) => {
+        formValue.value.cost_per_animal = value;
     }
-    return formValue.value.tree_cutting_reasons.map(
-      (treeCuttingReason) => treeCuttingReason.id
-    );
-  },
-  set: (treeCuttingReasonIds) => {
-    formValue.value.tree_cutting_reasons =
-      treeCuttingReasonsForSelect.value.filter((treeCuttingReason) =>
-        treeCuttingReasonIds.some(
-          (treeCuttingReasonId) => treeCuttingReasonId === treeCuttingReason.id
-        )
-      );
-  },
 });
 
-onMounted(() => {
-  fetchGnDivisions();
-  // fetchTimberCuttingPermitApplication();
-  // fetchTreeCuttingReasons();
-});
-
-async function save() {f
-  if (isNewApplication.value) {
-    await Http.post(`individualBusiness`, formValue.value);
-    emit("save");
-
-    return;
-  }
-}
-
-async function fetchTimberCuttingPermitApplication() {
-  // await Http.get("timberCuttingPermitApplication");
-  timberCuttingPermitApplications.value = data;
-}
-
-const fetchGnDivisions = async () => {
-  try {
-    const response = await Http.get("gnDivision");
-    const data = response.data.data; // Assuming the API response contains the data you need
-    // console.log(data);
-    GNDivisionOptions.value = data;
-    // console.log(GNDivisionOptions.value);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const addresses = ref(['']);
-
-function addAddress() {
-    formValue.value.addresses.push({ id: "", name: "" });
-}
-function selectGramaNiladariDivision(key) {
-  formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
-    (GNDivisionOption) => {
-      return GNDivisionOption.id === key;
-    }
-  );
-}
 function handleValidateClick(e) {
   e.preventDefault();
   formRef.value?.validate((errors) => {
@@ -680,55 +506,27 @@ function handleValidateClick(e) {
     }
   });
 }
-// function handleChange(e) {
-//   checkedValueRef.value = e.target.value;
-//   console.log(`Selected value: ${checkedValueRef.value}`);
-// }
-function handleChange(group, e) {
-  if (group === "nonCommercialUse") {
-    non_commercial_use_checked_value.value = e.target.value;
-    console.log(
-      `Selected non-commercial use value: ${non_commercial_use_checked_value.value}`
-    );
-  } else if (group === "timberSeller") {
-    timber_seller_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${timber_seller_checked_value.value}`
-    );
-  } else if (group === "ownershipOfLand") {
-    ownership_of_land_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${ownership_of_land_checked_value.value}`
-    );
-  }
-}
 
-const addOtherBusinessDetails = () => {
-    formValue.value.other_businesses.push({...otherBusinessDetailsForm.value});
-    clearDetailsForm(); // Clear the form after adding tree details
+const addAnimalDetails = () => {
+    formValue.value.animals.push({...animalDetailsForm.value});
+    clearDetailsForm();
 };
 
 const clearDetailsForm = () => {
-  otherBusinessDetailsForm.value.registration_no = "";
-  otherBusinessDetailsForm.value.business_name = "";
+  animalDetailsForm.value.serial_no="";
+  animalDetailsForm.value.identification_no="";
+  animalDetailsForm.value.species="";
+  animalDetailsForm.value.breed="";
+  animalDetailsForm.value.age="";
+  animalDetailsForm.value.sex="";
+  animalDetailsForm.value.color="";
+  animalDetailsForm.value.specific_marks="";
+  animalDetailsForm.value.health_certificate_no="";
+  animalDetailsForm.value.vehicle_registration_no="";
 };
 
-const removeBusinessRow = (index) => {
-    formValue.value.director_details.splice(index, 1);
-};
-
-const addDirectorDetails = () => {
-    formValue.value.director_details.push({...directorDetailsForm.value});
-    clearDirectorDetailsForm(); // Clear the form after adding tree details
-};
-
-const clearDirectorDetailsForm = () => {
-  directorDetailsForm.value.registration_no = "";
-  directorDetailsForm.value.name = "";
-};
-
-const removeDirRow = (index) => {
-    formValue.value.director_details.splice(index, 1);
+const removeAnimalRow = (index) => {
+    formValue.value.animals.splice(index, 1);
 };
 
 </script>
