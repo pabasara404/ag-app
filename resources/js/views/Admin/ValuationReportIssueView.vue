@@ -39,12 +39,12 @@ const columns = [
         key: "name",
     },
     {
-        title: "Total Annual Income",
-        key: "total_annual_income",
+        title: "Valuation amount",
+        key: "valuation_amount",
     },
     {
         title: "Reason",
-        key: "purpose",
+        key: "reason",
     },
     {
         title: "Status",
@@ -109,9 +109,9 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("incomeCertificateByStatus", {
+    const { data } = await Http.get("valuationByStatus", {
         params: {
-            status: 'Escalated'
+            statuses: 'Escalated'
         }
     });
     isLoading.value = false;
@@ -119,7 +119,7 @@ async function fetchApplication() {
 }
 async function deleteApplication(application) {
     isLoading.value = true;
-    await Http.delete(`incomeCertificate/${application.id}`);
+    await Http.delete(`valuation/${application.id}`);
     isLoading.value = false;
 }
 </script>

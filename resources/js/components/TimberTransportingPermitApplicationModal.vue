@@ -4,7 +4,7 @@
     preset="card"
     style="width: 800px"
     :on-update:show="(value) => emit('close', value)"
-  >
+         >
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">

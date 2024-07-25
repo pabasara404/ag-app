@@ -59,7 +59,7 @@ import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
-import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import EditApplicationModal from "@/components/ValuationReportModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -77,12 +77,12 @@ const columns = [
         key: "name",
     },
     {
-        title: "Total Annual Income",
-        key: "total_annual_income",
+        title: "Valuation amount",
+        key: "valuation_amount",
     },
     {
         title: "Reason",
-        key: "purpose",
+        key: "reason",
     },
     {
         title: "Status",
@@ -147,7 +147,7 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
+    const {data} = await Http.get("valuation");
     isLoading.value = false;
     applications.value = data.data;
 }

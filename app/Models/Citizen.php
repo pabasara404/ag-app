@@ -19,7 +19,13 @@ class Citizen extends Model
         'gn_division_id',
         'user_id',
     ];
-
+    public function gn_division(){
+        return $this->belongsTo(GnDivision::class);
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
     public function licenses(){
         $this->hasMany(License::class);
     }
@@ -27,12 +33,6 @@ class Citizen extends Model
         $this->hasMany(TimberCuttingPermitApplication::class);
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 
-    public function gn_division(){
-        return $this->belongsTo(GnDivision::class);
-    }
+
 }

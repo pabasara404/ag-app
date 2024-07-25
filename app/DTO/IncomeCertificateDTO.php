@@ -14,7 +14,7 @@ class IncomeCertificateDTO
     public array $incomes;
     public string $total_annual_income;
     public ?string $income_tax_number;
-    public string $is_samurdhi_beneficiary;
+    public ?string $is_samurdhi_beneficiary;
     public array $samurdhi_details;
     public string $checked_date;
     public ?string $checked_time;
@@ -25,16 +25,14 @@ class IncomeCertificateDTO
 
     public function __construct(array $data)
     {
-        collect($data)->each(function ($value, $key) {
-            if ($key === 'id' && empty($value)) {
-                $this->id = null;
-            } elseif ($key === 'submission_timestamp' && empty($value)) {
-                $this->submission_timestamp = now()->toDateTimeString();
-            } else {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
-        });
+        }
 
-        return $this;
+        if (empty($this->submission_timestamp)) {
+            $this->submission_timestamp = now()->toDateTimeString();
+        }
     }
 }

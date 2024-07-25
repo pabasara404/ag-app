@@ -4,7 +4,7 @@
     preset="card"
     style="width: 800px"
     :on-update:show="(value) => emit('close', value)"
-  >
+    >
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
@@ -13,7 +13,7 @@
         </div>
       </n-page-header>
 
-      <n-form ref="formRef" :model="formValue">
+      <n-form ref="formRef" :rules="rules" :model="formValue">
         <n-form-item label="Name of the Applicant" path="name">
           <n-input
             v-model:value="formValue.name"
@@ -23,13 +23,15 @@
         <n-form-item label="Address of the Applicant" path="address">
           <n-input
             v-model:value="formValue.address"
+            maxlength="255" show-count clearable
             placeholder="Address of the Applicant"
           /> </n-form-item
         ><n-form-item label="Telephone No." path="contact_number">
           <n-input
             v-model:value="formValue.contact_number"
             placeholder="Telephone Number" /></n-form-item
-        ><n-form-item label="Are you a Timber seller?" path="timberSeller">
+        >
+          <n-form-item label="Are you a Timber seller?" path="timberSeller">
           <n-radio-group
             v-model:value="formValue.timber_seller_checked_value"
             name="timberSeller"
@@ -392,6 +394,9 @@
           </n-form-item>
         </div>
       </n-form>
+        <n-space vertical>
+            <n-qr-code :value="text" />
+        </n-space>
     </n-layout>
     <template #footer></template>
   </n-modal>
@@ -400,7 +405,7 @@
 
 <script setup>
 import { computed, ref, watch, onMounted } from "vue";
-import { NButton, useMessage } from "naive-ui";
+import { NButton, useMessage} from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
   InformationCircleOutline as InformationCircleOutlineIcon,
@@ -433,6 +438,7 @@ const timberCuttingPermitApplications = ref([]);
 const selectedValues = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
+const text = ref('The rain dampened the sky');
 
 const formValue = ref({
     id: "",
@@ -562,44 +568,32 @@ const treeDetailsForm = ref({
 //     age: "",
 //     want_to_cut: false,
 // });
-
 const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
+    name: [
+        { required: true, message: 'Please input your name', trigger: 'blur' },
+        { pattern: /^[A-Za-z\s]+$/, message: 'Name must be letters only', trigger: 'blur' }
+    ],
+    address: [{ required: true, message: 'Please input your address', trigger: 'blur' }],
+    contact_number: [{ required: true, message: 'Please input your number', trigger: ['input', 'blur'] }],
+    land_deed_number: [{ required: true, message: 'Please input the land deed number', trigger: 'blur' }],
+    selectedDeedDate: [{ required: true, message: 'Please select the deed date', trigger: 'blur' }],
+    land_name: [{ required: true, message: 'Please input the land name', trigger: 'blur' }],
+    land_size: [{ required: true, message: 'Please input the land size', trigger: 'blur' }],
+    plan_number: [{ required: true, message: 'Please input the plan number', trigger: 'blur' }],
+    plan_plot_number: [{ required: true, message: 'Please input the plan plot number', trigger: 'blur' }],
+    selectedPlanDate: [
+        { required: true, message: 'Please select the plan date', trigger: 'blur' },
+        { validator: (rule, value) => {
+                if (new Date(value) > new Date()) {
+                    return new Error('Plan date cannot be in the future');
+                }
+                return true;
+            },
+            trigger: 'blur'
+        }
+    ]
 };
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
+
 
 
 onMounted(async () => {
@@ -623,19 +617,27 @@ watch(
 const isNewTimberCuttingPermitApplication = computed(() => {
     return !formValue.value.id;
 });
-async function certifyAndSubmit() {
-    if (isNewTimberCuttingPermitApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("timberCuttingPermitApplication", formValue.value);
-        emit("close", false);
-        return;
-    }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
-}
+const certifyAndSubmit = async () => {
+    formRef.value.validate((errors) => {
+        if (!errors) {
+            if (isNewTimberCuttingPermitApplication.value) {
+                formValue.status = "Submitted";
+                Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
+                    emit("close", false);
+                });
+                return;
+            }
+            if (props.initialStatus === "Pending" && formValue.status === "Pending") {
+                formValue.status = "Resubmitted";
+            }
+            Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value).then(() => {
+                emit("close", false);
+            });
+        } else {
+            console.log('Form validation failed', errors);
+        }
+    });
+};
 
 const updateStatus = async (status) => {
     try {

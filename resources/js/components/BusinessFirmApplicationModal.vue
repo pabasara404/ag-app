@@ -525,7 +525,7 @@ const formValue = ref({
         }
     ],
     checked_date: "2024-07-01",
-    comment: "All documents verified.",
+    comment: "",
     status: "Submitted",
     ownership_of_land_checked_value: "Rent",
     submission_timestamp:"",

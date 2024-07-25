@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('samurdhi_details', function (Blueprint $table) {
             $table->id();
             $table->string('subside_amount');
-            $table->boolean('is_subsidiaries_returned');
+            $table->string('is_subsidiaries_returned')->default(false);
             $table->text('recommendation');
             $table->date('checked_date');
             $table->timestamps();

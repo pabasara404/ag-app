@@ -337,7 +337,7 @@ const menuOptions = [
                         name: "exciseLicensing",
                     },
                 },
-                { default: () => "Excise Licensing" }
+                { default: () => "Excise License Management" }
             ),
         key: "exciseLicensing",
         authorizedBy: ["Employee", "Admin"],

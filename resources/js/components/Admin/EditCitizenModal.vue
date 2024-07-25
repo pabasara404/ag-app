@@ -29,18 +29,6 @@
           <n-form-item label="NIC" path="nic">
             <n-input v-model:value="formValue.nic" placeholder="NIC" />
           </n-form-item>
-          <n-form-item label="Role" path="role">
-            <n-dropdown
-              trigger="hover"
-              placement="bottom-start"
-              :options="rolesForDropdown"
-              @select="selectRole"
-            >
-              <n-button
-                >{{selectedRole ? selectedRole.label : "Select a Role" }} <n-icon><ArrowDropDownRoundIcon /></n-icon
-              ></n-button>
-            </n-dropdown>
-          </n-form-item>
           <n-form-item label="Address">
             <n-input
               type="textarea"

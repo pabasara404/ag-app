@@ -65,10 +65,9 @@ class IncomeCertificateController extends Controller
      */
     public function update(UpdateIncomeCertificateRequest $request, IncomeCertificate $incomeCertificate)
     {
-        $incomeCertificate->update($request->toArray());
+        IncomeCertificateAction::update($request->toArray(), $incomeCertificate);
         return response()->noContent();
     }
-
     /**
      * Remove the specified resource from storage.
      */

@@ -58,4 +58,40 @@ class IncomeCertificateAction
         }
     }
 
+    public static function update(array $incomeCertificateData, IncomeCertificate $incomeCertificate)
+    {
+        DB::beginTransaction();
+        try {
+            $dto = new IncomeCertificateDTO($incomeCertificateData);
+            $incomeCertificate->update((array) $dto);
+
+            if ($dto->is_samurdhi_beneficiary) {
+                $samurdhiDetail = SamurdhiDetail::updateOrCreate(
+                    ['income_certificate_id' => $incomeCertificate->id],
+                    (array) $dto->samurdhi_details
+                );
+            } else {
+                SamurdhiDetail::where('income_certificate_id', $incomeCertificate->id)->delete();
+            }
+
+            foreach ($dto->incomes as $incomeData) {
+                $income = Income::updateOrCreate(
+                    ['id' => $incomeData['id'] ?? null],
+                    $incomeData + ['income_certificate_id' => $incomeCertificate->id]
+                );
+            }
+
+            if ($dto->gn_division) {
+                $gnDivision = GNDivision::find($dto->gn_division['id']);
+                $incomeCertificate->gn_division()->associate($gnDivision);
+                $incomeCertificate->save();
+            }
+
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception; // Instead of dd(), propagate the exception for proper error handling
+        }
+    }
+
 }

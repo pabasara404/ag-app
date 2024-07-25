@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimalTransportationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ExciseController;
 use App\Http\Controllers\FirmController;
 use App\Http\Controllers\GnDivisionController;
 use App\Http\Controllers\GnOfficerController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
 use App\Http\Controllers\TimberTransportingPermitApplicationController;
 use App\Http\Controllers\TreeCuttingReasonController;
+use App\Http\Controllers\ValuationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -83,13 +85,34 @@ Route::delete('firmApplication/{firmApplication}', [FirmController::class, 'dest
 Route::post('firmApplication', [FirmController::class, 'store']);
 Route::put('firmApplication/{id}', [FirmController::class, 'updateStatus']);
 
+//routes for excises
+//Route::get('exciseApplication/searchByReferenceNo', [ExciseController::class, 'searchByReferenceNo']);
+Route::get('exciseApplication', [ExciseController::class, 'index']);
+Route::get('exciseByStatus', [ExciseController::class, 'show']);
+Route::put('exciseApplication/{exciseApplication}', [ExciseController::class, 'update']);
+Route::delete('exciseApplication/{exciseApplication}', [ExciseController::class, 'destroy']);
+Route::post('exciseApplication', [ExciseController::class, 'store']);
+Route::put('exciseApplication/{id}', [ExciseController::class, 'updateStatus']);
+Route::get('exciseByStatus', [ExciseController::class, 'filterByStatus']);
+
+
+//routes for valuations
+Route::get('valuation', [ValuationController::class, 'index']);
+Route::get('valuationByStatus', [ValuationController::class, 'filterByStatus']);
+Route::post('valuation', [ValuationController::class, 'store']);
+Route::put('valuation/{valuation}', [ValuationController::class, 'update']);
+Route::put('valuation/{id}', [ValuationController::class, 'updateStatus']);
+Route::delete('valuation/{valuation}', [ValuationController::class, 'destroy']);
+
+
 //routes for animalTransportations
-Route::get('animalTransportation', [animalTransportationController::class, 'index']);
-Route::get('animalTransportationByStatus', [animalTransportationController::class, 'filterByStatus']);
-Route::post('animalTransportation', [animalTransportationController::class, 'store']);
-Route::put('animalTransportation/{animalTransportation}', [animalTransportationController::class, 'update']);
-Route::put('animalTransportation/{id}', [animalTransportationController::class, 'updateStatus']);
-Route::delete('animalTransportation/{animalTransportation}', [animalTransportationController::class, 'destroy']);
+Route::get('animalTransportation', [AnimalTransportationController::class, 'index']);
+Route::get('animalTransportationByStatus', [AnimalTransportationController::class, 'filterByStatus']);
+Route::post('animalTransportation', [AnimalTransportationController::class, 'store']);
+Route::put('animalTransportation/{animalTransportation}', [AnimalTransportationController::class, 'update']);
+Route::put('animalTransportation/{id}', [AnimalTransportationController::class, 'updateStatus']);
+Route::delete('animalTransportation/{animalTransportation}', [AnimalTransportationController::class, 'destroy']);
+
 
 //routes for incomeCertificates
 Route::get('incomeCertificate', [IncomeCertificateController::class, 'index']);
@@ -106,13 +129,13 @@ Route::put('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [T
 Route::delete('timberCuttingPermitApplication/{timberCuttingPermitApplication}', [TimberCuttingPermitApplicationController::class, 'destroy']);
 Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);
 Route::put('timberCuttingPermitApplication/{id}', [TimberCuttingPermitApplicationController::class, 'updateStatus']);
-
-//routes for timberTransportingPermitApplications
-Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
-Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
-Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
-Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
-
+//
+////routes for timberTransportingPermitApplications
+//Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
+//Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
+//Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
+//Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
+//
 
 
 //routes for gnDivisions

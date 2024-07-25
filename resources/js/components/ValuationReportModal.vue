@@ -8,12 +8,11 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>Application for Registration of a Business Name By an Individual</n-h2>
+          <n-h2>Application to a Valuation Certificate </n-h2>
         </div>
       </n-page-header>
 <!--        v-if="props.initialStatus === 'issued'"-->
         <n-watermark
-
             image="../../images/Emblem_of_Sri_Lanka.svg.png"
             cross
             fullscreen
@@ -35,224 +34,121 @@
               v-model:value="formValue.application_code"
           />
         </n-form-item>
-          <n-form-item label="The Business Name" path="business_name">
+          <n-form-item label="Enter Name of the Applicant" path="business_name">
               <n-input
-                  v-model:value="formValue.business_name"
-                  placeholder="Enter Name of the Business"
+                  v-model:value="formValue.name"
+                  placeholder="Enter Name of the Applicant"
               />
           </n-form-item>
-          <n-form-item label="The General Nature Of the Business" path="nature">
-          <n-input
-            v-model:value="formValue.nature"
-            placeholder="The General Nature Of the Business"
-          /> <n-tooltip trigger="hover">
-            <template #trigger>
-                <n-icon><InformationCircleOutlineIcon /></n-icon>
-            </template>
-            <span>If trading. / export of manufacture. state clearly the of goods that are being traded imported/ exported or manufactured</span>
-        </n-tooltip></n-form-item
-        ><n-form-item label="The Principal Place of the Business" path="principal_place">
-          <n-input
-            v-model:value="formValue.principal_place"
-            placeholder="The Principal Place of the Business" /></n-form-item>
-          <n-form-item label="Initial Capital of the Business" path="initial_capital">
-          <n-input
-              v-model:value="formValue.initial_capital"
-              placeholder="Initial Capital of the Business" /></n-form-item>
-          <n-form-item label="If any Branch Office/ Store / Stores Warehouse is prevailing the address">
-              <div v-for="(address, index) in formValue.addresses" :key="index">
-                  <n-input
-                      v-model:value="formValue.addresses[index].name"
-                      placeholder="If any Branch Office/Store/Stores Warehouse is prevailing the address"
-                  />
-              </div>
+          <n-form-item label="Address" path="nature">
+              <n-input
+                v-model:value="formValue.address"
+                placeholder="Address"
+              />
           </n-form-item>
-          <n-button @click="addAddress">Add Another Address</n-button>
-          <br /><br />
-          <n-form-item label="The Date of Commencement of the Business" path="nature">
-              <n-date-picker v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>State here the actual date of commencement of Business activities.</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="Full Name of Owner" path="ownerName">
+          <n-form-item label="Valuation Amount" path="valuation_amount">
               <n-input
-                  v-model:value="formValue.owner_detail.name"
-                  placeholder="Full Name of Owner"
-              /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>Full Name With names denoted by initials.</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="If any previous Name for the Owner Name in full" path="ownerName">
+                  v-model:value="formValue.valuation_amount"
+                  placeholder="Valuation Amount" /></n-form-item>
+          <n-form-item label="Reason" path="reason">
               <n-input
-                  v-model:value="formValue.owner_detail.previous_name"
-                  placeholder="If any previous Name for the Owner Name in full"
-              /> <n-tooltip trigger="hover">
-              <template #trigger>
-                  <n-icon><InformationCircleOutlineIcon /></n-icon>
-              </template>
-              <span>Any other Name (In full) used In addition to the usual name. In case of a married woman the maiden name (in full)</span>
-          </n-tooltip></n-form-item>
-          <n-form-item label="The Nationality of the Owner" path="ownerNationality">
+                  v-model:value="formValue.reason"
+                  placeholder="Reason" /></n-form-item>
+          <n-form-item label="Land Deed Number" path="land_deed_number">
               <n-input
-                  v-model:value="formValue.owner_detail.nationality"
-                  placeholder="The Nationality of the Owner" />
+                  v-model:value="formValue.land_deed_number"
+                  placeholder="Land Deed Number"
+              />
           </n-form-item>
-          <n-form-item label="National Identity Card Number" path="ownerNic">
+          <n-form-item label="Boundary to North" path="to_north">
               <n-input
-                  v-model:value="formValue.owner_detail.nic"
-                  placeholder="National Identity Card Number" />
+                  v-model:value="formValue.to_north"
+                  placeholder="Boundary to North"
+              />
           </n-form-item>
-          <n-form-item label="The Usual residence of the Owner" path="ownerResidence">
+          <n-form-item label="Boundary to South" path="to_south">
               <n-input
-                  v-model:value="formValue.owner_detail.residence"
-                  placeholder="The Usual residence of the Owner" />
+                  v-model:value="formValue.to_south"
+                  placeholder="Boundary to South"
+              />
           </n-form-item>
-          <n-form-item label="If the Owner in any other business?" path="otherBusiness">
-              <n-radio-group
-                  v-model:value="formValue.is_other_business_value"
-                  name="otherBusiness"
+          <n-form-item label="Boundary to East" path="to_east">
+              <n-input
+                  v-model:value="formValue.to_east"
+                  placeholder="Boundary to East"
+              />
+          </n-form-item>
+          <n-form-item label="Boundary to West" path="to_west">
+              <n-input
+                  v-model:value="formValue.to_west"
+                  placeholder="Boundary to West"
+              />
+          </n-form-item>
+          <n-form-item label="Size in Arches" path="size">
+              <n-input
+                  v-model:value="formValue.size"
+                  placeholder="Size in Arches"
+              />
+          </n-form-item>
+          <n-form-item label="Building Length" path="width">
+              <n-input
+                  v-model:value="formValue.length"
+                  placeholder="Building Length"
+              />
+          </n-form-item>
+          <n-form-item label="Building Width" path="width">
+              <n-input
+                  v-model:value="formValue.width"
+                  placeholder="Building Width"
+              />
+          </n-form-item>
+          <n-form-item label="Name of Notary Officer" path="notary_officer_name">
+              <n-input
+                  v-model:value="formValue.notary_officer_name"
+                  placeholder="Name of Notary Officer"
+              />
+          </n-form-item>
+          <n-form-item label="Plan No." path="plan_number">
+              <n-input
+                  v-model:value="formValue.plan_number"
+                  placeholder="Plan No."
+              />
+          </n-form-item>
+          <n-form-item label="Plan date" path="plan_date">
+              <n-date-picker
+                  v-model:value="selectedPlanDate"
+                  placeholder="Plan date"
+                  type="date" />
+          </n-form-item>
+          <n-form-item label="Land Name" path="land_name">
+              <n-input
+                  v-model:value="formValue.land_name"
+                  placeholder="Land Name"
+              />
+          </n-form-item>
+          <n-form-item
+              label="Grama Niladari Division"
+              path="grama_niladari_division"
+          >
+              <n-dropdown
+                  trigger="hover"
+                  placement="bottom-start"
+                  :options="gnDivisionsForDropdown"
+                  @select="selectGramaNiladariDivision"
               >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
+                  <n-button
+                  >{{
+                          selectedGramaNiladariDivision
+                              ? selectedGramaNiladariDivision.label
+                              : "Select an option"
+                      }}
+                      <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                  </n-button>
+              </n-dropdown>
           </n-form-item>
-          <div v-if="formValue.is_other_business_value">
-              <n-card>
-                  <n-form-item label="Business Registration no" path="registration_no">
-                      <n-input
-                          v-model:value="otherBusinessDetailsForm.registration_no"
-                          placeholder="Business Registration number" />
-                  </n-form-item>
-                  <n-form-item label="Business Name">
-                      <n-input
-                          v-model:value="otherBusinessDetailsForm.business_name"
-                          placeholder="Business Name"
-                      />
-                  </n-form-item>
-              </n-card>
-              <br/>
-              <n-button @click="addOtherBusinessDetails">Add Another Business</n-button>
-          </div>
-          <br/>
-          <n-form-item>
-              <n-table :bordered="false" :single-line="false">
-                  <thead>
-                  <tr>
-                      <th>Business Registration No</th>
-                      <th>Business Name</th>
-                      <th>Remove</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr :key="key" v-for="(other_business, key) in formValue.other_businesses">
-                      <td>{{ other_business.registration_no}}</td>
-                      <td>{{ other_business.business_name}}</td>
-                      <td><n-button @click="removeBusinessRow(key)">
-                          <n-icon>
-                              <clear-outlined-icon/>
-                          </n-icon>
-                      </n-button></td>
-                  </tr>
-                  </tbody>
-              </n-table>
-          </n-form-item>
-          <n-form-item label="If the owner is a director of a cooperation?" path="is_director">
-              <n-radio-group
-                  v-model:value="formValue.is_director"
-                  name="otherBusiness"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
-          </n-form-item>
-          <div v-if="formValue.is_director">
-              <n-card>
-                  <n-form-item label="Registration no" path="registration_no">
-                      <n-input
-                          v-model:value="directorDetailsForm.registration_no"
-                          placeholder="Registration number" />
-                  </n-form-item>
-                  <n-form-item label="Name">
-                      <n-input
-                          v-model:value="directorDetailsForm.name"
-                          placeholder="Name"
-                      />
-                  </n-form-item>
-              </n-card>
-              <br/>
-              <n-button @click="addDirectorDetails">Add Director Details</n-button>
-          </div>
-          <br/>
-          <n-form-item>
-              <n-table :bordered="false" :single-line="false">
-                  <thead>
-                  <tr>
-                      <th>Registration No</th>
-                      <th>Name</th>
-                      <th>Remove</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr :key="key" v-for="(director_detail, key) in formValue.director_details">
-                      <td>{{ director_detail.registration_no}}</td>
-                      <td>{{ director_detail.business_name}}</td>
-                      <td><n-button @click="removeDirRow(key)">
-                          <n-icon>
-                              <clear-outlined-icon/>
-                          </n-icon>
-                      </n-button></td>
-                  </tr>
-                  </tbody>
-              </n-table>
-          </n-form-item>
-          <n-form-item label="If the Business is carried on under any other name, such other business name" path="ownerNic">
-              <n-input
-                  v-model:value="formValue.other_business_name"
-                  placeholder="If the Business is carried on under any other name, such other business name" />
-          </n-form-item>
-          <n-form-item label="If the owner is a government officer?" path="timberSeller">
-              <n-radio-group
-                  v-model:value="formValue.government_officer_checked_value"
-                  name="governmentOfficer"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
-          </n-form-item>
-          <n-form-item label="Telephone number" path="contactNumber">
-              <n-input
-                  v-model:value="formValue.contact_number"
-                  placeholder="Telephone number" />
-          </n-form-item>
-          <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p><br/>
+          <p>As I/we, kindly request a Valuation Certificate as a security, and in order to obtain it,  I/we hereby submit the deed details which is owned by me/us with the above details. I/we further certify that I am/ we are ready to pay the fee due to me/us, that this land is not subject to any other lawsuit and that I/we have ownership over it.</p><br/>
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
-              <n-form-item label="Ownership of land" path="ownershipOfLand">
-                  <n-radio-group
-                      v-model:value="formValue.ownership_of_land_checked_value"
-                      name="ownershipOfLand"
-                  >
-                      <n-space>
-                          <n-radio :value="'Freehold(Sinnakkara)'" label="Freehold(Sinnakkara)">Freehold(Sinnakkara)</n-radio>
-                          <n-radio :value="'Co-owner'" label="Co-owner">Co-owner</n-radio>
-                          <n-radio :value="'Granted by Government(Swarnabhumi)'" label="Granted by Government(Swarnabhumi)">Granted by Government(Swarnabhumi)</n-radio>
-                          <n-radio :value="'Lease'" label="Lease">Lease</n-radio>
-                          <n-radio :value="'Rent'" label="Rent">Rent</n-radio>
-                          <n-radio :value="'Government Permitted'" label="Government Permitted">Government Permitted</n-radio>
-                          <n-radio :value="'Illegal'" label="Illegal">Illegal</n-radio>
-                      </n-space>
-                  </n-radio-group>
-              </n-form-item>
               <n-form-item label="Checked Date" path="land_deed_date">
 <!--                  <n-input-group>-->
                       <n-date-picker v-model:value="selectedCheckedDate" type="date" />
@@ -287,31 +183,16 @@
                       </n-button>
                   </n-dropdown>
               </n-form-item>
-              <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
+              <p>I hereby confirm that the land of the applicant/applicants mentioned above, reside in/ situated in my division. And I confirm that I have examined the land mentioned on the application form, have confirmed the information in the form to be truthful, and can certify the land including buildings are valued according to the mentioned amount.</p>
           </n-card>
           <n-p
           >Upload following documents:<n-ul>
-            <n-li>Duly Filled application</n-li>
             <n-li>
               Copy of the deed of the relevant land (Should've certified by the
               Grama Niladhari)
             </n-li>
             <n-li
               >Copy of the plan (Should've certified by the Grama Niladhari )
-            </n-li>
-            <n-li> Extract for the relevant deed issued within a week. </n-li>
-            <n-li>
-              If the deed has life interest owner/ owners, a letter of consent
-              regarding timber cutting ( Should've certified by the Grama
-              Niladhari )
-            </n-li>
-            <n-li>
-              If the life interest owner/owners have died applicant should
-              present certified copy of the death certificate.
-            </n-li>
-            <n-li>
-              If you are presenting a deed of declaration, it should submit with
-              a grama niladhari report stating the clear holding of the land.
             </n-li>
           </n-ul>
         </n-p>
@@ -392,53 +273,35 @@ const treeCuttingReasons = ref([]);
 
 const formValue = ref({
     id: "",
-    business_name: "Tech Innovators Ltd.",
-    nature: "Software Development",
-    principal_place: "123 Silicon Valley, Tech City",
-    initial_capital: "500000 USD",
-    addresses: [
-        {id:"", name: "123 Silicon Valley, Tech City"},
-        {id:"", name: "456 Innovation Drive, Tech City"}
-    ],
-    start_date: "2023-01-01",
-    owner_detail: {
-        name: "John Doe",
-        previous_name: "Jonathan Doe",
-        nationality: "American",
-        nic: "A1234567",
-        residence: "789 Main Street, Hometown, USA"
+    application_code: "",
+    name: "John Doe",
+    address: "123 Main St, Colombo",
+    valuation_amount: "5000000",
+    reason: "Property Sale",
+    land_deed_number: "LDN456789",
+    to_north: "Neighbor A",
+    to_south: "Road",
+    to_east: "River",
+    to_west: "Empty Land",
+    size: "2000 sqft",
+    length: "50 ft",
+    width: "40 ft",
+    notary_officer_name: "Notary Public John",
+    plan_number: "PN789456",
+    plan_date: "2023-05-15",
+    land_name: "Green Acres",
+    gn_division: {
+        id: "74",
+        gn_code: "370",
+        name: "Kotugoda",
+        mpa_code: "204",
     },
-    is_other_business_value: "Yes",
-    other_businesses: [{
-        registration_no: "987654",
-        business_name: "Future Enterprises"
-    }],
-    is_director: "Yes",
-    director_details: [{
-        registration_no: "555333",
-        business_name: "John Doe"
-    }],
-    other_business_name: "Innovative Solutions Inc.",
-    government_officer_checked_value: "No",
-    contact_number: "+1234567890",
-    ownership_of_land_checked_value: "Yes",
-    checked_date: "2023-01-01",
-    status: "Submitted",
-    submission_timestamp:"",
-    checked_time: "",
-    comment:"",
-    application_code:"",
+    status: "",
+    submission_timestamp: "2023-07-15 10:00:00",
+    checked_date: "2023-07-20",
+    comment: "Initial submission for review."
 });
 
-const otherBusinessDetailsForm = ref({
-    registration_no: "",
-    business_name: "",
-});
-
-const directorDetailsForm = ref({
-    registration_no: "",
-    name: "",
-});
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
@@ -476,33 +339,7 @@ const rules = {
     trigger: ["input"],
   },
 };
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
-onMounted(async () => {
-        // await Http.get('citizen-by-user-id', {
-        //     params:{
-        //         user_id: getLocalAuthUser().id
-        //     }
-        // })
-    console.log(props.initialStatus);
-    }
-);
+
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -513,20 +350,20 @@ watch(
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
-        await Http.post("individualBusiness", formValue.value);
+        await Http.post("valuation", formValue.value);
         emit("close", false);
         return;
     }
     if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
-    await Http.put(`individualBusiness/${formValue.value.id}`, formValue.value);
+    await Http.put(`valuation/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`individualBusiness/${props.application.id}`, {
+        await Http.put(`valuation/${props.application.id}`, {
             status: status
         });
         emit('save');
@@ -536,15 +373,15 @@ const updateStatus = async (status) => {
     }
 };
 
-const selectedStartDate = computed({
+const selectedPlanDate = computed({
   get: () => {
-    const startDate = formValue.value.start_date;
-    return moment(startDate, "YYYY-MM-DD").isValid()
-      ? moment(startDate).valueOf()
+    const planDate = formValue.value.plan_date;
+    return moment(planDate, "YYYY-MM-DD").isValid()
+      ? moment(planDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.start_date = moment
+    formValue.value.plan_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
@@ -562,174 +399,52 @@ const selectedCheckedDate = computed({
     }
 });
 
-const selectedCheckedTime = computed({
-    get() {
-        const checkedTime = formValue.value.checked_time;
-        return checkedTime ? moment(checkedTime, "HH:mm").format("HH:mm") : "";
-    },
-    set(value) {
-        if (moment(value, "HH:mm").isValid()) {
-            formValue.value.checked_time = moment(value, "HH:mm").format("HH:mm");
-        } else {
-            formValue.value.checked_time = "";
-        }
-    }
-});
-
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
-
 const gnDivisionsForDropdown = computed(() => {
-  return GNDivisionOptions.value.map((gnDivisionOption) => {
-    return {
-      key: gnDivisionOption.id,
-      label: gnDivisionOption.name,
-    };
-  });
+    return GNDivisionOptions.value.map((gnDivisionOption) => {
+        return {
+            key: gnDivisionOption.id,
+            label: gnDivisionOption.name,
+        };
+    });
 });
 
 const selectedGramaNiladariDivision = computed(() => {
-  return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
-    return (
-      gnDivisionForDropdown.key === formValue.value.gn_division.id
-    );
-  });
-});
-
-const treeCuttingReasonsForSelect = computed(() => {
-  return treeCuttingReasons.value.map((treeCuttingReason) => {
-    return {
-      ...treeCuttingReason,
-      value: treeCuttingReason.id,
-    };
-  });
-});
-
-const selectedTreeCuttingReasons = computed({
-  get: () => {
-    if (!formValue.value.tree_cutting_reasons?.length) {
-      return [];
-    }
-    return formValue.value.tree_cutting_reasons.map(
-      (treeCuttingReason) => treeCuttingReason.id
-    );
-  },
-  set: (treeCuttingReasonIds) => {
-    formValue.value.tree_cutting_reasons =
-      treeCuttingReasonsForSelect.value.filter((treeCuttingReason) =>
-        treeCuttingReasonIds.some(
-          (treeCuttingReasonId) => treeCuttingReasonId === treeCuttingReason.id
-        )
-      );
-  },
+    return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
+        return gnDivisionForDropdown.key === formValue.value.gn_division.id;
+    });
 });
 
 onMounted(() => {
-  fetchGnDivisions();
-  // fetchTimberCuttingPermitApplication();
-  // fetchTreeCuttingReasons();
+    fetchGnDivisions();
 });
 
-async function save() {f
-  if (isNewApplication.value) {
-    await Http.post(`individualBusiness`, formValue.value);
-    emit("save");
-
-    return;
-  }
-}
-
-async function fetchTimberCuttingPermitApplication() {
-  // await Http.get("timberCuttingPermitApplication");
-  timberCuttingPermitApplications.value = data;
-}
-
 const fetchGnDivisions = async () => {
-  try {
-    const response = await Http.get("gnDivision");
-    const data = response.data.data; // Assuming the API response contains the data you need
-    // console.log(data);
-    GNDivisionOptions.value = data;
-    // console.log(GNDivisionOptions.value);
-  } catch (error) {
-    console.error(error);
-  }
+    try {
+        const response = await Http.get("gnDivision");
+        const data = response.data.data; // Assuming the API response contains the data you need
+        GNDivisionOptions.value = data;
+    } catch (error) {
+        console.error(error);
+    }
 };
 
-const addresses = ref(['']);
-
-function addAddress() {
-    formValue.value.addresses.push({ id: "", name: "" });
-}
 function selectGramaNiladariDivision(key) {
-  formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
-    (GNDivisionOption) => {
-      return GNDivisionOption.id === key;
+    const selectedDivision = GNDivisionOptions.value.find((GNDivisionOption) => {
+        return GNDivisionOption.id === key;
+    });
+
+    if (selectedDivision) {
+        formValue.value.gn_division = {
+            id: selectedDivision.id,
+            gn_code: selectedDivision.gn_code,
+            name: selectedDivision.name,
+            mpa_code: selectedDivision.mpa_code
+        };
     }
-  );
 }
-function handleValidateClick(e) {
-  e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      message.success("Valid");
-    } else {
-      console.log(errors);
-      message.error("Invalid");
-    }
-  });
-}
-// function handleChange(e) {
-//   checkedValueRef.value = e.target.value;
-//   console.log(`Selected value: ${checkedValueRef.value}`);
-// }
-function handleChange(group, e) {
-  if (group === "nonCommercialUse") {
-    non_commercial_use_checked_value.value = e.target.value;
-    console.log(
-      `Selected non-commercial use value: ${non_commercial_use_checked_value.value}`
-    );
-  } else if (group === "timberSeller") {
-    timber_seller_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${timber_seller_checked_value.value}`
-    );
-  } else if (group === "ownershipOfLand") {
-    ownership_of_land_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${ownership_of_land_checked_value.value}`
-    );
-  }
-}
-
-const addOtherBusinessDetails = () => {
-    formValue.value.other_businesses.push({...otherBusinessDetailsForm.value});
-    clearDetailsForm(); // Clear the form after adding tree details
-};
-
-const clearDetailsForm = () => {
-  otherBusinessDetailsForm.value.registration_no = "";
-  otherBusinessDetailsForm.value.business_name = "";
-};
-
-const removeBusinessRow = (index) => {
-    formValue.value.director_details.splice(index, 1);
-};
-
-const addDirectorDetails = () => {
-    formValue.value.director_details.push({...directorDetailsForm.value});
-    clearDirectorDetailsForm(); // Clear the form after adding tree details
-};
-
-const clearDirectorDetailsForm = () => {
-  directorDetailsForm.value.registration_no = "";
-  directorDetailsForm.value.name = "";
-};
-
-const removeDirRow = (index) => {
-    formValue.value.director_details.splice(index, 1);
-};
 
 </script>
 

@@ -90,6 +90,7 @@ const columns = [
                     onClick: () => {
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
+                        initialStatus.value = row.status;
                     },
                 },
                 { default: () => "Review" }

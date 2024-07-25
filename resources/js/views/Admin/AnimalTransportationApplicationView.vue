@@ -5,8 +5,8 @@
             <n-p>To get a animal transportation permit please fill out the form below.The original copies of relevant documents must be submitted.</n-p>
             <n-p>Required documents to obtain an animal transportation permit:</n-p>
             <n-ul>
-                <n-li>1. To confirm the source of income </n-li>
-                <n-li>2. If the business is not located in the domain of residence, a report from the village officer of the division where it is located must also be submitted.</n-li>
+                <n-li>1. Cattle Voucher</n-li>
+                <n-li>2. Health Certificate from the Government Veterinary Surgeon</n-li>
             </n-ul>
             <div class="flex justify-center ... p-8">
                 <n-button
@@ -38,44 +38,47 @@ const isShowingApplicationModal = ref(false);
 function addNewApplication() {
     selectedApplication.value = {
         id: "",
-        name: "",
-        address: "",
-        nic: "",
-        contact_number:"",
-        gn_division: {
-            id: "74",
-            gn_code: "370",
-            name: "Kotugoda",
-            mpa_code: "204",
-        },
-        purpose:"",
-        submitting_institute:"",
-        incomes: [
-            {
-                id:"",
-                source_of_income: "",
-                registration_no:"",
-                name:"",size:"",
-                monthly_income:"",
-                annual_income:""
-            }
-        ],
-        total_annual_income:"",
-        income_tax_number:"",
-        is_samurdhi_beneficiary:"",
-        samurdhi_details: {
-            id: "",
-            subside_amount: "",
-            is_subsidiaries_returned: "",
-            recommendation: "",
-            checked_date:""
-        },
+        application_code: "",
+        name: "John Doe",
+        address: "123 Main St, Colombo",
+        contact_number: "0712345678",
+        reason_to_transport: "Transporting animals for sale",
+        start_point: "Colombo",
+        destination: "Kandy",
+        animals: [{
+            id:"",
+            serial_no: "AN001",
+            identification_no: "ID001",
+            species: "Cow",
+            breed: "Angus",
+            age: "2 years",
+            sex: "Male",
+            color: "Black",
+            specific_marks: "White patch on forehead",
+            health_certificate_no: "HC001",
+            vehicle_registration_no: "WP ABC 1234"
+        },{
+            id:"",
+            serial_no: "AN002",
+            identification_no: "ID002",
+            species: "Goat",
+            breed: "Boer",
+            age: "1 year",
+            sex: "Female",
+            color: "Brown",
+            specific_marks: "White spot on nose",
+            health_certificate_no: "HC002",
+            vehicle_registration_no: "WP DEF 5678"
+        }],
+        cost_per_animal: "5000",
+        total_animal_count: "",
+        issued_date: "2023-01-01",
+        expire_date: "2023-01-31",
         checked_date: "2023-01-01",
         status: "",
-        submission_timestamp:"",
-        checked_time: "",
-        comment:"",
-        application_code:"",
+        submission_timestamp: "",
+        // checked_time: "",
+        comment: "This is a test comment"
     };
 
     isShowingApplicationModal.value = true

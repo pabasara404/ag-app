@@ -84,7 +84,7 @@
               <n-input
                   v-model:value="formValue.submitting_institute"
                   placeholder="Institution submitting the Certificate" /></n-form-item>
-          <n-card title="How the income is earned">
+          <n-card title="How the income is earned" v-if="isNewApplication">
               <n-p>(Specify Business/Self-Employed Property/Animal Husbandry/Rental Income/Agriculture/Other.)
               </n-p>
               <n-form-item label="Source of Income" path="initial_capital">
@@ -116,9 +116,9 @@
                   <n-input
                       v-model:value="incomeDetailsForm.annual_income"
                       placeholder="Annual Income in Numbers" /></n-form-item>
+          <n-button @click="addIncomeDetails">Add Income Details</n-button>
           </n-card>
           <br/>
-          <n-button @click="addIncomeDetails">Add Income Details</n-button>
 
           <br/>
           <n-form-item>
@@ -163,63 +163,51 @@
             placeholder="File No. if paying income tax" />
           </n-form-item>
           <p>I confirm that the above facts are correct and that my income is true.</p><br/>
-          <n-form-item label="If the Applicant is a Samurdhi Beneficiary?" path="otherBusiness">
-              <n-radio-group
-                  v-model:value="formValue.is_samurdhi_beneficiary"
-                  name="otherBusiness"
-              >
-                  <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
-                  </n-space>
-              </n-radio-group>
-          </n-form-item>
-          <div v-if="formValue.is_samurdhi_beneficiary">
-          <n-card>
-              <n-h3>By Samurdhi Development Officer</n-h3>
-              <n-form-item label="If the Applicant is from a Samurdhi Beneficiary family?" path="otherBusiness">
-                  <n-radio-group
-                      v-model:value="formValue.samurdhi_details.is_samurdhi_beneficiary"
-                      name="otherBusiness"
-                  >
-                      <n-space>
-                          <n-radio :value="true" label="Yes"> Yes </n-radio>
-                          <n-radio :value="false" label="No"> No </n-radio>
-                      </n-space>
-                  </n-radio-group>
-              </n-form-item>
-              <n-form-item label="Samurdhi subside amount" path="principal_place">
-                  <n-input
-                      v-model:value="formValue.samurdhi_details.subside_amount"
-                      placeholder="Samurdhi subside amount" />
-              </n-form-item>
-              <n-form-item label="Has the Samurdhi subsidiaries been
-returned or not?" path="otherBusiness">
-                  <n-radio-group
-                      v-model:value="formValue.samurdhi_details.is_subsidiaries_returned"
-                      name="otherBusiness"
-                  >
-                      <n-space>
-                          <n-radio :value="true" label="Yes"> Yes </n-radio>
-                          <n-radio :value="false" label="No"> No </n-radio>
-                      </n-space>
-                  </n-radio-group>
-              </n-form-item>
-              <n-form-item
-                  label="Recommendation of Samurdhi Development Officer"
-              >
-                  <n-input
-                      type="textarea"
-                      v-model:value="formValue.samurdhi_details.recommendation"
-                      placeholder="Recommendation of Samurdhi Development Officer"
-                  />
-              </n-form-item>
-              <n-form-item label="Samurdhi Development Officer Checked Date" path="land_deed_date">
-                  <n-date-picker v-model:value="selectedSamurdhiCheckedDate" type="date" />
-              </n-form-item>
-          </n-card>
-          </div>
 
+          <div v-if="!isNewApplication">
+              <n-form-item label="If the Applicant is a Samurdhi Beneficiary?" path="otherBusiness">
+                  <n-radio-group
+                      v-model:value="formValue.is_samurdhi_beneficiary"
+                      name="otherBusiness"
+                  >
+                      <n-space>
+                          <n-radio :value="true" label="Yes"> Yes </n-radio>
+                          <n-radio :value="false" label="No"> No </n-radio>
+                      </n-space>
+                  </n-radio-group>
+              </n-form-item>
+
+              <n-card v-if="formValue.is_samurdhi_beneficiary">
+                  <n-h3>By Samurdhi Development Officer</n-h3>
+                  <n-form-item label="Samurdhi subside amount" path="subside_amount">
+                      <n-input
+                          v-model:value="samurdhiSubsideAmount"
+                          placeholder="Samurdhi subside amount"
+                      />
+                  </n-form-item>
+                  <n-form-item label="Has the Samurdhi subsidiaries been returned or not?" path="otherBusiness">
+                      <n-radio-group
+                          v-model:value="samurdhiIsSubsidiariesReturned"
+                          name="otherBusiness"
+                      >
+                          <n-space>
+                              <n-radio :value="true" label="Yes"> Yes </n-radio>
+                              <n-radio :value="false" label="No"> No </n-radio>
+                          </n-space>
+                      </n-radio-group>
+                  </n-form-item>
+                  <n-form-item label="Recommendation of Samurdhi Development Officer">
+                      <n-input
+                          type="textarea"
+                          v-model:value="samurdhiRecommendation"
+                          placeholder="Recommendation of Samurdhi Development Officer"
+                      />
+                  </n-form-item>
+                  <n-form-item label="Samurdhi Development Officer Checked Date" path="land_deed_date">
+                      <n-date-picker v-model:value="selectedSamurdhiCheckedDate" type="date" />
+                  </n-form-item>
+              </n-card>
+          </div>
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
@@ -368,9 +356,9 @@ const formValue = ref({
     income_tax_number: "TAX123",
     is_samurdhi_beneficiary: "Yes",
     samurdhi_details: {
-        id: "1",
+        id: "",
         subside_amount: "5000",
-        is_subsidiaries_returned: "No",
+        is_subsidiaries_returned: false,
         recommendation: "Approved",
         checked_date: "2023-05-15"
     },
@@ -443,8 +431,11 @@ async function certifyAndSubmit() {
         emit("close", false);
         return;
     }
-    if ((props.initialStatus === "Pending" && formValue.value.status === "Pending") || (props.initialStatus === "Need to Reviewed By Samurdhi Officer" && props.initialStatus === "Need to Reviewed By Samurdhi Officer")) {
+    if ((props.initialStatus === "Pending" && formValue.value.status === "Pending")) {
         formValue.value.status = "Resubmitted";
+    }
+    if (props.initialStatus === "Need to Reviewed By Samurdhi Officer" && formValue.value.status === "Need to Reviewed By Samurdhi Officer") {
+        formValue.value.status = "Need to Reviewed By GN Officer";
     }
     await Http.put(`incomeCertificate/${formValue.value.id}`, formValue.value);
     emit("close", false);
@@ -476,13 +467,46 @@ const selectedCheckedDate = computed({
 
 const selectedSamurdhiCheckedDate = computed({
     get: () => {
-        const samurdhiCheckedDate = formValue.value.samurdhi_details.checked_date;
+        const samurdhiCheckedDate = formValue.value.samurdhi_details?.checked_date;
         return moment(samurdhiCheckedDate, "YYYY-MM-DD").isValid()
             ? moment(samurdhiCheckedDate).toDate()
             : null;
     },
     set: (date) => {
+        if (!formValue.value.samurdhi_details) {
+            formValue.value.samurdhi_details = {};
+        }
         formValue.value.samurdhi_details.checked_date = moment(date).format("YYYY-MM-DD");
+    }
+});
+
+const samurdhiSubsideAmount = computed({
+    get: () => formValue.value.samurdhi_details?.subside_amount || '',
+    set: (value) => {
+        if (!formValue.value.samurdhi_details) {
+            formValue.value.samurdhi_details = {};
+        }
+        formValue.value.samurdhi_details.subside_amount = value;
+    }
+});
+
+const samurdhiIsSubsidiariesReturned = computed({
+    get: () => formValue.value.samurdhi_details?.is_subsidiaries_returned || false,
+    set: (value) => {
+        if (!formValue.value.samurdhi_details) {
+            formValue.value.samurdhi_details = {};
+        }
+        formValue.value.samurdhi_details.is_subsidiaries_returned = value;
+    }
+});
+
+const samurdhiRecommendation = computed({
+    get: () => formValue.value.samurdhi_details?.recommendation || '',
+    set: (value) => {
+        if (!formValue.value.samurdhi_details) {
+            formValue.value.samurdhi_details = {};
+        }
+        formValue.value.samurdhi_details.recommendation = value;
     }
 });
 

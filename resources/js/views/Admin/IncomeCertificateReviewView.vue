@@ -24,6 +24,7 @@
             :is-showing="isShowingEditApplicationModal"
             @close="isShowingEditApplicationModal = $event"
             @save="fetchApplication"
+            :initial-status="initialStatus"
         />
     </n-layout>
 </template>
@@ -45,6 +46,7 @@ const selectedApplication = ref(false);
 const applications = ref([]);
 const inverted = ref(false);
 const isLoading = ref(false);
+const initialStatus = ref(null);
 
 const options = [
     {
@@ -102,6 +104,7 @@ const columns = [
                     onClick: () => {
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
+                        initialStatus.value = row.status;
                     },
                 },
                 {default: () => "Review"}
@@ -176,7 +179,11 @@ function renderIcon(icon) {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
+    const { data } = await Http.get("incomeCertificateByStatus", {
+        params: {
+            status: 'Submitted,Resubmitted,Need to Reviewed By Samurdhi Officer,Need to Reviewed By GN Officer'
+        }
+    });
     isLoading.value = false;
     applications.value = data.data;
 }

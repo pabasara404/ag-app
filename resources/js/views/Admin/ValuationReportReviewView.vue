@@ -38,7 +38,7 @@ import {
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import EditApplicationModal from "@/components/ValuationReportModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditApplicationModal = ref(false);
 const selectedApplication = ref(false);
@@ -67,12 +67,12 @@ const columns = [
         key: "name",
     },
     {
-        title: "Total Annual Income",
-        key: "total_annual_income",
+        title: "Valuation amount",
+        key: "valuation_amount",
     },
     {
         title: "Reason",
-        key: "purpose",
+        key: "reason",
     },
     {
         title: "Status",
@@ -176,14 +176,14 @@ function renderIcon(icon) {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
+    const {data} = await Http.get("valuation");
     isLoading.value = false;
     applications.value = data.data;
 }
 
 async function deleteApplication(application) {
     isLoading.value = true;
-    await Http.delete(`incomeCertificate/${application.id}`);
+    await Http.delete(`valuation/${application.id}`);
     isLoading.value = false;
 }
 </script>

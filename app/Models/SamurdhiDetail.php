@@ -10,7 +10,11 @@ class SamurdhiDetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        'income_certificate_id', 'subside_amount', 'is_subsidiaries_returned', 'recommendation', 'checked_date'
+        'income_certificate_id',
+        'subside_amount',
+        'is_subsidiaries_returned',
+        'recommendation',
+        'checked_date'
     ];
 
     public function incomeCertificate()

@@ -128,6 +128,46 @@ const routes = [
                 component: () => import("./views/Admin/TimberCuttingReviewApplicationsView.vue"),
             },
             {
+                path: "exciseLicensePermitStatus",
+                name: "ExciseLicensePermitStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `View Excise License Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ExciseLicensePermitStatusView.vue"),
+            },
+            {
+                path: "exciseLicenseIssuePermits",
+                name: "ExciseLicenseIssuePermits",
+                meta: {
+                    middleware: "auth",
+                    title: `Issue Permits`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ExciseLicenseIssuePermitsView.vue"),
+            },
+            {
+                path: "exciseLicenseApplication",
+                name: "ExciseLicenseApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Apply to a Excise License`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ExciseLicenseApplicationView.vue"),
+            },
+            {
+                path: "exciseLicenseReviewApplication",
+                name: "ExciseLicenseReviewApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `Review the Applications`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ExciseLicenseReviewApplicationView.vue"),
+            },
+            {
                 path: "gramaNiladariDivision",
                 name: "gramaNiladariDivision",
                 meta: {

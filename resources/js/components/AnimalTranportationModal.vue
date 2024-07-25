@@ -168,7 +168,7 @@
                   </tbody>
               </n-table>
           </n-form-item>
-          <n-form-item label="Cost Per Animal" path="nature">
+          <n-form-item label="Animal Count" path="nature">
               <n-input
                   :disabled="true"
                   v-model:value="totalAnimals"
