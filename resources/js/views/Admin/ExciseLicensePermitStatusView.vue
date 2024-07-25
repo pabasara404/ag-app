@@ -81,18 +81,18 @@ const columns = [
         key: "status",
     },
     {
-        title: "Submitted date",
-        key: "submission_timestamp",
+        title: "Issued date",
+        key: "issued_date",
     },
     {
-        title: "Last updated date",
-        key: "updated_at",
+        title: "Expiration date",
+        key: "expire_date",
     },
     {
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return h(
                 NButton,
                 {
                     round: true,
@@ -106,14 +106,14 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "Edit Application" }
-            ) : null;
+                { default: () => "View Application" }
+            );
         }
     },{
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Issued" ? h(
+            return row.status === "Expired" ? h(
                 NButton,
                 {
                     round: true,
@@ -127,7 +127,7 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "Download" }
+                { default: () => "Renew Permit" }
             ) : null;
         }
     }

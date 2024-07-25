@@ -23,7 +23,7 @@ class ExciseResource extends JsonResource
             'business_name' => $this->business_name,
             'issued_date' => $this->issued_date,
             'expire_date' => $this->expire_date,
-            'gn_division' => $this->gnDivision ? $this->gnDivision->toArray() : null,
+            "gn_division"=> $this->gn_division,
             'status' => $this->status,
             'submission_timestamp' => $this->submission_timestamp,
             'comment' => $this->comment,

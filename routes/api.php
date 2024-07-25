@@ -85,6 +85,16 @@ Route::delete('firmApplication/{firmApplication}', [FirmController::class, 'dest
 Route::post('firmApplication', [FirmController::class, 'store']);
 Route::put('firmApplication/{id}', [FirmController::class, 'updateStatus']);
 
+
+//routes for valuations
+Route::get('valuation', [ValuationController::class, 'index']);
+Route::get('valuationByStatus', [ValuationController::class, 'filterByStatus']);
+Route::post('valuation', [ValuationController::class, 'store']);
+Route::put('valuation/{valuation}', [ValuationController::class, 'update']);
+Route::put('valuation/{id}', [ValuationController::class, 'updateStatus']);
+Route::delete('valuation/{valuation}', [ValuationController::class, 'destroy']);
+
+
 //routes for excises
 //Route::get('exciseApplication/searchByReferenceNo', [ExciseController::class, 'searchByReferenceNo']);
 Route::get('exciseApplication', [ExciseController::class, 'index']);
@@ -95,14 +105,6 @@ Route::post('exciseApplication', [ExciseController::class, 'store']);
 Route::put('exciseApplication/{id}', [ExciseController::class, 'updateStatus']);
 Route::get('exciseByStatus', [ExciseController::class, 'filterByStatus']);
 
-
-//routes for valuations
-Route::get('valuation', [ValuationController::class, 'index']);
-Route::get('valuationByStatus', [ValuationController::class, 'filterByStatus']);
-Route::post('valuation', [ValuationController::class, 'store']);
-Route::put('valuation/{valuation}', [ValuationController::class, 'update']);
-Route::put('valuation/{id}', [ValuationController::class, 'updateStatus']);
-Route::delete('valuation/{valuation}', [ValuationController::class, 'destroy']);
 
 
 //routes for animalTransportations
