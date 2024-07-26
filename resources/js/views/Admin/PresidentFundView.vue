@@ -24,6 +24,26 @@
                 />
             </div>
         </n-card>
+        <n-card
+            class="my-6"
+            @click="handleCardClick('presidentFundReview')" title="View President Fund Request Review" hoverable>
+            <div class="flex justify-center ">
+                <img
+                    width="125"
+                    src="../../.././images/application status tracking black and white simple clipart.jpeg"
+                />
+            </div>
+        </n-card>
+        <n-card
+            class="my-6"
+            @click="handleCardClick('presidentFundApprove')" title="View President Fund Request Approve" hoverable>
+            <div class="flex justify-center ">
+                <img
+                    width="125"
+                    src="../../.././images/application status tracking black and white simple clipart.jpeg"
+                />
+            </div>
+        </n-card>
     </div>
 </template>
 

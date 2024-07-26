@@ -165,6 +165,61 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/PresidentFundApplicationView.vue"),
+            }, {
+                path: "presidentFundReview",
+                name: "PresidentFundReview",
+                meta: {
+                    middleware: "auth",
+                    title: `View President Fund Request Review`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/PresidentFundPermitReviewView.vue"),
+            }, {
+                path: "presidentFundApprove",
+                name: "PresidentFundApprove",
+                meta: {
+                    middleware: "auth",
+                    title: `View President Fund Request Approval`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/PresidentFundPermitApproveView.vue"),
+            },{
+                path: "mahapolaStatus",
+                name: "MahapolaPermitStatus",
+                meta: {
+                    middleware: "auth",
+                    title: `Upload a Application`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/MahapolaPermitStatusView.vue"),
+            },
+            {
+                path: "mahapolaApplication",
+                name: "MahapolaApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `View Application Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/MahapolaApplicationView.vue"),
+            }, {
+                path: "mahapolaReview",
+                name: "MahapolaReview",
+                meta: {
+                    middleware: "auth",
+                    title: `Review Mahapola Applications`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/MahapolaPermitReviewView.vue"),
+            }, {
+                path: "mahapolaApprove",
+                name: "MahapolaApprove",
+                meta: {
+                    middleware: "auth",
+                    title: `Approve Mahapola Applications`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/MahapolaPermitApproveView.vue"),
             },
             {
                 path: "gramaNiladariDivision",

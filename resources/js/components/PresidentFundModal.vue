@@ -90,9 +90,21 @@
                   label="Status"
                   path="status"
               >
-                  <n-input
-                      v-model:value="formValue.status"
-                      placeholder="Status o the application" />
+                  <n-dropdown
+                      trigger="hover"
+                      placement="bottom-start"
+                      :options="statusOptions"
+                      @select="handleStatusSelect"
+                  >
+                      <n-button
+                      >{{
+                              selectedStatus
+                                  ? selectedStatus.label
+                                  : "Change the Status"
+                          }}
+                          <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                      </n-button>
+                  </n-dropdown>
               </n-form-item>
           </n-card>
          <n-p>Upload following documents:
@@ -134,8 +146,9 @@
         >
         <div class="flex justify-end">
             <n-form-item>
-                <n-button v-if="initialStatus!=='Active'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Active'" type="primary" class="mx-5" @click="updateStatus('Issued')">Download</n-button>
+                <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Approved')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
             </n-form-item>
         </div>
       </n-form>
@@ -184,7 +197,7 @@ const formValue = ref({
         name: "Kotugoda",
         mpa_code: "204",
     },
-    status: "Active",
+    status: "Submitted",
     submission_timestamp: "2023-07-15 10:00:00",
     comment: "This is a test comment",
     application_code: "",
@@ -192,7 +205,7 @@ const formValue = ref({
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
-    { label: 'Escalated', key: 'Expired' }
+    { label: 'Escalated', key: 'Escalated' }
 ];
 
 const selectedStatus = computed(() => {
@@ -236,18 +249,21 @@ watch(
 );
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
-        formValue.value.status = "Active";
-        await Http.post("exciseApplication", formValue.value);
+        formValue.value.status = "Submitted";
+        await Http.post("presidentFundApplication", formValue.value);
         emit("close", false);
         return;
     }
-    await Http.put(`exciseApplication/${formValue.value.id}`, formValue.value);
+    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+        formValue.value.status = "Resubmitted";
+    }
+    await Http.put(`presidentFundApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`exciseApplication/${props.application.id}`, {
+        await Http.put(`presidentFundApplication/${props.application.id}`, {
             status: status
         });
         emit('save');
@@ -256,34 +272,6 @@ const updateStatus = async (status) => {
         console.error("Failed to update status:", error);
     }
 };
-
-const selectedIssuedDate = computed({
-    get: () => {
-        const issuedDate = formValue.value.issued_date;
-        return moment(issuedDate, "YYYY-MM-DD").isValid()
-            ? moment(issuedDate).valueOf()
-            : null;
-    },
-    set: (epoch) => {
-        formValue.value.issued_date = moment
-            .unix(epoch / 1000)
-            .format("YYYY-MM-DD");
-    },
-});
-
-const selectedExpireDate = computed({
-    get: () => {
-        const expireDate = formValue.value.expire_date;
-        return moment(expireDate, "YYYY-MM-DD").isValid()
-            ? moment(expireDate).valueOf()
-            : null;
-    },
-    set: (epoch) => {
-        formValue.value.expire_date = moment
-            .unix(epoch / 1000)
-            .format("YYYY-MM-DD");
-    },
-});
 
 const isNewApplication = computed(() => {
   return !formValue.value.id;

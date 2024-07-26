@@ -1,39 +1,5 @@
 <template>
-    <PageHeader title="President Fund Request Status" />
-    <n-card title="What is Status means?" content-style="padding: 0;">
-        <n-tabs
-            type="line"
-            size="large"
-            :tabs-padding="20"
-            pane-style="padding: 20px;"
-        >
-            <n-tab-pane name="Submitted">
-                The application has been successfully submitted and is under initial review.
-            </n-tab-pane>
-            <n-tab-pane name="Pending">
-                The application is incomplete due to missing files and requires resubmission with the necessary documents.
-            </n-tab-pane>
-            <n-tab-pane name="Resubmitted">
-                The application has been resubmitted with the previously missing documents and is awaiting further review.
-            </n-tab-pane>
-            <n-tab-pane name="Escalated">
-                The application has been escalated for higher-level review due to special circumstances or complications.
-            </n-tab-pane>
-            <n-tab-pane name="Approved">
-                The application has been reviewed and approved, meeting all the necessary criteria.
-            </n-tab-pane>
-            <n-tab-pane name="Rejected">
-                The application has been reviewed and rejected, failing to meet the required standards or criteria.
-            </n-tab-pane>
-            <n-tab-pane name="Awaiting Payment">
-                The application has been approved and is pending the completion of the payment process.
-            </n-tab-pane>
-            <n-tab-pane name="Issued">
-                The application has been fully processed, and the requested documents or items have been issued.
-            </n-tab-pane>
-        </n-tabs>
-    </n-card>
-    <br/>
+    <PageHeader title="President Fund Request Review" />
     <n-space vertical>
         <n-data-table
             :loading="isLoading"
@@ -85,7 +51,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return h(
                 NButton,
                 {
                     round: true,
@@ -100,13 +66,13 @@ const columns = [
                     },
                 },
                 { default: () => "View Application" }
-            ):null;
+            );
         }
     },{
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Approved" ? h(
+            return row.status === "Expired" ? h(
                 NButton,
                 {
                     round: true,
@@ -120,7 +86,7 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "View Application" }
+                { default: () => "Renew Permit" }
             ) : null;
         }
     }
@@ -132,7 +98,11 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("presidentFundApplication");
+    const { data } = await Http.get("presidentFundByStatus", {
+        params: {
+            statuses: 'Submitted,Resubmitted'
+        }
+    });
     isLoading.value = false;
     applications.value = data.data;
 }

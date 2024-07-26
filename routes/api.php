@@ -11,6 +11,7 @@ use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\IncomeCertificateController;
 use App\Http\Controllers\IndividualBusinessController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\PresidentFundController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
 use App\Http\Controllers\TimberTransportingPermitApplicationController;
@@ -104,6 +105,16 @@ Route::delete('exciseApplication/{exciseApplication}', [ExciseController::class,
 Route::post('exciseApplication', [ExciseController::class, 'store']);
 Route::put('exciseApplication/{id}', [ExciseController::class, 'updateStatus']);
 Route::get('exciseByStatus', [ExciseController::class, 'filterByStatus']);
+
+//routes for presidentFunds
+//Route::get('presidentFundApplication/searchByReferenceNo', [PresidentFundController::class, 'searchByReferenceNo']);
+Route::get('presidentFundApplication', [PresidentFundController::class, 'index']);
+Route::get('presidentFundByStatus', [PresidentFundController::class, 'show']);
+Route::put('presidentFundApplication/{presidentFundApplication}', [PresidentFundController::class, 'update']);
+Route::delete('presidentFundApplication/{presidentFundApplication}', [PresidentFundController::class, 'destroy']);
+Route::post('presidentFundApplication', [PresidentFundController::class, 'store']);
+Route::put('presidentFundApplication/{id}', [PresidentFundController::class, 'updateStatus']);
+Route::get('presidentFundByStatus', [PresidentFundController::class, 'filterByStatus']);
 
 
 
