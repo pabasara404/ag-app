@@ -138,16 +138,6 @@ const routes = [
                 component: () => import("./views/Admin/ExciseLicensePermitStatusView.vue"),
             },
             {
-                path: "exciseLicenseIssuePermits",
-                name: "ExciseLicenseIssuePermits",
-                meta: {
-                    middleware: "auth",
-                    title: `Issue Permits`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
-                },
-                component: () => import("./views/Admin/ExciseLicenseIssuePermitsView.vue"),
-            },
-            {
                 path: "exciseLicenseApplication",
                 name: "ExciseLicenseApplication",
                 meta: {
@@ -156,16 +146,25 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/ExciseLicenseApplicationView.vue"),
-            },
-            {
-                path: "exciseLicenseReviewApplication",
-                name: "ExciseLicenseReviewApplication",
+            }, {
+                path: "presidentFundStatus",
+                name: "PresidentFundPermitStatus",
                 meta: {
                     middleware: "auth",
-                    title: `Review the Applications`,
+                    title: `Upload a President Fund Request`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ExciseLicenseReviewApplicationView.vue"),
+                component: () => import("./views/Admin/PresidentFundPermitStatusView.vue"),
+            },
+            {
+                path: "presidentFundApplication",
+                name: "PresidentFundApplication",
+                meta: {
+                    middleware: "auth",
+                    title: `View President Fund Request Status`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/PresidentFundApplicationView.vue"),
             },
             {
                 path: "gramaNiladariDivision",

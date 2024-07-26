@@ -8,7 +8,7 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>Excise Licence Form</n-h2>
+          <n-h2>President Fund Application Form</n-h2>
         </div>
       </n-page-header>
 <!--        v-if="props.initialStatus === 'issued'"-->
@@ -50,26 +50,32 @@
                   v-model:value="formValue.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
-          <n-form-item label="Name of the Business" path="business_name">
-              <n-input
-                  v-model:value="formValue.business_name"
-                  placeholder="Name of the Business" />
-          </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
-          <n-form-item
-              label="Grama Niladari Division"
-              path="grama_niladari_division"
-          >
-              <n-dropdown
-                  trigger="hover"
-                  placement="bottom-start"
-                  :options="gnDivisionsForDropdown"
-                  @select="selectGramaNiladariDivision"
-              >
+          <n-card v-if="!isNewApplication">
+              <n-h3>By GN Officer</n-h3>
+                  <n-form-item
+                      label="Any comment about application"
+                  >
+                  <n-input
+                      type="textarea"
+                      v-model:value="formValue.comment"
+                      placeholder="Any comment about application"
+                      />
+                  </n-form-item>
+                    <n-form-item
+                  label="Grama Niladari Division"
+                  path="grama_niladari_division"
+                    >
+                  <n-dropdown
+                      trigger="hover"
+                      placement="bottom-start"
+                      :options="gnDivisionsForDropdown"
+                      @select="selectGramaNiladariDivision"
+                  >
                   <n-button
                   >{{
                           selectedGramaNiladariDivision
@@ -79,32 +85,16 @@
                       <n-icon><ArrowDropDownRoundIcon /></n-icon>
                   </n-button>
               </n-dropdown>
-          </n-form-item>
+                </n-form-item>
               <n-form-item
                   label="Status"
                   path="status"
               >
-                  <n-dropdown
-                      trigger="hover"
-                      placement="bottom-start"
-                      :options="statusOptions"
-                      @select="handleStatusSelect"
-                  >
-                      <n-button
-                      >{{
-                              selectedStatus
-                                  ? selectedStatus.label
-                                  : "Change the Status"
-                          }}
-                          <n-icon><ArrowDropDownRoundIcon /></n-icon>
-                      </n-button>
-                  </n-dropdown>
+                  <n-input
+                      v-model:value="formValue.status"
+                      placeholder="Status o the application" />
               </n-form-item>
-              <n-form-item label="Date of Issue" path="nature">
-                  <n-date-picker v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
-              <n-form-item label="Date  of Expire" path="nature">
-                  <n-date-picker v-model:value="selectedExpireDate" type="date" /> </n-form-item>
-
+          </n-card>
          <n-p>Upload following documents:
 
               <n-p>Required documents to obtain an income certificate:</n-p>
@@ -188,9 +178,6 @@ const formValue = ref({
     address: "123 Main St, Colombo",
     nic: "123456789V",
     contact_number: "0712345678",
-    business_name: "Will's Bar",
-    issued_date: "",
-    expire_date: "",
     gn_division: {
         id: "74",
         gn_code: "370",
@@ -204,8 +191,8 @@ const formValue = ref({
 });
 
 const statusOptions = [
-    { label: 'Active', key: 'Active' },
-    { label: 'Expired', key: 'Expired' }
+    { label: 'Pending', key: 'Pending' },
+    { label: 'Escalated', key: 'Expired' }
 ];
 
 const selectedStatus = computed(() => {
@@ -253,9 +240,6 @@ async function certifyAndSubmit() {
         await Http.post("exciseApplication", formValue.value);
         emit("close", false);
         return;
-    }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
     }
     await Http.put(`exciseApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);

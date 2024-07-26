@@ -36,7 +36,6 @@ class ExciseAction
         DB::beginTransaction();
         try {
             $dto = (array) new ExciseDTO($excise);
-            $dto['application_code'] = Excise::generateApplicationCode();
             $excise = Excise::create($dto);
 
             $gnDivision = GNDivision::find($dto['gn_division']['id']);
