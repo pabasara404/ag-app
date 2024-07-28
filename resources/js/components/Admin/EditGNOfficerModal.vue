@@ -2,6 +2,8 @@
   <n-modal
     v-model:show="isShowing"
     :on-update:show="(value) => emit('close', value)"
+    preset="card"
+    style="width: 630px"
   >
     <n-card
       style="width: 600px"
@@ -14,7 +16,6 @@
         <n-page-header
           ><n-h2 v-if="!isNewGNOfficer">Edit GNOfficer</n-h2>
           <n-h2 v-else>Add New GNOfficer</n-h2>
-          <n-icon size="25"><CloseIcon /></n-icon>
         </n-page-header>
         <n-form ref="formRef" :model="formValue">
           <n-form-item label="Name" path="user.Name">

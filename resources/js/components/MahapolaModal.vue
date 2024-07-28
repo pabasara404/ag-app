@@ -8,7 +8,7 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>President Fund Application Form</n-h2>
+          <n-h2>Mahapola Application Form</n-h2>
         </div>
       </n-page-header>
 <!--        v-if="props.initialStatus === 'issued'"-->
@@ -250,20 +250,20 @@ watch(
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
-        await Http.post("presidentFundApplication", formValue.value);
+        await Http.post("mahapolaApplication", formValue.value);
         emit("close", false);
         return;
     }
     if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
         formValue.value.status = "Resubmitted";
     }
-    await Http.put(`presidentFundApplication/${formValue.value.id}`, formValue.value);
+    await Http.put(`mahapolaApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`presidentFundApplication/${props.application.id}`, {
+        await Http.put(`mahapolaApplication/${props.application.id}`, {
             status: status
         });
         emit('save');

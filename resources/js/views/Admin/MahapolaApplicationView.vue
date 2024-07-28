@@ -1,7 +1,7 @@
 <template>
     <n-layout class="pl-2">
-        <PageHeader title="Upload a President Fund Request"/>
-            <n-p>To president fund request please upload the scanned copy of the license with the details of the owner.</n-p>
+        <PageHeader title="Upload a Mahapola Application"/>
+            <n-p>To verify Mahapola Application please upload the scanned copy of the application with the details of the applicant.</n-p>
 
             <div class="flex justify-center ... p-8">
                 <n-button
@@ -10,7 +10,7 @@
                     secondary
                     bordered
                 >
-                    Upload a President Fund Request
+                    Upload a Mahapola Application
                 </n-button>
             </div>
             <application-modal
@@ -24,7 +24,7 @@
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
-import ApplicationModal from "@/components/PresidentFundModal.vue";
+import ApplicationModal from "@/components/MahapolaModal.vue";
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
@@ -37,19 +37,16 @@ function addNewApplication() {
         address: "123 Main St, Colombo",
         nic: "123456789V",
         contact_number: "0712345678",
-        business_name: "Will's Bar",
-        issued_date: "2023-01-01",
-        expire_date: "2023-01-31",
         gn_division: {
             id: "74",
             gn_code: "370",
             name: "Kotugoda",
             mpa_code: "204",
         },
-        status: "Pending",
+        status: "Submitted",
         submission_timestamp: "2023-07-15 10:00:00",
         comment: "This is a test comment",
-        application_code: "uk8486786767",
+        application_code: "bsdgh454564",
     };
 
     isShowingApplicationModal.value = true

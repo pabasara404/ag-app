@@ -22,7 +22,7 @@ import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
-import EditApplicationModal from "@/components/PresidentFundModal.vue";
+import EditApplicationModal from "@/components/MahapolaModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -94,7 +94,7 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("presidentFundByStatus", {
+    const { data } = await Http.get("mahapolaByStatus", {
         params: {
             statuses: 'Escalated'
         }

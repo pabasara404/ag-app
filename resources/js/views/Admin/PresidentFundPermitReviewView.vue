@@ -68,27 +68,6 @@ const columns = [
                 { default: () => "View Application" }
             );
         }
-    },{
-        title: "",
-        key: "actions",
-        render(row) {
-            return row.status === "Expired" ? h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: () => {
-                        selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
-                    },
-                },
-                { default: () => "Renew Permit" }
-            ) : null;
-        }
     }
 ];
 

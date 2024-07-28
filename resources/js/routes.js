@@ -603,6 +603,15 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 component: () => import("./views/Admin/PaymentManagementView.vue"),
+            },{
+                path: "reportManagement",
+                name: "reportManagement",
+                meta: {
+                    middleware: "auth",
+                    title: `Report Management`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                component: () => import("./views/Admin/ReportManagementView.vue"),
             },
         ],
     }

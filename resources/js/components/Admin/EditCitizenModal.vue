@@ -1,6 +1,8 @@
 <template>
   <n-modal
     v-model:show="isShowing"
+    preset="card"
+    style="width: 630px"
     :on-update:show="(value) => emit('close', value)"
   >
     <n-card
@@ -14,7 +16,6 @@
         <n-page-header
           ><n-h2 v-if="!isNewCitizen">Edit Citizen</n-h2>
           <n-h2 v-else>Add New Citizen</n-h2>
-          <n-icon size="25"><CloseIcon /></n-icon>
         </n-page-header>
         <n-form ref="formRef" :model="formValue">
           <n-form-item label="First Name" path="user.firstName">

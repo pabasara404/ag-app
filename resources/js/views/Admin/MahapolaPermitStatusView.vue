@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="President Fund Request Status" />
+    <PageHeader title="View Mahapola Application Status" />
     <n-card title="What is Status means?" content-style="padding: 0;">
         <n-tabs
             type="line"
@@ -56,7 +56,7 @@ import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
-import EditApplicationModal from "@/components/PresidentFundModal.vue";
+import EditApplicationModal from "@/components/MahapolaModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -132,7 +132,7 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("presidentFundApplication");
+    const {data} = await Http.get("mahapolaApplication");
     isLoading.value = false;
     applications.value = data.data;
 }

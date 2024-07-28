@@ -11,6 +11,7 @@ use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\IncomeCertificateController;
 use App\Http\Controllers\IndividualBusinessController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\MahapolaController;
 use App\Http\Controllers\PresidentFundController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
@@ -115,6 +116,16 @@ Route::delete('presidentFundApplication/{presidentFundApplication}', [PresidentF
 Route::post('presidentFundApplication', [PresidentFundController::class, 'store']);
 Route::put('presidentFundApplication/{id}', [PresidentFundController::class, 'updateStatus']);
 Route::get('presidentFundByStatus', [PresidentFundController::class, 'filterByStatus']);
+
+//routes for mahapola
+//Route::get('mahapolaApplication/searchByReferenceNo', [MahapolaController::class, 'searchByReferenceNo']);
+Route::get('mahapolaApplication', [MahapolaController::class, 'index']);
+Route::get('mahapolaByStatus', [MahapolaController::class, 'show']);
+Route::put('mahapolaApplication/{mahapolaApplication}', [MahapolaController::class, 'update']);
+Route::delete('mahapolaApplication/{mahapolaApplication}', [MahapolaController::class, 'destroy']);
+Route::post('mahapolaApplication', [MahapolaController::class, 'store']);
+Route::put('mahapolaApplication/{id}', [MahapolaController::class, 'updateStatus']);
+Route::get('mahapolaByStatus', [MahapolaController::class, 'filterByStatus']);
 
 
 

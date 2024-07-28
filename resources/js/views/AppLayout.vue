@@ -372,6 +372,20 @@ const menuOptions = [
         key: "paymentManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(BookIcon),
+    },{
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "reportManagement",
+                    },
+                },
+                { default: () => "Report Management" }
+            ),
+        key: "reportManagement",
+        authorizedBy: ["Employee", "Admin"],
+        icon: renderIcon(BookIcon),
     },
 ];
 // const signOut = () => store.dispatch("auth/logout");
