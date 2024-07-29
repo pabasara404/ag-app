@@ -570,19 +570,19 @@ const treeDetailsForm = ref({
 // });
 const rules = {
     name: [
-        { required: true, message: 'Please input your name', trigger: 'blur' },
+        { required: false, message: 'Please input your name', trigger: 'blur' },
         { pattern: /^[A-Za-z\s]+$/, message: 'Name must be letters only', trigger: 'blur' }
     ],
-    address: [{ required: true, message: 'Please input your address', trigger: 'blur' }],
-    contact_number: [{ required: true, message: 'Please input your number', trigger: ['input', 'blur'] }],
-    land_deed_number: [{ required: true, message: 'Please input the land deed number', trigger: 'blur' }],
-    selectedDeedDate: [{ required: true, message: 'Please select the deed date', trigger: 'blur' }],
-    land_name: [{ required: true, message: 'Please input the land name', trigger: 'blur' }],
-    land_size: [{ required: true, message: 'Please input the land size', trigger: 'blur' }],
-    plan_number: [{ required: true, message: 'Please input the plan number', trigger: 'blur' }],
-    plan_plot_number: [{ required: true, message: 'Please input the plan plot number', trigger: 'blur' }],
+    address: [{ required: false, message: 'Please input your address', trigger: 'blur' }],
+    contact_number: [{ required: false, message: 'Please input your number', trigger: ['input', 'blur'] }],
+    land_deed_number: [{ required: false, message: 'Please input the land deed number', trigger: 'blur' }],
+    selectedDeedDate: [{ required: false, message: 'Please select the deed date', trigger: 'blur' }],
+    land_name: [{ required: false, message: 'Please input the land name', trigger: 'blur' }],
+    land_size: [{ required: false, message: 'Please input the land size', trigger: 'blur' }],
+    plan_number: [{ required: false, message: 'Please input the plan number', trigger: 'blur' }],
+    plan_plot_number: [{ required: false, message: 'Please input the plan plot number', trigger: 'blur' }],
     selectedPlanDate: [
-        { required: true, message: 'Please select the plan date', trigger: 'blur' },
+        { required: false, message: 'Please select the plan date', trigger: 'blur' },
         { validator: (rule, value) => {
                 if (new Date(value) > new Date()) {
                     return new Error('Plan date cannot be in the future');

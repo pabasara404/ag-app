@@ -38,23 +38,57 @@
                             <n-h5>Citizen Application Report</n-h5>
                             <canvas ref="submittedApplicationsChart"></canvas>
                         </n-gi>
-                        <n-h5>Citizen Demographics Report</n-h5>
-
                     </n-grid>
+                        <n-h5>Citizen Demographics Report</n-h5>
+                        <n-space vertical>
+                            <n-data-table
+                                :loading="isLoading"
+                                :columns="citizenColumns"
+                                :data="citizens"
+                                :bordered="false"
+                            />
+                        </n-space>
+
 
 
                 </n-tab-pane>
                 <n-tab-pane name="Timber Cutting">
                     <n-h5>Timber Cutting Permit Issuance Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="timberCuttingColumns"
+                        :data="timberCuttingApplications"
+                        :bordered="false"
+                    />
                     <n-h5>Timber Cutting Application Status Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="allTimberCuttingColumns"
+                        :data="allTimberCuttingApplications"
+                        :bordered="false"
+                    />
                 </n-tab-pane>
                 <n-tab-pane name="Timber Transportation">
                     <n-h5>Timber Transportation Permit Report</n-h5>
                     <n-h5>Transportation Activity Report</n-h5>
                 </n-tab-pane>
                 <n-tab-pane name="Business Registration">
-                    <n-h5>Business Registration Report</n-h5>
-                    <n-h5>Business Activity Report</n-h5>
+                    <n-h5>Individual Business Registration Report</n-h5>
+                        <n-data-table
+                            :loading="isLoading"
+                            :columns="individualBusinessColumns"
+                            :data="individualBusinessApplications"
+                            :bordered="false"
+                        />
+                    <n-h5>Individual Business Activity Report</n-h5>
+                        <n-data-table
+                            :loading="isLoading"
+                            :columns="allIndividualBusinessColumns"
+                            :data="allIndividualBusinessApplications"
+                            :bordered="false"
+                        />
+                    <n-h5>Firm Registration Report</n-h5>
+                    <n-h5>Firm Activity Report</n-h5>
                 </n-tab-pane>
                 <n-tab-pane name="Income Certificates">
                     <n-h5>Income Certificate Issuance Report</n-h5>
@@ -96,6 +130,11 @@ const inverted = ref(false);
 const isLoading = ref(false);
 const graphData = ref([]);
 const chart = ref(null);
+const citizens = ref([]);
+const timberCuttingApplications = ref([]);
+const allTimberCuttingApplications = ref([]);
+const individualBusinessApplications = ref([]);
+const allIndividualBusinessApplications = ref([]);
 const submittedApplicationsChart = ref(null);
 
 const options = [
@@ -109,7 +148,7 @@ const options = [
     },
 ];
 const payments = ref([]);
-const columns = [
+const citizenColumns = [
     {
         title: "Name",
         key: "name",
@@ -134,49 +173,119 @@ const columns = [
         title: "DOB",
         key: "date_of_birth",
     },
+];
+
+
+const timberCuttingColumns = [
     {
-        title: "",
-        key: "actions",
-        render(row) {
-            return h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    // renderIcon: EyeIcon,
-                    size: "small",
-                    onClick: () => {
-                        selectedPayment.value = row;
-                        isShowingEditPaymentModal.value = true;
-                    },
-                },
-                { default: () => "View" }
-            );
-        },
+        title: "Name of Applicant",
+        key: "name",
     },
     {
-        title: "",
-        key: "actions",
-        render(row) {
-            return h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: async () => {
-                        await deletePayment(row);
-                        await fetchPayment();
-                    },
-                },
-                { default: () => "Delete" }
-            );
-        },
+        title: "Tree count",
+        key: "tree_count",
     },
+    {
+        title: "Address",
+        key: "address",
+    },
+    {
+        title: "Comment",
+        key: "comment",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    }
+];
+
+const allTimberCuttingColumns = [
+    {
+        title: "Name of Applicant",
+        key: "name",
+    },
+    {
+        title: "Tree count",
+        key: "tree_count",
+    },
+    {
+        title: "Address",
+        key: "address",
+    },
+    {
+        title: "Comment",
+        key: "comment",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    }
+];
+
+const individualBusinessColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the business",
+        key: "business_name",
+    },
+    {
+        title: "Nature of the Business",
+        key: "nature",
+    },
+    {
+        title: "Initial Capital",
+        key: "initial_capital",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
+];
+
+const allIndividualBusinessColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the business",
+        key: "business_name",
+    },
+    {
+        title: "Nature of the Business",
+        key: "nature",
+    },
+    {
+        title: "Initial Capital",
+        key: "initial_capital",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
 ];
 
 onMounted(() => {
@@ -185,7 +294,55 @@ onMounted(() => {
     loadStatusChart();
     fetchGraphData();
     fetchSubmittedApplicationsData();
+    fetchCitizen();
+    fetchTimberCuttingApplication();
+    fetchAllTimberCuttingApplication();
+    fetchIndividualBusinessApplication();
+    fetchAllIndividualBusinessApplication();
 });
+
+async function fetchCitizen() {
+    isLoading.value = true;
+    const { data } = await Http.get("citizen");
+    isLoading.value = false;
+    citizens.value = data.data;
+}
+
+async function fetchTimberCuttingApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("timberCuttingPermitApplicationByStatus", {
+        params: {
+            status: 'Issued'
+        }
+    });
+    isLoading.value = false;
+    timberCuttingApplications.value = data.data; // Ensure the response is handled correctly
+}
+
+async function fetchAllTimberCuttingApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("timberCuttingPermitApplication");
+    isLoading.value = false;
+    allTimberCuttingApplications.value = data.data;
+}
+
+async function fetchIndividualBusinessApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("individualBusinessByStatus", {
+        params: {
+            status: 'Issued'
+        }
+    });
+    isLoading.value = false;
+    individualBusinessApplications.value = data.data;
+}
+
+async function fetchAllIndividualBusinessApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("individualBusiness");
+    isLoading.value = false;
+    allIndividualBusinessApplications.value = data.data;
+}
 
 function addNewPayment() {
     selectedPayment.value = {
