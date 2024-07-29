@@ -18,6 +18,8 @@ class FirmDTO
     public string $status;
     public ?string $application_code;
     public string $ownership_of_land_checked_value;
+    public array $gn_division;
+
     public function __construct(array $data)
     {
         collect($data)->each(function ($value, $key) {

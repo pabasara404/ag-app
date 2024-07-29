@@ -55,6 +55,26 @@
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
+          <n-form-item
+              label="Grama Niladari Division"
+              path="grama_niladari_division"
+          >
+              <n-dropdown
+                  trigger="hover"
+                  placement="bottom-start"
+                  :options="gnDivisionsForDropdown"
+                  @select="selectGramaNiladariDivision"
+              >
+                  <n-button
+                  >{{
+                          selectedGramaNiladariDivision
+                              ? selectedGramaNiladariDivision.label
+                              : "Select an option"
+                      }}
+                      <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                  </n-button>
+              </n-dropdown>
+          </n-form-item>
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
                   <n-form-item

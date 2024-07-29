@@ -31,7 +31,8 @@ class FirmResource extends JsonResource
             'partners' => $this->partners,
             "updated_at"=>$this->updated_at,
             "submission_timestamp"=>$this->submission_timestamp,
-            "application_code"=>$this->application_code
+            "application_code"=>$this->application_code,
+            "gn_division"=> $this->gn_division,
         ];
     }
 }

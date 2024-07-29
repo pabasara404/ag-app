@@ -230,7 +230,7 @@ async function handleValidateClick(e) {
 
     try {
         isLoading.value = true;
-        const response = await Http.get(`/application-details`, {
+        const response = await Http.get(`/applicationDetails`, {
             params: {
                 table_name: formValue.value.payment_type,
                 application_code: formValue.value.application_code

@@ -335,7 +335,7 @@ const timberTransportingPermitApplications = ref([]);
 const GNDivisionOptions = ref([]);
 
 const formValue = ref({
-    id: "123",
+    id: "",
     name: "John Doe",
     address: "123 Main St, Anytown, USA",
     contact_number: "123-456-7890",

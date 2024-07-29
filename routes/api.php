@@ -15,7 +15,9 @@ use App\Http\Controllers\MahapolaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PresidentFundController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
+use App\Http\Controllers\TimberTransportingPermitApplicationController;
 use App\Http\Controllers\TreeCuttingReasonController;
 use App\Http\Controllers\ValuationController;
 use Illuminate\Http\Request;
@@ -44,7 +46,12 @@ Route::middleware('auth:sanctum')->group(function (){
 //    Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 });
 
-Route::get('/application-details', [ApplicationController::class, 'getApplicationDetails']);
+Route::get('/applicationDetails', [ApplicationController::class, 'getApplicationDetails']);
+Route::get('/applicationCountsByGNDivision', [StatisticsController::class, 'getApplicationCountsByGnDivision']);
+Route::get('/applicationCountsByStatus', [StatisticsController::class, 'getApplicationCountsByStatus']);
+Route::get('issuedApplicationCountsByMonthly', [StatisticsController::class, 'getIssuedApplicationCountsByMonth']);
+Route::get('issuedApplicationCounts', [StatisticsController::class, 'getIssuedApplicationCounts']);
+Route::get('submittedApplicationCounts', [StatisticsController::class, 'getSubmittedApplicationCounts']);
 
 Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/payment', [PaymentController::class, 'index']);
@@ -160,11 +167,11 @@ Route::delete('timberCuttingPermitApplication/{timberCuttingPermitApplication}',
 Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);
 Route::put('timberCuttingPermitApplication/{id}', [TimberCuttingPermitApplicationController::class, 'updateStatus']);
 //
-////routes for timberTransportingPermitApplications
-//Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
-//Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
-//Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
-//Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
+//routes for timberTransportingPermitApplications
+Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
+Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
+Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
+Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
 //
 
 

@@ -40,6 +40,26 @@
                 <n-input
                     v-model:value="formValue.principal_place"
                     placeholder="The Principal Place of the Business" /></n-form-item>
+                <n-form-item
+                    label="Grama Niladari Division"
+                    path="grama_niladari_division"
+                >
+                    <n-dropdown
+                        trigger="hover"
+                        placement="bottom-start"
+                        :options="gnDivisionsForDropdown"
+                        @select="selectGramaNiladariDivision"
+                    >
+                        <n-button
+                        >{{
+                                selectedGramaNiladariDivision
+                                    ? selectedGramaNiladariDivision.label
+                                    : "Select an option"
+                            }}
+                            <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                        </n-button>
+                    </n-dropdown>
+                </n-form-item>
                 <n-form-item label="Initial Capital of the Business" path="initial_capital">
                     <n-input
                         v-model:value="formValue.initial_capital"
@@ -502,6 +522,12 @@ const formValue = ref({
         { id: "", name: "Branch Office" }
     ],
     start_date: "2024-01-01",
+    gn_division: {
+        id: "74",
+        gn_code: "370",
+        name: "Kotugoda",
+        mpa_code: "204",
+    },
     partner_details: [
         {
             id: "",
@@ -594,6 +620,54 @@ async function certifyAndSubmit() {
     await Http.put(`firmApplication/${formValue.value.id}`, formValue.value);
     emit("close", false);
 }
+
+const gnDivisionsForDropdown = computed(() => {
+    return GNDivisionOptions.value.map((gnDivisionOption) => {
+        return {
+            key: gnDivisionOption.id,
+            label: gnDivisionOption.name,
+        };
+    });
+});
+const selectedGramaNiladariDivision = computed(() => {
+    if (!formValue.value.gn_division) {
+        return null;
+    }
+    return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
+        return gnDivisionForDropdown.key === formValue.value.gn_division.id;
+    });
+});
+
+
+onMounted(() => {
+    fetchGnDivisions();
+});
+
+const fetchGnDivisions = async () => {
+    try {
+        const response = await Http.get("gnDivision");
+        const data = response.data.data; // Assuming the API response contains the data you need
+        GNDivisionOptions.value = data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+function selectGramaNiladariDivision(key) {
+    const selectedDivision = GNDivisionOptions.value.find((GNDivisionOption) => {
+        return GNDivisionOption.id === key;
+    });
+
+    if (selectedDivision) {
+        formValue.value.gn_division = {
+            id: selectedDivision.id,
+            gn_code: selectedDivision.gn_code,
+            name: selectedDivision.name,
+            mpa_code: selectedDivision.mpa_code
+        };
+    }
+}
+
 
 
 const partnerDetails = ref([]);

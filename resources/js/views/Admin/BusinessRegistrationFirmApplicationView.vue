@@ -68,6 +68,12 @@ function addNewApplication() {
                 ]
             }
         ],
+        gn_division: {
+            id: "74",
+            gn_code: "370",
+            name: "Kotugoda",
+            mpa_code: "204",
+        },
         checked_date: "2024-07-01",
         comment: "",
         status: "Submitted",

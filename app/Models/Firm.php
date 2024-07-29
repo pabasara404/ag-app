@@ -23,6 +23,7 @@ class Firm extends Model
         'status',
         'submission_timestamp',
         'application_code',
+        'gn_division_id',
     ];
 
     public function addresses()
@@ -34,6 +35,11 @@ class Firm extends Model
     {
         return $this->hasMany(Partner::class);
     }
+
+    public function gn_division()
+{
+    return $this->belongsTo(GnDivision::class);
+}
 
     public static function generateApplicationCode()
 {

@@ -25,7 +25,8 @@ class FirmController extends Controller
     {
         $firms = Firm::with(
             'addresses',
-            'partners'
+            'partners',
+            'gn_division'
         )->get();
 
         return FirmResource::collection($firms);
