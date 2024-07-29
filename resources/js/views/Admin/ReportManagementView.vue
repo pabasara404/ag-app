@@ -88,19 +88,67 @@
                             :bordered="false"
                         />
                     <n-h5>Firm Registration Report</n-h5>
+                        <n-data-table
+                            :loading="isLoading"
+                            :columns="allIndividualBusinessColumns"
+                            :data="firmApplications"
+                            :bordered="false"
+                        />
                     <n-h5>Firm Activity Report</n-h5>
+                        <n-data-table
+                            :loading="isLoading"
+                            :columns="allIndividualBusinessColumns"
+                            :data="allFirmApplications"
+                            :bordered="false"
+                        />
                 </n-tab-pane>
                 <n-tab-pane name="Income Certificates">
                     <n-h5>Income Certificate Issuance Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="incomeColumns"
+                        :data="incomeApplications"
+                        :bordered="false"
+                    />
                     <n-h5>Income Certificate Application Status Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="allIncomeColumns"
+                        :data="allIncomeApplications"
+                        :bordered="false"
+                    />
                 </n-tab-pane>
                 <n-tab-pane name="Animal Transportation">
                     <n-h5>Animal Transportation Permit Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="animalColumns"
+                        :data="animalApplications"
+                        :bordered="false"
+                    />
                     <n-h5>Animal Transportation Activity Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="allAnimalColumns"
+                        :data="allAnimalApplications"
+                        :bordered="false"
+                    />
                 </n-tab-pane>
                 <n-tab-pane name="Valuation Report">
                     <n-h5>Valuation Report Issuance Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="valuationColumns"
+                        :data="valuationApplications"
+                        :bordered="false"
+                    />
                     <n-h5>Valuation Activity Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="allValuationColumns"
+                        :data="allValuationApplications"
+                        :bordered="false"
+                    />
                 </n-tab-pane>
 
             </n-tabs>
@@ -135,6 +183,14 @@ const timberCuttingApplications = ref([]);
 const allTimberCuttingApplications = ref([]);
 const individualBusinessApplications = ref([]);
 const allIndividualBusinessApplications = ref([]);
+const firmApplications = ref([]);
+const allFirmApplications = ref([]);
+const incomeApplications = ref([]);
+const allIncomeApplications = ref([]);
+const animalApplications = ref([]);
+const allAnimalApplications = ref([]);
+const valuationApplications = ref([]);
+const allValuationApplications = ref([]);
 const submittedApplicationsChart = ref(null);
 
 const options = [
@@ -244,10 +300,6 @@ const individualBusinessColumns = [
         key: "initial_capital",
     },
     {
-        title: "Status",
-        key: "status",
-    },
-    {
         title: "Submitted date",
         key: "submission_timestamp",
     },
@@ -288,6 +340,196 @@ const allIndividualBusinessColumns = [
     }
 ];
 
+const incomeColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Annual Income",
+        key: "total_annual_income",
+    },
+    {
+        title: "Reason",
+        key: "purpose",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    },
+
+];
+
+const allIncomeColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Annual Income",
+        key: "total_annual_income",
+    },
+    {
+        title: "Reason",
+        key: "purpose",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
+];
+const animalColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Animals",
+        key: "total_animal_count",
+    },
+    {
+        title: "Reason",
+        key: "reason_to_transport",
+    },
+    {
+        title: "Submitted Date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Issued Date",
+        key: "issued_date",
+    },
+    {
+        title: "Last updated Date",
+        key: "updated_at",
+    },
+    {
+        title: "Expire Date",
+        key: "expire_date",
+    },
+];
+
+const allAnimalColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Animals",
+        key: "total_animal_count",
+    },
+    {
+        title: "Reason",
+        key: "reason_to_transport",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted Date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Issued Date",
+        key: "issued_date",
+    },
+    {
+        title: "Last updated Date",
+        key: "updated_at",
+    },
+    {
+        title: "Expire Date",
+        key: "expire_date",
+    },
+];
+
+const valuationColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Valuation amount",
+        key: "valuation_amount",
+    },
+    {
+        title: "Reason",
+        key: "reason",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
+];
+
+const allValuationColumns = [
+    {
+        title: "Reference No.",
+        key: "application_code",
+    },
+    {
+        title: "Name of the Applicant",
+        key: "name",
+    },
+    {
+        title: "Valuation amount",
+        key: "valuation_amount",
+    },
+    {
+        title: "Reason",
+        key: "reason",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
+];
+
 onMounted(() => {
     fetchPayment();
     loadGnDivisionChart();
@@ -299,6 +541,14 @@ onMounted(() => {
     fetchAllTimberCuttingApplication();
     fetchIndividualBusinessApplication();
     fetchAllIndividualBusinessApplication();
+    fetchFirmApplication();
+    fetchAllFirmApplication();
+    fetchIncomeApplication();
+    fetchAllIncomeApplication();
+    fetchAnimalApplication();
+    fetchAllAnimalApplication();
+    fetchValuationApplication();
+    fetchAllValuationApplication();
 });
 
 async function fetchCitizen() {
@@ -343,6 +593,79 @@ async function fetchAllIndividualBusinessApplication() {
     isLoading.value = false;
     allIndividualBusinessApplications.value = data.data;
 }
+
+async function fetchFirmApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("firmByStatus", {
+        params: {
+            status: 'Issued'
+        }
+    });
+    isLoading.value = false;
+    firmApplications.value = data.data;
+}
+
+
+async function fetchAllFirmApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("firmApplication");
+    isLoading.value = false;
+    allFirmApplications.value = data.data;
+}
+
+async function fetchAllIncomeApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("incomeCertificate");
+    isLoading.value = false;
+    allIncomeApplications.value = data.data;
+}
+
+async function fetchIncomeApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("incomeCertificateByStatus", {
+        params: {
+            status: 'Escalated'
+        }
+    });
+    isLoading.value = false;
+    incomeApplications.value = data.data;
+}
+
+async function fetchAnimalApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("animalTransportationByStatus", {
+        params: {
+            statuses: 'Issued'
+        }
+    });
+    isLoading.value = false;
+    animalApplications.value = data.data;
+}
+async function fetchAllAnimalApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("animalTransportation");
+    isLoading.value = false;
+    allAnimalApplications.value = data.data;
+}
+async function fetchValuationApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("valuationByStatus", {
+        params: {
+            statuses: 'Escalated'
+        }
+    });
+    isLoading.value = false;
+    valuationApplications.value = data.data;
+}
+
+async function fetchAllValuationApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("valuation");
+    isLoading.value = false;
+    allValuationApplications.value = data.data;
+}
+
+
 
 function addNewPayment() {
     selectedPayment.value = {

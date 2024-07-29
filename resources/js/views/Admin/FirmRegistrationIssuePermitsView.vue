@@ -17,9 +17,10 @@
 
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
-import {h, ref} from "vue";
+import {h, onMounted, ref} from "vue";
 import {NButton} from "naive-ui";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import Http from "@/services/http.js";
 
 const applications = ref([]);
 const isLoading = ref(false);
@@ -73,10 +74,17 @@ const columns = [
     }
 ];
 
+onMounted(() => {
+    fetchApplication();
+});
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("timberCuttingPermitApplication");
+    const { data } = await Http.get("firmByStatus", {
+        params: {
+            status: 'Escalated'
+        }
+    });
     isLoading.value = false;
     applications.value = data.data;
 }
