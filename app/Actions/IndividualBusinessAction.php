@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\DTO\IndividualBusinessDTO;
 use App\Models\Address;
+use App\Models\GnDivision;
 use App\Models\IndividualBusiness;
 use App\Models\OwnerDetail;
 use App\Models\OtherBusiness;
@@ -29,7 +30,8 @@ class IndividualBusinessAction
                 'addresses',
                 'owner_detail',
                 'other_businesses',
-                'director_details'
+                'director_details',
+                'gn_division'
             ])
             ->get();
     }
@@ -44,6 +46,10 @@ class IndividualBusinessAction
             $ownerDetail = OwnerDetail::create($dto['owner_detail']);
 
             $individualBusiness->owner_detail_id = $ownerDetail->id;
+
+            $gnDivision = GNDivision::find($dto['gn_division']['id']);
+            $individualBusiness->gn_division()->associate($gnDivision);
+
             $individualBusiness->save();
 
             collect($dto['addresses'])->each(function ($address) use ($individualBusiness) {

@@ -1,17 +1,6 @@
 <template>
-    <n-modal
-        v-model:show="isShowing"
-        preset="card"
-        style="width: 630px"
-        :on-update:show="(value) => emit('close', value)"
-    >
-        <n-card
-            style="width: 600px"
-            :bordered="false"
-            size="huge"
-            role="dialog"
-            aria-modal="true"
-        >
+    <n-modal v-model:show="isShowing" preset="card" style="width: 630px" :on-update:show="(value) => emit('close', value)">
+        <n-card style="width: 600px" :bordered="false" size="huge" role="dialog" aria-modal="true">
             <n-layout style="padding-left: 8px">
                 <n-page-header>
                     <n-h2 v-if="!isNewPayment">Edit Payment</n-h2>
@@ -22,39 +11,29 @@
                         <n-input v-model:value="formValue.name" placeholder="Enter Name" />
                     </n-form-item>
                     <n-form-item label="Payment Type " label-placement="left" path="role">
-                        <n-dropdown
-                            trigger="hover"
-                            placement="bottom-start"
-                            :options="paymentTypeOptions"
-                            @select="handleSelect"
-                        >
+                        <n-dropdown trigger="hover" placement="bottom-start" :options="paymentTypeOptions" @select="handleSelect">
                             <n-button>
                                 {{
-                                    selectedPaymentType
-                                        ? selectedPaymentType.label
-                                        : "Payment Type"
+                                    selectedPaymentType ? selectedPaymentType.label : "Payment Type"
                                 }}
                                 <n-icon><ArrowDropDownRoundIcon /></n-icon>
                             </n-button>
                         </n-dropdown>
                     </n-form-item>
                     <n-form-item label="Application Code" path="user.firstName">
-                        <n-input
-                            v-model:value="formValue.application_code"
-                            placeholder="Enter Application Code"
-                        />
+                        <n-input v-model:value="formValue.application_code" placeholder="Enter Application Code" />
                         <n-button class="mx-1.5" attr-type="button" @click="handleValidateClick">
                             <n-icon size="25"><SearchIcon /></n-icon>
                         </n-button>
                     </n-form-item>
-                    <n-card title="Application Details">
-                        <p v-if="formValue.value.applicationDetails">
-                            <strong>Application Code:</strong> {{ formValue.value.applicationDetails.application_code }}<br>
-                            <!-- Add more fields as needed -->
-                        </p>
-                        <p v-else>No application details available</p>
-                    </n-card>
-
+                    <template v-if="formValue.applicationDetails">
+                        <n-card  :loading="isLoading" title="Application Details">
+                            <p v-for="(field, index) in applicationFields" :key="index">
+                                <strong>{{ field.label }}:</strong> {{ formValue.applicationDetails[field.key] }}<br>
+                            </p>
+                        </n-card>
+                    </template>
+                    <br/>
                     <n-form-item label="Amount" path="user.firstName">
                         <n-input v-model:value="formValue.amount" placeholder="Enter Amount" />
                     </n-form-item>
@@ -97,7 +76,7 @@
                         </n-upload>
                     </n-form-item>
                     <n-form-item>
-                        <n-button @click="save">
+                        <n-button @click="save" >
                             {{ isNewPayment ? "Add Payment" : "Update Payment" }}
                         </n-button>
                     </n-form-item>
@@ -111,16 +90,14 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { useMessage } from "naive-ui";
-import {
-    ArchiveOutline as ArchiveIcon,
-    Search as SearchIcon,
-} from "@vicons/ionicons5";
+import { ArchiveOutline as ArchiveIcon, Search as SearchIcon } from "@vicons/ionicons5";
 import { ArrowDropDownRound as ArrowDropDownRoundIcon } from "@vicons/material";
 
 import Http from "@/services/http";
 import moment from "moment";
 
 const formRef = ref(null);
+const isLoading = ref(false);
 const message = useMessage();
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
@@ -145,8 +122,28 @@ const formValue = ref({
     nic: "",
     receipt_no: "",
     paid_date: "",
+    applicationDetails: null
 });
 
+const rules = {
+    user: {
+        firstName: {
+            required: true,
+            message: "Please input your name",
+            trigger: "blur",
+        },
+        age: {
+            required: true,
+            message: "Please input your age",
+            trigger: ["input", "blur"],
+        },
+    },
+    phone: {
+        required: true,
+        message: "Please input your number",
+        trigger: ["input"],
+    },
+};
 const paymentTypeOptions = [
     {
         label: "Timber Cutting Payment",
@@ -211,32 +208,28 @@ const selectedDate = computed({
         return moment(formValue.value.paid_date).valueOf();
     },
     set: (epoch) => {
-        formValue.value.paid_date = moment.unix(epoch / 1000).format("YYYY-MM-DD");
+        formValue.value.paid_date = moment(epoch).format("YYYY-MM-DD");
     },
 });
 
 const isNewPayment = computed(() => {
     return !formValue.value.id;
-});
-
-const applicationDetails = ref(null);
-
-async function save() {
-    if (isNewPayment.value) {
-        await Http.post(`payment`, formValue.value);
-        emit("close");
-
-        return;
+});async function save() {
+    try {
+        const response = await Http.post(`/payment`, formValue.value);
+        message.success('Payment saved successfully');
+        emit('close');
+    } catch (error) {
+        message.error(error.response.data.error || 'Error saving payment');
+        console.error(error);
     }
-
-    await Http.put(`payment/${formValue.value.id}`, formValue.value);
-    emit("close");
 }
 
 async function handleValidateClick(e) {
     e.preventDefault();
 
     try {
+        isLoading.value = true;
         const response = await Http.get(`/application-details`, {
             params: {
                 table_name: formValue.value.payment_type,
@@ -247,15 +240,114 @@ async function handleValidateClick(e) {
         if (response.data) {
             // Display the retrieved application details in the n-card
             formValue.value.applicationDetails = response.data;
+            isLoading.value = false;
         } else {
             message.error("Application not found");
+            formValue.value.applicationDetails = null;
         }
     } catch (error) {
-        message.error("Error retrieving application details");
+        message.error(error.response.data.error || 'Error retrieving application details');
         console.error(error);
+        formValue.value.applicationDetails = null;
     }
 }
 
+// Define a mapping of fields for each payment type
+const fieldMappings = {
+    timber_cutting_permit_applications: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name of the Applicant", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "Tree Count", key: "tree_count" },
+        // Add more fields as necessary
+    ],
+    timber_transporting_applications: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name of the Applicant", key: "name" },
+        { label: "Transport Date", key: "transport_date" },
+        { label: "Vehicle Number", key: "plate_number" },
+        { label: "Route", key: "route" },
+        // Add more fields as necessary
+    ],
+    individual_businesses: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Business Name", key: "business_name" },
+        { label: "Nature", key: "nature" },
+        { label: "Principle Place", key: "principal_place" },
+        { label: "Initial Capital", key: "initial_capital" },
+        { label: "Contact Number", key: "contact_number" },
+        // Add more fields as necessary
+    ],
+    firms: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Business Name", key: "business_name" },
+        { label: "Nature", key: "nature" },
+        { label: "Principle Place", key: "principal_place" },
+        { label: "Initial Capital", key: "initial_capital" },
+        { label: "Submission Timestamp", key: "submission_timestamp" },
+        // Add more fields as necessary
+    ],
+    income_certificates: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "NIC", key: "nic" },
+        { label: "Purpose", key: "purpose" },
+        { label: "Submitting Institute", key: "submitting_institute" },
+        { label: "Total Annual Income", key: "total_annual_income" },
+        { label: "Checked Date", key: "checked_date" },
+        // Add more fields as necessary
+    ],
+    animal_transportations: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Reason to Transport", key: "reason_to_transport" },
+        { label: "Start Point", key: "start_point" },
+        { label: "Destination", key: "destination" },
+        { label: "Cost per Animal", key: "cost_per_animal" },
+        { label: "Issued Date", key: "issued_date" },
+        { label: "Expire Date", key: "expire_date" },
+        // Add more fields as necessary
+    ],
+    valuations: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "Valuation Amount", key: "valuation_amount" },
+        { label: "Reason", key: "reason" },
+        { label: "Land Name", key: "land_name" },
+        // Add more fields as necessary
+    ],
+    excises: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "Business Name", key: "business_name" },
+        { label: "Issued Date", key: "issued_date" },
+        { label: "Expire Date", key: "expire_date" },
+        // Add more fields as necessary
+    ],
+    president_funds: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "NIC", key: "nic" },
+        { label: "Contact Number", key: "contact_number" },
+        // Add more fields as necessary
+    ],
+    mahapolas: [
+        { label: "Application Code", key: "application_code" },
+        { label: "Name", key: "name" },
+        { label: "Address", key: "address" },
+        { label: "NIC", key: "nic" },
+        { label: "Contact Number", key: "contact_number" },
+        // Add more fields as necessary
+    ],
+};
+
+const applicationFields = computed(() => {
+    return fieldMappings[formValue.value.payment_type] || [];
+});
 </script>
 
 <style scoped></style>

@@ -22,7 +22,8 @@ class IndividualBusinessController extends Controller
             'addresses',
             'owner_detail',
             'other_businesses',
-            'director_details'
+            'director_details',
+            'gn_division'
         )->get();
 
         return IndividualBusinessResource::collection($individualBusinesses);

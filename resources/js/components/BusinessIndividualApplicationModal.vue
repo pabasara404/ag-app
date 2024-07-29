@@ -234,6 +234,26 @@
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
+          <n-form-item
+              label="Grama Niladari Division"
+              path="grama_niladari_division"
+          >
+              <n-dropdown
+                  trigger="hover"
+                  placement="bottom-start"
+                  :options="gnDivisionsForDropdown"
+                  @select="selectGramaNiladariDivision"
+              >
+                  <n-button
+                  >{{
+                          selectedGramaNiladariDivision
+                              ? selectedGramaNiladariDivision.label
+                              : "Select an option"
+                      }}
+                      <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                  </n-button>
+              </n-dropdown>
+          </n-form-item>
           <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p><br/>
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
@@ -386,7 +406,6 @@ const non_commercial_use_checked_value = ref(false);
 const timber_seller_checked_value = ref(false);
 const ownership_of_land_checked_value = ref(false);
 const timberCuttingPermitApplications = ref([]);
-const selectedValues = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
 
@@ -418,6 +437,12 @@ const formValue = ref({
         registration_no: "555333",
         business_name: "John Doe"
     }],
+    gn_division: {
+        id: "74",
+        gn_code: "370",
+        name: "Kotugoda",
+        mpa_code: "204",
+    },
     other_business_name: "Innovative Solutions Inc.",
     government_officer_checked_value: "No",
     contact_number: "+1234567890",
@@ -562,40 +587,58 @@ const selectedCheckedDate = computed({
     }
 });
 
-const selectedCheckedTime = computed({
-    get() {
-        const checkedTime = formValue.value.checked_time;
-        return checkedTime ? moment(checkedTime, "HH:mm").format("HH:mm") : "";
-    },
-    set(value) {
-        if (moment(value, "HH:mm").isValid()) {
-            formValue.value.checked_time = moment(value, "HH:mm").format("HH:mm");
-        } else {
-            formValue.value.checked_time = "";
-        }
-    }
-});
-
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
-
 const gnDivisionsForDropdown = computed(() => {
-  return GNDivisionOptions.value.map((gnDivisionOption) => {
-    return {
-      key: gnDivisionOption.id,
-      label: gnDivisionOption.name,
-    };
-  });
+    return GNDivisionOptions.value.map((gnDivisionOption) => {
+        return {
+            key: gnDivisionOption.id,
+            label: gnDivisionOption.name,
+        };
+    });
 });
 
 const selectedGramaNiladariDivision = computed(() => {
-  return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
-    return (
-      gnDivisionForDropdown.key === formValue.value.gn_division.id
-    );
-  });
+    if (!formValue.value.gn_division) {
+        return null;
+    }
+    return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
+        return gnDivisionForDropdown.key === formValue.value.gn_division.id;
+    });
 });
+
+
+onMounted(() => {
+    fetchGnDivisions();
+});
+
+const fetchGnDivisions = async () => {
+    try {
+        const response = await Http.get("gnDivision");
+        const data = response.data.data; // Assuming the API response contains the data you need
+        GNDivisionOptions.value = data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+function selectGramaNiladariDivision(key) {
+    const selectedDivision = GNDivisionOptions.value.find((GNDivisionOption) => {
+        return GNDivisionOption.id === key;
+    });
+
+    if (selectedDivision) {
+        formValue.value.gn_division = {
+            id: selectedDivision.id,
+            gn_code: selectedDivision.gn_code,
+            name: selectedDivision.name,
+            mpa_code: selectedDivision.mpa_code
+        };
+    }
+}
+
+
 
 const treeCuttingReasonsForSelect = computed(() => {
   return treeCuttingReasons.value.map((treeCuttingReason) => {
@@ -625,11 +668,6 @@ const selectedTreeCuttingReasons = computed({
   },
 });
 
-onMounted(() => {
-  fetchGnDivisions();
-  // fetchTimberCuttingPermitApplication();
-  // fetchTreeCuttingReasons();
-});
 
 async function save() {f
   if (isNewApplication.value) {
@@ -645,30 +683,13 @@ async function fetchTimberCuttingPermitApplication() {
   timberCuttingPermitApplications.value = data;
 }
 
-const fetchGnDivisions = async () => {
-  try {
-    const response = await Http.get("gnDivision");
-    const data = response.data.data; // Assuming the API response contains the data you need
-    // console.log(data);
-    GNDivisionOptions.value = data;
-    // console.log(GNDivisionOptions.value);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const addresses = ref(['']);
 
 function addAddress() {
     formValue.value.addresses.push({ id: "", name: "" });
 }
-function selectGramaNiladariDivision(key) {
-  formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
-    (GNDivisionOption) => {
-      return GNDivisionOption.id === key;
-    }
-  );
-}
+
 function handleValidateClick(e) {
   e.preventDefault();
   formRef.value?.validate((errors) => {

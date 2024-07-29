@@ -2,7 +2,7 @@
   <n-layout class="pl-2">
     <PageHeader title="Timber Transportation Permit Request" />
       <n-p>Required documents to obtain the timber transportation permit:</n-p>
-<!--      <n-ul>-->
+      <n-ul>
           <n-li>Duly Filled application</n-li>
           <n-li>Copy of the deed of the relevant land (Should've certified by the Grama Niladhari)</n-li>
           <n-li>Copy of the plan (Should've certified by the Grama Niladhari)</n-li>

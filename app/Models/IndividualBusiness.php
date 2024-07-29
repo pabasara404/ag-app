@@ -26,7 +26,8 @@ class IndividualBusiness extends Model
         'submission_timestamp',
         'application_code',
         'owner_detail_id',
-        'citizen_id'
+        'citizen_id',
+        'gn_division_id',
     ];
 
     public function addresses(){
@@ -44,6 +45,12 @@ class IndividualBusiness extends Model
     public function director_details(){
         return $this->hasMany(DirectorDetail::class);
     }
+
+    public function gn_division()
+    {
+        return $this->belongsTo(GnDivision::class);
+    }
+
 
     public static function generateApplicationCode()
     {

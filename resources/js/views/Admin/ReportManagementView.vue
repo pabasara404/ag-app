@@ -1,7 +1,49 @@
 <template>
     <n-layout style="height: 540px" has-sider>
         <n-layout style="padding-left: 8px" :inverted="inverted">
-            <PageHeader title="Payments Management" />
+            <PageHeader title="Reports Management" />
+            <n-tabs
+                type="line"
+                size="large"
+                :tabs-padding="20"
+                pane-style="padding: 20px;"
+            >
+                <n-tab-pane name="Grama Niladari Division">
+                    <n-h5>Division Activity Report</n-h5>
+                    <n-h5>Division Comparison Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Citizen Details">
+                    <n-h5>Citizen Application Report</n-h5>
+                    <n-h5>Citizen Demographics Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Timber Cutting">
+                    <n-h5>Timber Cutting Permit Issuance Report</n-h5>
+                    <n-h5>Timber Cutting Application Status Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Timber Transportation">
+                    <n-h5>Timber Transportation Permit Report</n-h5>
+                    <n-h5>Transportation Activity Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Business Registration">
+                    <n-h5>Business Registration Report</n-h5>
+                    <n-h5>Business Activity Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Income Certificates">
+                    <n-h5>Income Certificate Issuance Report</n-h5>
+                    <n-h5>Income Certificate Application Status Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Animal Transportation">
+                    <n-h5>Animal Transportation Permit Report</n-h5>
+                    <n-h5>Animal Transportation Activity Report</n-h5>
+                </n-tab-pane>
+                <n-tab-pane name="Valuation Report">
+                    <n-h5>Valuation Report Issuance Report</n-h5>
+                    <n-h5>Valuation Activity Report</n-h5>
+                </n-tab-pane>
+
+            </n-tabs>
+
+
             <div class="flex justify-end pb-6">
                 <n-space>
                     <n-button @click="addNewPayment">

@@ -37,7 +37,8 @@ class IndividualBusinessResource extends JsonResource
             "updated_at"=>$this->updated_at,
             "status"=>$this->status,
             "submission_timestamp"=>$this->submission_timestamp,
-            "application_code"=>$this->application_code
+            "application_code"=>$this->application_code,
+            "gn_division"=> $this->gn_division,
         ];
     }
 }

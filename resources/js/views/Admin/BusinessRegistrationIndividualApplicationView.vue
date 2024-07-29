@@ -64,6 +64,12 @@ function addNewApplication() {
             registration_no: "555333",
             business_name: "John Doe"
         }],
+        gn_division: {
+            id: "74",
+            gn_code: "370",
+            name: "Kotugoda",
+            mpa_code: "204",
+        },
         other_business_name: "Innovative Solutions Inc.",
         government_officer_checked_value: "No",
         contact_number: "+1234567890",

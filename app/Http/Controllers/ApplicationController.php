@@ -2,85 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DeedDetail;
-use App\Http\Requests\StoreDeedDetailRequest;
-use App\Http\Requests\UpdateDeedDetailRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getApplicationDetails(Request $request)
     {
-        //
-    }
+        $tableName = $request->input('table_name');
+        $applicationCode = $request->input('application_code');
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        if (empty($tableName) || empty($applicationCode)) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDeedDetailRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreDeedDetailRequest $request)
-    {
-        //
-    }
+        // Retrieve application details from the specified table
+        $applicationDetails = DB::table($tableName)
+            ->where('application_code', $applicationCode)
+            ->where('status', 'issued')
+            ->first();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\DeedDetail  $deedDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function show(DeedDetail $deedDetail)
-    {
-        //
-    }
+        if (!$applicationDetails) {
+            return response()->json(['error' => 'Application not found or not issued'], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\DeedDetail  $deedDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(DeedDetail $deedDetail)
-    {
-        //
-    }
+        // Check for an existing payment record
+        $existingPayment = DB::table('payments')
+            ->where('application_code', $applicationCode)
+            ->first();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDeedDetailRequest  $request
-     * @param  \App\Models\DeedDetail  $deedDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateDeedDetailRequest $request, DeedDetail $deedDetail)
-    {
-        //
-    }
+        if ($existingPayment) {
+            return response()->json(['error' => 'Payment already exists for this application'], 400);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\DeedDetail  $deedDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(DeedDetail $deedDetail)
-    {
-        //
+        return response()->json($applicationDetails);
     }
 }

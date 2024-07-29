@@ -6,7 +6,7 @@
             size="large"
             :tabs-padding="20"
             pane-style="padding: 20px;"
-        >
+            >
             <n-tab-pane name="Submitted">
                 The application has been successfully submitted and is under initial review.
             </n-tab-pane>

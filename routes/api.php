@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnimalTransportationController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
@@ -10,12 +11,11 @@ use App\Http\Controllers\GnDivisionController;
 use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\IncomeCertificateController;
 use App\Http\Controllers\IndividualBusinessController;
-use App\Http\Controllers\LetterController;
 use App\Http\Controllers\MahapolaController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PresidentFundController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimberCuttingPermitApplicationController;
-use App\Http\Controllers\TimberTransportingPermitApplicationController;
 use App\Http\Controllers\TreeCuttingReasonController;
 use App\Http\Controllers\ValuationController;
 use Illuminate\Http\Request;
@@ -43,6 +43,12 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 //    Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);
 });
+
+Route::get('/application-details', [ApplicationController::class, 'getApplicationDetails']);
+
+Route::post('/payment', [PaymentController::class, 'store']);
+Route::get('/payment', [PaymentController::class, 'index']);
+Route::delete('/payment/{id}', [PaymentController::class, 'delete']);
 
 //routes for employees
 Route::get('employee', [EmployeeController::class, 'index']);

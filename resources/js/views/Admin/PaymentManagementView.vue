@@ -62,6 +62,10 @@ const options = [
 const payments = ref([]);
 const columns = [
     {
+        title: "Application Code",
+        key: "application_code",
+    },
+    {
         title: "Name",
         key: "name",
     },
@@ -70,21 +74,18 @@ const columns = [
         key: "nic",
     },
     {
-        title: "Address",
-        key: "address",
+        title: "Amount",
+        key: "amount",
     },
     {
-        title: "Contact Number",
-        key: "contact_number",
+        title: "Payment Type",
+        key: "payment_type",
     },
     // {
     //   title: "Role",
     //   key: "role",
     // },
-    {
-        title: "DOB",
-        key: "date_of_birth",
-    },
+
     {
         title: "",
         key: "actions",
@@ -155,7 +156,7 @@ async function fetchPayment() {
     isLoading.value = true;
     const { data } = await Http.get("payment");
     isLoading.value = false;
-    payments.value = data.data;
+    payments.value = data;
 }
 
 async function deletePayment(payment) {

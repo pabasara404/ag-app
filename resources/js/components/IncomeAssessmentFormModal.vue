@@ -1,4 +1,4 @@
-<template>
+di<template>
   <n-modal
     v-model:show="isShowing"
     preset="card"

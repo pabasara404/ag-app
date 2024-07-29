@@ -129,7 +129,7 @@
           <n-form-item
               label="Grama Niladari Division"
               path="grama_niladari_division"
-          >
+            >
               <n-dropdown
                   trigger="hover"
                   placement="bottom-start"
@@ -402,6 +402,7 @@ const selectedCheckedDate = computed({
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
+
 const gnDivisionsForDropdown = computed(() => {
     return GNDivisionOptions.value.map((gnDivisionOption) => {
         return {
