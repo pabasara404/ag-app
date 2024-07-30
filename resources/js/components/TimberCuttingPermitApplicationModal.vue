@@ -481,6 +481,7 @@ const formValue = ref({
     checked_date:"",
     checked_time:"",
     comment:"",
+    application_code:""
     // citizen_id:{
     //    name: "John Doe",
     //    address: "123 Main St",

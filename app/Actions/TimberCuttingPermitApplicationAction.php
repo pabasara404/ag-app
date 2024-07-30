@@ -56,32 +56,49 @@ class TimberCuttingPermitApplicationAction
     {
         DB::beginTransaction();
         try {
-            $dto = (array) new TimberCuttingPermitApplicationDTO($timberCuttingPermitApplication);
-            $timberCuttingPermitApplication = TimberCuttingPermitApplication::create($dto);
-            $gnDivision = GnDivision::create($dto['gn_division']);
-            $deedDetails = DeedDetail::create($dto['deed_detail']);
-            $landDetails = LandDetail::create($dto['land_detail']);
-            $boundaries = Boundaries::create($dto['boundary']);
-//            $citizen = Citizen::create($dto['citizen']);
+            $dto = new TimberCuttingPermitApplicationDTO($timberCuttingPermitApplication);
 
-//            $timberCuttingPermitApplication->submission_timestamp = now();
-            $timberCuttingPermitApplication->gn_division_id = $gnDivision->id;
+            // Generate application code before creating the model
+            $applicationCode = TimberCuttingPermitApplication::generateApplicationCode();
+            $dto->application_code = $applicationCode;
+
+            // Convert DTO to array and merge with additional fields
+            $timberCuttingPermitApplicationArray = array_merge((array) $dto, [
+                'application_code' => $applicationCode
+            ]);
+
+            // Create the TimberCuttingPermitApplication model with the generated application code
+            $timberCuttingPermitApplication = TimberCuttingPermitApplication::create($timberCuttingPermitApplicationArray);
+
+            $gnDivision = GnDivision::create($dto->gn_division);
+            $deedDetails = DeedDetail::create($dto->deed_detail);
+            $landDetails = LandDetail::create($dto->land_detail);
+            $boundaries = Boundaries::create($dto->boundary);
+
+            if (!empty($dto->gn_division)) {
+                $gnDivision = GnDivision::find($dto->gn_division['id']);
+                if ($gnDivision) {
+                    $timberCuttingPermitApplication->gn_division()->associate($gnDivision);
+                    $timberCuttingPermitApplication->save();
+                }
+            }
+
             $timberCuttingPermitApplication->deed_detail_id = $deedDetails->id;
             $timberCuttingPermitApplication->land_detail_id = $landDetails->id;
             $timberCuttingPermitApplication->boundary_id = $boundaries->id;
-//            $timberCuttingPermitApplication->citizen_id = $citizen->id;
             $timberCuttingPermitApplication->save();
 
-            collect($dto['tree_cutting_reasons'])->each(function ($treeCuttingReason) use ($timberCuttingPermitApplication) {
+            collect($dto->tree_cutting_reasons)->each(function ($treeCuttingReason) use ($timberCuttingPermitApplication) {
                 $timberCuttingPermitApplication->tree_cutting_reasons()->attach(TreeCuttingReason::find($treeCuttingReason['id']));
             });
 
-            collect($dto['tree_details'])->each(function ($treeDetail) use ($timberCuttingPermitApplication) {
+            collect($dto->tree_details)->each(function ($treeDetail) use ($timberCuttingPermitApplication) {
                 $treeDetails = TreeDetail::create($treeDetail);
                 $timberCuttingPermitApplication->tree_details = $treeDetails;
             });
+
             DB::commit();
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             DB::rollBack();
             dd($exception);
         }

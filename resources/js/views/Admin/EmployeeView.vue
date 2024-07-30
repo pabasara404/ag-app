@@ -27,8 +27,7 @@
     <edit-employee-modal
       :employee="selectedEmployee"
       :is-showing="isShowingEditEmployeeModal"
-      @close="isShowingEditEmployeeModal = $event"
-      @save="fetchEmployee"
+      @close="handleEditEmployeeModalClose"
     />
   </n-layout>
 </template>
@@ -129,6 +128,11 @@ const columns = [
     },
   },
 ];
+
+function handleEditEmployeeModalClose(){
+    isShowingEditEmployeeModal.value = false;
+    fetchEmployee();
+}
 
 onMounted(() => {
   fetchEmployee();

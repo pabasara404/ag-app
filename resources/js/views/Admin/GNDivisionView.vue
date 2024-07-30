@@ -27,8 +27,7 @@
         <EditGNDivisionModal
             :gnDivision="selectedGNDivision"
             :is-showing="isShowingEditGNDivisionModal"
-            @close="isShowingEditGNDivisionModal = $event"
-            @save="fetchGNDivision"
+            @close="handleEditGNDivisionModalClose"
         />
     </n-layout>
 </template>
@@ -121,6 +120,11 @@ const columns = [
         },
     },
 ];
+
+function handleEditGNDivisionModalClose(){
+    isShowingEditGNDivisionModal.value = false;
+    fetchGNDivision();
+}
 
 onMounted(() => {
     fetchGNDivision();
