@@ -102,18 +102,20 @@ import {computed, h, ref, onMounted, watch} from "vue";
 import { NIcon } from "naive-ui";
 import {RouterLink, useRouter} from "vue-router";
 import {
-    BookOutline as BookIcon,
-    Business as BusinessIcon,
+    Book as BookIcon,
+    Briefcase as BusinessIcon,
+    DocumentText as DocumentTextIcon,
     Car as CarIcon,
     Cart as CartIcon,
     Diamond as DiamondIcon,
     Document as DocumentIcon,
     Leaf as LeafIcon,
-    LogoBitcoin as LogoBitcoinIcon,
+    Newspaper as LogoBitcoinIcon,
     Map as MapIcon,
     Person as PersonIcon,
-    WineOutline as WineIcon,
+    Beer as WineIcon,
     Moon as MoonIcon,
+    BarChart as BarChartIcon,
     MoonOutline as MoonOutlineIcon,
     // PersonCircle as PersonCircleIcon,
 } from "@vicons/ionicons5";
@@ -275,7 +277,7 @@ const menuOptions = [
             ),
         key: "requestingAndIssuingIncomeCertificates",
         authorizedBy: ["Employee", "Admin"],
-        icon: renderIcon(BusinessIcon),
+        icon: renderIcon(DocumentTextIcon),
     },
     {
         label: "Welfare Information Verification",
@@ -385,7 +387,7 @@ const menuOptions = [
             ),
         key: "reportManagement",
         authorizedBy: ["Employee", "Admin"],
-        icon: renderIcon(BookIcon),
+        icon: renderIcon(BarChartIcon),
     },
 ];
 // const signOut = () => store.dispatch("auth/logout");

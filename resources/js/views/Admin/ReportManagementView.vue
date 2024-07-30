@@ -161,14 +161,13 @@
 <script setup>
 import { h, onMounted, ref } from "vue";
 import {
-    PencilSharp as PencilIcon,
+    Dollar as DollarIcon,
     Add as AddIcon,
     TrashBin as TrashBinIcon,
     Eye as EyeIcon,
 } from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
-import EditPaymentModal from "@/components/EditPaymentModal.vue";
 import PageHeader from "@/components/PageHeader.vue";
 const isShowingEditPaymentModal = ref(false);
 import { Chart, registerables } from 'chart.js';
