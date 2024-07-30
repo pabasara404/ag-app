@@ -8,8 +8,8 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2>Timber Transportation Permit Application</n-h2>
             <n-h2 v-if="!isNewApplication">Review Application</n-h2>
+            <n-h2 v-else>Timber Transportation Permit Application</n-h2>
         </div>
       </n-page-header>
 
@@ -86,7 +86,6 @@
               <n-form-item label="Bought Date" path="date">
                   <n-date-picker v-model:value="selectedBoughtDate" type="date" />
               </n-form-item>
-
                   <n-form-item
                       label="How to go the location of timber from AG Office"
                   >
@@ -112,7 +111,7 @@
           </n-form-item>
           <n-form-item label="Land Deed Number" path="land_deed_number">
               <n-input
-                  v-model:value="formValue.private_lands.land_deed_number"
+                  v-model:value="formValue.private_land.land_deed_number"
                   placeholder="Land Deed Number"
               />
           </n-form-item>
@@ -121,31 +120,31 @@
           </n-form-item>
           <n-form-item label="Plan plot No." path="plan_plot_no">
               <n-input
-                  v-model:value="formValue.private_lands.plan_plot_number"
+                  v-model:value="formValue.private_land.plan_plot_number"
                   placeholder="Plan plot No."
               />
           </n-form-item>
           <n-form-item label="Registration office" path="registration_office">
               <n-input
-                  v-model:value="formValue.private_lands.registration_office"
+                  v-model:value="formValue.private_land.registration_office"
                   placeholder="Registration office"
               />
           </n-form-item>
           <n-form-item label="Plan No." path="plan_number">
               <n-input
-                  v-model:value="formValue.private_lands.plan_number"
+                  v-model:value="formValue.private_land.plan_number"
                   placeholder="Plan No."
               />
           </n-form-item>
           <n-form-item label="Land Name" path="land_name">
               <n-input
-                  v-model:value="formValue.private_lands.land_name"
+                  v-model:value="formValue.private_land.land_name"
                   placeholder="Land Name"
               />
           </n-form-item>
           <n-form-item label="Land Size in perches" path="land_size">
               <n-input
-                  v-model:value="formValue.private_lands.land_size"
+                  v-model:value="formValue.private_land.land_size"
                   placeholder="Land Size in perches"
               />
               <n-tooltip trigger="hover">
@@ -155,21 +154,21 @@
                   <span>1 Acre = 160 Perches = 4 Roods = 4,000 Sqm</span>
               </n-tooltip>
           </n-form-item>
-          <n-form-item label="Boundaries:" path="boundaries">
+          <n-form-item label="Boundaries:" path="boundary">
               <n-input
-                  v-model:value="formValue.boundaries.north"
+                  v-model:value="formValue.boundary.north"
                   placeholder="To North"
               />
               <n-input
-                  v-model:value="formValue.boundaries.south"
+                  v-model:value="formValue.boundary.south"
                   placeholder="To South"
               />
               <n-input
-                  v-model:value="formValue.boundaries.east"
+                  v-model:value="formValue.boundary.east"
                   placeholder="To East"
               />
               <n-input
-                  v-model:value="formValue.boundaries.west"
+                  v-model:value="formValue.boundary.west"
                   placeholder="To West"
               />
           </n-form-item>
@@ -379,11 +378,10 @@ const formRef = ref(null);
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
-  isShowing: Boolean,
+    isShowing: Boolean,
     application: Object,
     initialStatus: String
 });
-const timberTransportingPermitApplications = ref([]);
 const GNDivisionOptions = ref([]);
 
 const formValue = ref({
@@ -403,7 +401,7 @@ const formValue = ref({
     bought_date: "2022-01-01",
     road_to_timber_location: "Take the highway and exit at Main St.",
     is_timber_private_land_checked_value: false,
-    private_lands: {
+    private_land: {
         land_deed_number: "123456",
         registration_date: "2021-01-01",
         plan_plot_number: "789",
@@ -412,7 +410,7 @@ const formValue = ref({
         land_name: "John Doe's Land",
         land_size: "10 acres",
     },
-    boundaries: {
+    boundary: {
         north: "123 Main St",
         south: "456 Oak St",
         east: "789 Elm St",
@@ -450,54 +448,6 @@ const treeDetailsForm = ref({
     width: "0.5 ft",
     piece_count: "8",
 });
-
-//
-// const formValue = ref({
-//     id: "",
-//     name: "",
-//     address: "",
-//     contact_number: "",
-//     gn_division: {
-//          id: "",
-//         gn_code: "",
-//         name: "",
-//         mpa_code: "",
-//     },
-//     address_of_timber: "",
-//     is_timber_bought_checked_value: "",
-//     receipt_no: "",
-//     bought_date: "",
-//     road_to_timber_location: "",
-//     is_timber_private_land_checked_value: "",
-//     private_lands:{
-//         land_deed_number: "",
-//         registration_date: "",
-//         plan_plot_number: "",
-//         registration_office: "",
-//         plan_number: "",
-//         land_name: "",
-//         land_size: ""
-//     },
-//     boundaries:{
-//         north: "",
-//         south: "",
-//         east: "",
-//         west: ""
-//     },
-//     end_location: "",
-//     route: "",
-//     timber_transport_date: "",
-//     plate_number: "",
-//     timber_details:[],
-//     total_pieces: "0"
-// });
-//
-// const treeDetailsForm = ref({
-//     timber_type: "",
-//     length: "",
-//     width: "",
-//     piece_count: ""
-// });
 
 const rules = {
   user: {
@@ -541,6 +491,7 @@ watch(
   () => props.isShowing,
   (newValue) => {
     isShowing.value = newValue;
+    formValue.value = {...props.application };
   }
 );
 async function certifyAndSubmit() {
@@ -565,13 +516,13 @@ async function certifyAndSubmit() {
 
 const selectedRegistrationDate = computed({
   get: () => {
-    const landRegistrationDate = formValue.value.private_lands.registration_date;
+    const landRegistrationDate = formValue.value.private_land.registration_date;
     return moment(landRegistrationDate, "YYYY-MM-DD").isValid()
       ? moment(landRegistrationDate).valueOf()
       : null;
   },
   set: (epoch) => {
-    formValue.value.private_lands.registration_date = moment
+    formValue.value.private_land.registration_date = moment
       .unix(epoch / 1000)
       .format("YYYY-MM-DD");
   },
@@ -627,7 +578,6 @@ const totalPieces = computed(() => {
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
-
 const gnDivisionsForDropdown = computed(() => {
     return GNDivisionOptions.value.map((gnDivisionOption) => {
         return {
@@ -638,10 +588,11 @@ const gnDivisionsForDropdown = computed(() => {
 });
 
 const selectedGramaNiladariDivision = computed(() => {
+    if (!formValue.value.gn_division || !formValue.value.gn_division.id) {
+        return null;
+    }
     return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
-        return (
-            gnDivisionForDropdown.key === formValue.value.gn_division.id
-        );
+        return gnDivisionForDropdown.key === formValue.value.gn_division.id;
     });
 });
 
@@ -656,12 +607,24 @@ const selectGramaNiladariDivision = (key) => {
         };
     }
 };
+const fetchGnDivisions = async () => {
+    try {
+        const response = await Http.get("gnDivision");
+        const data = response.data.data; // Assuming the API response contains the data you need
+        // console.log(data);
+        GNDivisionOptions.value = data;
+        // console.log(GNDivisionOptions.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 
 onMounted(() => {
   fetchGnDivisions();
   // fetchTimberCuttingPermitApplication();
 });
+
 
 
 const statusOptions = [
@@ -682,15 +645,6 @@ function handleStatusSelect(selected) {
 }
 
 
-async function save() {
-  if (isNewApplication.value) {
-    await Http.post(`timberTransportingPermitApplication`, formValue.value);
-    emit("save");
-
-    return;
-  }
-}
-
 const updateStatus = async (status) => {
     try {
         await Http.put(`timberTransportingPermitApplication/${props.application.id}`, {
@@ -702,22 +656,7 @@ const updateStatus = async (status) => {
         console.error("Failed to update status:", error);
     }
 };
-async function fetchTimberTransportingPermitApplication() {
-  // await Http.get("timberTransportingPermitApplication");
-  timberTransportingPermitApplications.value = data;
-}
 
-const fetchGnDivisions = async () => {
-  try {
-    const response = await Http.get("gnDivision");
-    const data = response.data.data; // Assuming the API response contains the data you need
-    // console.log(data);
-    GNDivisionOptions.value = data;
-    // console.log(GNDivisionOptions.value);
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const addTreeDetails = () => {
     formValue.value.timber_details.push({...treeDetailsForm.value});

@@ -169,13 +169,11 @@ Route::put('timberCuttingPermitApplication/{id}', [TimberCuttingPermitApplicatio
 //
 //routes for timberTransportingPermitApplications
 Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);
-Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
-Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
+Route::put('timberTransportingPermitApplication/{id}', [TimberTransportingPermitApplicationController::class, 'update']);
+Route::delete('timberTransportingPermitApplication/{id}', [TimberTransportingPermitApplicationController::class, 'destroy']);
 Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
-Route::put('timberTransportingPermitApplication/{id}', [TimberTransportingPermitApplicationController::class, 'updateStatus']);
+Route::put('timberTransportingPermitApplication/{id}/status', [TimberTransportingPermitApplicationController::class, 'updateStatus']);
 Route::get('timberTransportingPermitApplicationByStatus', [TimberTransportingPermitApplicationController::class, 'show']);
-//
-
 
 //routes for gnDivisions
 Route::get('gnDivision', [GnDivisionController::class, 'index']);

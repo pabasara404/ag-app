@@ -35,9 +35,10 @@ class TimberTransportingPermitApplicationAction
         $statusArray = explode(',', $statuses);
         return TimberTransportPermitApplicationBuilder::whereStatus($statusArray)
             ->with([
-                'addresses',
-                'partners',
-                'gn_division'
+                "timber_details",
+                "boundary",
+                "private_land",
+                "gn_division"
             ])
             ->get();
     }

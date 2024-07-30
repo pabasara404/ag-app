@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\TimberTransportingPermitApplicationAction;
 use App\Http\Resources\TimberTransportingPermitApplicationResource;
-use App\Models\Firm;
 use App\Models\TimberTransportingPermitApplication;
 use App\Http\Requests\StoreTimberTransportingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberTransportingPermitApplicationRequest;
@@ -18,20 +17,14 @@ class TimberTransportingPermitApplicationController extends Controller
      */
     public function index()
     {
-        return TimberTransportingPermitApplicationResource::collection(TimberTransportingPermitApplication::with(
+        $applications = TimberTransportingPermitApplication::with(
             "timber_details",
             "boundary",
             "private_land",
             "gn_division"
-        ));
-    }
+        )->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return TimberTransportingPermitApplicationResource::collection($applications);
     }
 
     /**
@@ -46,23 +39,17 @@ class TimberTransportingPermitApplicationController extends Controller
      * Display the specified resource.
      */
     public function show(Request $request)
-    { $applications = TimberTransportingPermitApplicationAction::getApplicationByStatus($request->status);
-        return response()->json(['data' => $applications]);//
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TimberTransportingPermitApplication $timberTransportingPermitApplication)
     {
-        //
+        $applications = TimberTransportingPermitApplicationAction::getApplicationByStatus($request->status);
+        return response()->json(['data' => $applications]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTimberTransportingPermitApplicationRequest $request, TimberTransportingPermitApplication $timberTransportingPermitApplication)
+    public function update(UpdateTimberTransportingPermitApplicationRequest $request, $id)
     {
+        $timberTransportingPermitApplication = TimberTransportingPermitApplication::findOrFail($id);
         $timberTransportingPermitApplication->update($request->toArray());
         return response()->noContent();
     }
@@ -70,12 +57,16 @@ class TimberTransportingPermitApplicationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TimberTransportingPermitApplication $timberTransportingPermitApplication)
+    public function destroy($id)
     {
+        $timberTransportingPermitApplication = TimberTransportingPermitApplication::findOrFail($id);
         $timberTransportingPermitApplication->delete();
         return response()->noContent();
     }
 
+    /**
+     * Update the status of the specified resource.
+     */
     public function updateStatus(Request $request, $id): JsonResponse
     {
         $application = TimberTransportingPermitApplication::findOrFail($id);

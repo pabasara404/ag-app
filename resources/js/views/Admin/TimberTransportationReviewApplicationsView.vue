@@ -57,12 +57,15 @@ const options = [
 const applications = ref([]);
 const columns = [
     {
+        title: "Reference Number",
+        key: "application_code",
+    },{
         title: "Name of Applicant",
         key: "name",
     },
     {
-        title: "Tree count",
-        key: "nic",
+        title: "Total Pieces",
+        key: "total_pieces",
     },
     {
         title: "Address",
@@ -70,15 +73,15 @@ const columns = [
     },
     {
         title: "Status",
-        key: "contact_number",
+        key: "status",
     },
-    // {
-    //   title: "Role",
-    //   key: "role",
-    // },
     {
         title: "Submitted date",
-        key: "date_of_birth",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
     },
     {
         title: "",
@@ -129,68 +132,81 @@ onMounted(() => {
     fetchApplication();
 });
 
-// function addNewApplication() {
-//     selectedApplication.value = {
-//         id: "",
-//         name: "",
-//         address: "",
-//         contact_number: "",
-//         timber_seller_checked_value: "",
-//         non_commercial_use_checked_value: "",
-//         grama_niladari_division: {
-//             id: "",
-//             gn_code: "",
-//             name: "",
-//             mpa_code: "",
-//         },
-//         deed_details: {
-//             land_deed_number: "",
-//             land_deed_date: "",
-//         },
-//         ownership_of_land_checked_value: "",
-//         land_details: {
-//             land_name: "",
-//             land_size: "",
-//             plan_number: "",
-//             plan_date: "",
-//             plan_plot_number: "",
-//         },
-//         boundaries: {
-//             north: "",
-//             south: "",
-//             east: "",
-//             west: "",
-//         },
-//         tree_count: {
-//             breadfruit: "",
-//             coconut: "",
-//             jackfruit: "",
-//             palmyra: "",
-//         },
-//         tree_details: [
-//         ],
-//         tree_cutting_reasons: [],
-//         trees_cut_before: "",
-//         planted_tree_count: "",
-//         road_to_land: "",
-//     };
-//
-//     isShowingEditApplicationModal.value = true;
-// }
+function addNewApplication() {
+    selectedApplication.value = {
+        id: "",
+        name: "John Doe",
+        address: "123 Main St, Anytown, USA",
+        contact_number: "123-456-7890",
+        gn_division: {
+            id: "74",
+            gn_code: "370",
+            name: "Kotugoda",
+            mpa_code: "204",
+        },
+        address_of_timber: "456 Oak St, Anytown, USA",
+        is_timber_bought_checked_value: true,
+        receipt_no: "ABC123",
+        bought_date: "2022-01-01",
+        road_to_timber_location: "Take the highway and exit at Main St.",
+        is_timber_private_land_checked_value: false,
+        private_land: {
+            land_deed_number: "123456",
+            registration_date: "2021-01-01",
+            plan_plot_number: "789",
+            registration_office: "Anytown Registry",
+            plan_number: "01234",
+            land_name: "John Doe's Land",
+            land_size: "10 acres",
+        },
+        boundary: {
+            north: "123 Main St",
+            south: "456 Oak St",
+            east: "789 Elm St",
+            west: "321 Maple Ave",
+        },
+        end_location: "567 Pine St, Anytown, USA",
+        route: "Take the highway and exit at Pine St.",
+        timber_transport_date: "2022-02-01",
+        plate_number: "XYZ123",
+        timber_details: [
+            {
+                timber_type: "Oak",
+                length: "10 ft",
+                width: "1 ft",
+                piece_count: "5",
+            },
+            {
+                timber_type: "Maple",
+                length: "8 ft",
+                width: "0.75 ft",
+                piece_count: "0",
+            },
+        ],
+        total_pieces: "15",
+        checked_date: "2024-07-01",
+        comment: "",
+        status: "Submitted",
+        submission_timestamp:"",
+        application_code:""
+    };
+
+    isShowingEditApplicationModal.value = true;
+}
 
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) });
 }
 async function fetchApplication() {
     isLoading.value = true;
-    const { data } = await Http.get("timberCuttingPermitApplication");
+    const {data} = await Http.get("timberTransportingPermitApplication");
     isLoading.value = false;
     applications.value = data.data;
 }
 
 async function deleteApplication(application) {
     isLoading.value = true;
-    await Http.delete(`timberCuttingPermitApplication/${application.id}`);
+    await Http.delete(`timberTransportingPermitApplication/${application.id}`);
     isLoading.value = false;
 }
 </script>

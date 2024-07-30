@@ -15,6 +15,7 @@ class TimberTransportingPermitApplicationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             "name"=>$this->name,
             "address"=>$this->address,
             "contact_number"=>$this->contact_number,
@@ -38,6 +39,7 @@ class TimberTransportingPermitApplicationResource extends JsonResource
             'comment' => $this->comment,
             'status' => $this->status,
             "updated_at"=>$this->updated_at,
+            "submission_timestamp"=>$this->submission_timestamp,
 
         ];
 
