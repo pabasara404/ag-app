@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\TimberTransportingPermitApplicationAction;
 use App\Http\Resources\TimberTransportingPermitApplicationResource;
+use App\Models\Firm;
 use App\Models\TimberTransportingPermitApplication;
 use App\Http\Requests\StoreTimberTransportingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberTransportingPermitApplicationRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TimberTransportingPermitApplicationController extends Controller
 {
@@ -42,9 +45,9 @@ class TimberTransportingPermitApplicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TimberTransportingPermitApplication $timberTransportingPermitApplication)
-    {
-        //
+    public function show(Request $request)
+    { $applications = TimberTransportingPermitApplicationAction::getApplicationByStatus($request->status);
+        return response()->json(['data' => $applications]);//
     }
 
     /**
@@ -71,5 +74,14 @@ class TimberTransportingPermitApplicationController extends Controller
     {
         $timberTransportingPermitApplication->delete();
         return response()->noContent();
+    }
+
+    public function updateStatus(Request $request, $id): JsonResponse
+    {
+        $application = TimberTransportingPermitApplication::findOrFail($id);
+        $application->status = $request->status;
+        $application->save();
+
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }

@@ -9,17 +9,20 @@
             <n-page-header>
                 <div class="flex justify-between ...">
                     <n-h2>Application for Registration of a Business Name By a Firm</n-h2>
+                    <n-h2 v-if="!isNewApplication">Review Application</n-h2>
                 </div>
             </n-page-header>
 
-            <n-form-item
-                label="Application Reference Number" path="application_code">
-                <n-input
-                    :disabled="true"
-                    v-model:value="formValue.application_code"
-                />
-            </n-form-item>
+
             <n-form ref="formRef" :model="formValue">
+
+                <n-form-item v-if="!isNewApplication"
+                             label="Application Reference Number" path="application_code">
+                    <n-input
+                        :disabled="true"
+                        v-model:value="formValue.application_code"
+                    />
+                </n-form-item>
                 <n-form-item label="The Business Name" path="business_name">
                     <n-input
                         v-model:value="formValue.business_name"
@@ -555,6 +558,7 @@ const formValue = ref({
     status: "Submitted",
     ownership_of_land_checked_value: "Rent",
     submission_timestamp:"",
+    application_code:""
 });
 
 const partnerDetailsForm = ref({

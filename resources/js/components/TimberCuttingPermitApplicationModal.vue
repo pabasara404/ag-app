@@ -13,7 +13,16 @@
         </div>
       </n-page-header>
 
+
+
       <n-form ref="formRef" :rules="rules" :model="formValue">
+          <n-form-item
+              label="Application Reference Number" path="application_code">
+              <n-input
+                  :disabled="true"
+                  v-model:value="formValue.application_code"
+              />
+          </n-form-item>
         <n-form-item label="Name of the Applicant" path="name">
           <n-input
             v-model:value="formValue.name"
@@ -149,27 +158,6 @@
           <n-input
             v-model:value="formValue.boundary.west"
             placeholder="To West"
-          />
-        </n-form-item>
-        <n-form-item
-          label="Number of trees currently on this plot:"
-          path="no_of_trees"
-        >
-          <n-input
-            v-model:value="formValue.tree_count.jackfruit"
-            placeholder="Jackfruit"
-          />
-          <n-input
-            v-model:value="formValue.tree_count.breadfruit"
-            placeholder="Breadfruit"
-          />
-          <n-input
-            v-model:value="formValue.tree_count.coconut"
-            placeholder="Coconut"
-          />
-          <n-input
-            v-model:value="formValue.tree_count.palmyra"
-            placeholder="Palmyra"
           />
         </n-form-item>
         <n-card title="Enter details of the trees in the land">

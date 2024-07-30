@@ -9,10 +9,20 @@
       <n-page-header>
         <div class="flex justify-between ...">
           <n-h2>Timber Transportation Permit Application</n-h2>
+            <n-h2 v-if="!isNewApplication">Review Application</n-h2>
         </div>
       </n-page-header>
 
+
+
       <n-form ref="formRef" :model="formValue">
+          <n-form-item v-if="!isNewApplication"
+              label="Application Reference Number" path="application_code">
+              <n-input
+                  :disabled="true"
+                  v-model:value="formValue.application_code"
+              />
+          </n-form-item>
         <n-form-item label="Name of the Applicant" path="name">
           <n-input
             v-model:value="formValue.name"
@@ -299,9 +309,49 @@
         <n-p
           >By submitting this application, you affirm that the information provided above is accurate and that the timber listed originates from either your private property or has been lawfully acquired by you. Furthermore, you assert that this timber has not been commingled with timber sourced from government reserves or forests.
         </n-p>
+
+          <n-card v-if="!isNewApplication">
+              <n-h3>By GN Officer</n-h3>
+              <n-form-item label="Checked Date" path="land_deed_date">
+                  <!--                  <n-input-group>-->
+                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+              </n-form-item>
+              <n-form-item
+                  label="Any comment about application"
+              >
+                  <n-input
+                      type="textarea"
+                      v-model:value="formValue.comment"
+                      placeholder="Any comment about application"
+                  />
+              </n-form-item>
+              <n-form-item
+                  label="Status"
+                  path="status"
+              >
+                  <n-dropdown
+                      trigger="hover"
+                      placement="bottom-start"
+                      :options="statusOptions"
+                      @select="handleStatusSelect"
+                  >
+                      <n-button
+                      >{{
+                              selectedStatus
+                                  ? selectedStatus.label
+                                  : "Change the Status"
+                          }}
+                          <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                      </n-button>
+                  </n-dropdown>
+              </n-form-item>
+              <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
+          </n-card>
         <div class="flex justify-end">
           <n-form-item>
-            <n-button @click="certifyAndSubmit"> Certify and Submit </n-button>
+              <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
         </div>
       </n-form>
@@ -330,6 +380,8 @@ const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
   isShowing: Boolean,
+    application: Object,
+    initialStatus: String
 });
 const timberTransportingPermitApplications = ref([]);
 const GNDivisionOptions = ref([]);
@@ -385,6 +437,11 @@ const formValue = ref({
         },
     ],
     total_pieces: "15",
+    checked_date: "2024-07-01",
+    comment: "",
+    status: "Submitted",
+    submission_timestamp:"",
+    application_code:""
 });
 
 const treeDetailsForm = ref({
@@ -487,10 +544,23 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-  console.log(formValue.value);
-  await Http.post("timberTransportingPermitApplication", formValue.value);
-  isShowing.value = false;
-  emit("close", false);
+    console.log("Submitting form:", formValue.value);
+
+    if (isNewApplication.value) {
+        formValue.value.status = "Submitted";
+        await Http.post("timberTransportingPermitApplication", formValue.value);
+        emit("close", false);
+        return;
+    }
+
+    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+        formValue.value.status = "Resubmitted";
+    }
+
+    console.log(`Updating timberTransportingPermitApplication/${formValue.value.id} with data:`, formValue.value);
+
+    await Http.put(`timberTransportingPermitApplication/${formValue.value.id}`, formValue.value);
+    emit("close", false);
 }
 
 const selectedRegistrationDate = computed({
@@ -535,13 +605,26 @@ const selectedTimberTransportDate = computed({
   },
 });
 
+const selectedCheckedDate = computed({
+    get: () => {
+        const checkedDate = formValue.value.checked_date;
+        return moment(checkedDate, "YYYY-MM-DD").isValid()
+            ? moment(checkedDate).toDate()
+            : null;
+    },
+    set: (date) => {
+        formValue.value.checked_date = moment(date).format("YYYY-MM-DD");
+    }
+});
+
+
 const totalPieces = computed(() => {
     return formValue.value.timber_details.reduce((total, detail) => {
         return total + parseInt(detail.piece_count || "0");
     }, 0);
 });
 
-const isNewTimberTransportingPermitApplication = computed(() => {
+const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
 
@@ -580,8 +663,27 @@ onMounted(() => {
   // fetchTimberCuttingPermitApplication();
 });
 
+
+const statusOptions = [
+    { label: 'Pending', key: 'Pending' },
+    { label: 'Escalated', key: 'Escalated' },
+];
+
+const selectedStatus = computed(() => {
+    if (!formValue.value.status) {
+        return { label: "Submitted" };
+    }
+    return statusOptions.find(statusOption => statusOption.label === formValue.value.status) || { label: formValue.value.status };
+});
+
+function handleStatusSelect(selected) {
+    console.log(selected);
+    formValue.value.status = selected;
+}
+
+
 async function save() {
-  if (isNewTimberTransportingPermitApplication.value) {
+  if (isNewApplication.value) {
     await Http.post(`timberTransportingPermitApplication`, formValue.value);
     emit("save");
 
@@ -589,6 +691,17 @@ async function save() {
   }
 }
 
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`timberTransportingPermitApplication/${props.application.id}`, {
+            status: status
+        });
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+    }
+};
 async function fetchTimberTransportingPermitApplication() {
   // await Http.get("timberTransportingPermitApplication");
   timberTransportingPermitApplications.value = data;

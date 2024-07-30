@@ -28,7 +28,12 @@ class TimberTransportingPermitApplication extends Model
         'total_pieces',
         'private_land_id',
         'gn_division_id',
-        'timber_detail_id'
+        'timber_detail_id',
+        'status',
+        'submission_timestamp',
+        'application_code',
+        'checked_date',
+        'comment',
     ];
 
     public function gn_division(){
@@ -45,5 +50,13 @@ class TimberTransportingPermitApplication extends Model
 
     public function private_land(){
         return $this->belongsTo(PrivateLandDetail::class);
+    }
+
+    public static function generateApplicationCode()
+    {
+        $lastBusiness = self::orderBy('id', 'desc')->first();
+        $lastCode = $lastBusiness ? (int)substr($lastBusiness->application_code, -6) : 0;
+        $newCode = str_pad($lastCode + 1, 6, '0', STR_PAD_LEFT);
+        return "WP/KTN/TTP/{$newCode}";
     }
 }

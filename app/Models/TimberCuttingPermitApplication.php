@@ -34,7 +34,8 @@ class TimberCuttingPermitApplication extends Model
         'tree_count',
         'citizen_id',
         'tree_detail_id',
-        'comment'
+        'comment',
+        'application_code',
     ];
 
     protected $casts = [
@@ -67,23 +68,11 @@ class TimberCuttingPermitApplication extends Model
         return $this->belongsToMany(TreeCuttingReason::class,'permit_application_cutting_reason','permit_application_id','cutting_reason_id');
     }
 
-    public function transitionTo($newStatus)
+    public static function generateApplicationCode()
     {
-        $allowedTransitions = [
-            'Submitted' => ['Under Review'],
-            'Under Review' => ['Pending', 'Escalated'],
-            'Pending' => ['Under Review'],
-            'Escalated' => ['Rejected', 'Approved'],
-            'Approved' => ['Awaiting Payment'],
-            'Awaiting Payment' => ['Closed']
-        ];
-
-        if (in_array($newStatus, $allowedTransitions[$this->status])) {
-            $this->status = $newStatus;
-            $this->save();
-            return true;
-        }
-
-        return false;
+        $lastBusiness = self::orderBy('id', 'desc')->first();
+        $lastCode = $lastBusiness ? (int)substr($lastBusiness->application_code, -6) : 0;
+        $newCode = str_pad($lastCode + 1, 6, '0', STR_PAD_LEFT);
+        return "WP/KTN/TCP/{$newCode}";
     }
 }

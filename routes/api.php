@@ -172,6 +172,8 @@ Route::get('timberTransportingPermitApplication', [TimberTransportingPermitAppli
 Route::put('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'update']);
 Route::delete('timberTransportingPermitApplication/{timberTransportingPermitApplication}', [TimberTransportingPermitApplicationController::class, 'destroy']);
 Route::post('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'store']);
+Route::put('timberTransportingPermitApplication/{id}', [TimberTransportingPermitApplicationController::class, 'updateStatus']);
+Route::get('timberTransportingPermitApplicationByStatus', [TimberTransportingPermitApplicationController::class, 'show']);
 //
 
 

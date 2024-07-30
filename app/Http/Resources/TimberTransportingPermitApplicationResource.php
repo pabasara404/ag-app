@@ -32,7 +32,12 @@ class TimberTransportingPermitApplicationResource extends JsonResource
             "private_land"=>$this->private_land,
             "boundary"=>$this->boundary,
             "timber_details"=>$this->timber_details,
-            "gn_division"=>$this->gn_division
+            "gn_division"=>$this->gn_division,
+            "application_code"=>$this->application_code,
+            'checked_date' => $this->checked_date,
+            'comment' => $this->comment,
+            'status' => $this->status,
+            "updated_at"=>$this->updated_at,
 
         ];
 
