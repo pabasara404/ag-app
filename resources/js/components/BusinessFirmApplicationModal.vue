@@ -8,8 +8,8 @@
         <n-layout style="padding-left: 8px">
             <n-page-header>
                 <div class="flex justify-between ...">
-                    <n-h2>Application for Registration of a Business Name By a Firm</n-h2>
                     <n-h2 v-if="!isNewApplication">Review Application</n-h2>
+                    <n-h2 v-else>Application for Registration of a Business Name By a Firm</n-h2>
                 </div>
             </n-page-header>
 

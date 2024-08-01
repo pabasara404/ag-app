@@ -23,13 +23,6 @@
                     </div>
                     <div class="flex w-full flex-col p-3">
                         <div class="flex justify-end">
-                            <div class="pr-2">
-                                <n-avatar
-                                    round
-                                    size="medium"
-                                    src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg"
-                                />
-                            </div>
                             <div class="pt-2 pr-2">
                                 <span class="font-medium">{{ userData.name }}</span>
                             </div>
@@ -103,13 +96,11 @@ import { NIcon } from "naive-ui";
 import {RouterLink, useRouter} from "vue-router";
 import {
     Book as BookIcon,
-    Briefcase as BusinessIcon,
+    Storefront as BusinessIcon,
     DocumentText as DocumentTextIcon,
     Car as CarIcon,
-    Cart as CartIcon,
     Diamond as DiamondIcon,
     Document as DocumentIcon,
-    Leaf as LeafIcon,
     Newspaper as LogoBitcoinIcon,
     Map as MapIcon,
     Person as PersonIcon,
@@ -120,10 +111,10 @@ import {
     // PersonCircle as PersonCircleIcon,
 } from "@vicons/ionicons5";
 
-// import { useStore } from "vuex";
+import { Tree as LeafIcon} from "@vicons/carbon";
+import { EmojiTransportationFilled as CartIcon} from "@vicons/material";
+
 const router = useRouter();
-import http from "@/services/http.js";
-import DynamicBreadcrumb from "@/components/DynamicBreadcrumb.vue";
 import {getLocalAuthUser, logout} from "@/services/auth.js";
 
 // const store = useStore();
@@ -417,7 +408,7 @@ onMounted(async () => {
                 console.error("Error:", error);
             }
         } else {
-            console.error("Unexpected error:", error); // Handle other errors
+            console.error("Unexpected error:", error);
         }
     }
 });

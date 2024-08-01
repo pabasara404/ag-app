@@ -397,7 +397,6 @@ import { NButton, useMessage} from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
   InformationCircleOutline as InformationCircleOutlineIcon,
-    Close as CloseIcon,
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
@@ -405,9 +404,6 @@ import {
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
-import axios from "axios";
-
-import TableRow from "./TableRow.vue";
 import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
@@ -423,7 +419,6 @@ const non_commercial_use_checked_value = ref(false);
 const timber_seller_checked_value = ref(false);
 const ownership_of_land_checked_value = ref(false);
 const timberCuttingPermitApplications = ref([]);
-const selectedValues = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
 const text = ref('The rain dampened the sky');
@@ -503,60 +498,7 @@ const treeDetailsForm = ref({
     age: "5 years",
     want_to_cut: false
 });
-// const formValue = ref({
-//     id: "",
-//     name: "",
-//     address: "",
-//     contact_number: "",
-//     timber_seller_checked_value: "",
-//     non_commercial_use_checked_value: "",
-//     gn_division: {
-//         id: "",
-//         gn_code: "",
-//         name: "",
-//         mpa_code: "",
-//     },
-//     deed_detail: {
-//         land_deed_number: "",
-//         land_deed_date: "",
-//     },
-//     ownership_of_land_checked_value: "",
-//     land_detail: {
-//         land_name: "",
-//         land_size: "",
-//         plan_number: "",
-//         plan_date: "",
-//         plan_plot_number: "",
-//     },
-//     boundary: {
-//         north: "",
-//         south: "",
-//         east: "",
-//         west: "",
-//     },
-//     tree_count: {
-//         breadfruit: "",
-//         coconut: "",
-//         jackfruit: "",
-//         palmyra: "",
-//     },
-//     tree_details: [
-//     ],
-//     tree_cutting_reasons: [],
-//     trees_cut_before: "",
-//     planted_tree_count: "",
-//     road_to_land: "",
-// });
-//
-// const treeDetailsForm = ref({
-//     sub_no: "",
-//     type: "",
-//     height: "",
-//     girth: "",
-//     reproducibility: "",
-//     age: "",
-//     want_to_cut: false,
-// });
+
 const rules = {
     name: [
         { required: false, message: 'Please input your name', trigger: 'blur' },
@@ -752,19 +694,6 @@ onMounted(() => {
   fetchTreeCuttingReasons();
 });
 
-async function save() {
-  if (isNewTimberCuttingPermitApplication.value) {
-    await Http.post(`timberCuttingPermitApplication`, formValue.value);
-    emit("save");
-
-    return;
-  }
-}
-
-async function fetchTimberCuttingPermitApplication() {
-  // await Http.get("timberCuttingPermitApplication");
-  timberCuttingPermitApplications.value = data;
-}
 
 const fetchGnDivisions = async () => {
   try {

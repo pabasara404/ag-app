@@ -18,13 +18,19 @@
           <n-h2 v-else>Add New Employee</n-h2>
         </n-page-header>
         <n-form ref="formRef" :model="formValue">
-          <n-form-item label="First Name" path="user.firstName">
+          <n-form-item label="Full Name" path="user.firstName">
             <n-input v-model:value="formValue.name" placeholder="Enter Name" />
           </n-form-item>
           <n-form-item label="Phone" path="phone">
             <n-input
               v-model:value="formValue.contact_number"
               placeholder="Phone Number"
+            />
+          </n-form-item>
+            <n-form-item label="Email" path="email">
+            <n-input
+              v-model:value="formValue.user.email"
+              placeholder="Email Number"
             />
           </n-form-item>
           <n-form-item label="NIC" path="nic">

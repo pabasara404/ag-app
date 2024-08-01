@@ -180,7 +180,11 @@ function renderIcon(icon) {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("animalTransportation");
+    const { data } = await Http.get("animalTransportationByStatus", {
+        params: {
+            statuses: 'Submitted,Resubmitted'
+        }
+    });
     isLoading.value = false;
 
     // Add total_animal_count to each application

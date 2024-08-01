@@ -293,13 +293,6 @@ const props = defineProps({
     application: Object,
     initialStatus: String
 });
-const non_commercial_use_checked_value = ref(false);
-const timber_seller_checked_value = ref(false);
-const ownership_of_land_checked_value = ref(false);
-const timberCuttingPermitApplications = ref([]);
-const selectedValues = ref([]);
-const GNDivisionOptions = ref([]);
-const treeCuttingReasons = ref([]);
 
 const formValue = ref({
     id: "",

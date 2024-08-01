@@ -312,7 +312,6 @@
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-                  <!--                  <n-input-group>-->
                   <n-date-picker v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item
@@ -468,32 +467,61 @@ const rules = {
     trigger: ["input"],
   },
 };
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
 
 watch(
-  () => props.isShowing,
-  (newValue) => {
-    isShowing.value = newValue;
-    formValue.value = {...props.application };
-  }
+    () => props.isShowing,
+    (newValue) => {
+        isShowing.value = newValue;
+        formValue.value = {
+            ...{
+                id: "",
+                name: "",
+                address: "",
+                contact_number: "",
+                gn_division: {
+                    id: "",
+                    gn_code: "",
+                    name: "",
+                    mpa_code: "",
+                },
+                address_of_timber: "",
+                is_timber_bought_checked_value: false,
+                receipt_no: "",
+                bought_date: "",
+                road_to_timber_location: "",
+                is_timber_private_land_checked_value: false,
+                private_land: {
+                    land_deed_number: "",
+                    registration_date: "",
+                    plan_plot_number: "",
+                    registration_office: "",
+                    plan_number: "",
+                    land_name: "",
+                    land_size: "",
+                },
+                boundary: {
+                    north: "",
+                    south: "",
+                    east: "",
+                    west: "",
+                },
+                end_location: "",
+                route: "",
+                timber_transport_date: "",
+                plate_number: "",
+                timber_details: [],
+                total_pieces: "6",
+                checked_date: "",
+                comment: "",
+                status: "",
+                submission_timestamp: "",
+                application_code: "",
+            },
+            ...props.application,
+        };
+    }
 );
+
 async function certifyAndSubmit() {
     console.log("Submitting form:", formValue.value);
 

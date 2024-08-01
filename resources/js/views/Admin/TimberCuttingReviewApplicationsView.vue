@@ -108,9 +108,6 @@ onMounted(() => {
     fetchApplication();
 });
 
-function renderIcon(icon) {
-    return () => h(NIcon, null, { default: () => h(icon) });
-}
 async function fetchApplication() {
     isLoading.value = true;
     const { data } = await Http.get("timberCuttingPermitApplicationByStatus", {

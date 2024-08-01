@@ -70,7 +70,19 @@
                 </n-tab-pane>
                 <n-tab-pane name="Timber Transportation">
                     <n-h5>Timber Transportation Permit Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="timberTransportationColumns"
+                        :data="timberTransportationApplications"
+                        :bordered="false"
+                    />
                     <n-h5>Transportation Activity Report</n-h5>
+                    <n-data-table
+                        :loading="isLoading"
+                        :columns="allTimberTransportationColumns"
+                        :data="allTimberTransportationApplications"
+                        :bordered="false"
+                    />
                 </n-tab-pane>
                 <n-tab-pane name="Business Registration">
                     <n-h5>Individual Business Registration Report</n-h5>
@@ -161,7 +173,7 @@
 <script setup>
 import { h, onMounted, ref } from "vue";
 import {
-    Dollar as DollarIcon,
+    // Dollar as DollarIcon,
     Add as AddIcon,
     TrashBin as TrashBinIcon,
     Eye as EyeIcon,
@@ -190,6 +202,8 @@ const animalApplications = ref([]);
 const allAnimalApplications = ref([]);
 const valuationApplications = ref([]);
 const allValuationApplications = ref([]);
+const timberTransportationApplications = ref([]);
+const allTimberTransportationApplications = ref([]);
 const submittedApplicationsChart = ref(null);
 
 const options = [
@@ -529,6 +543,61 @@ const allValuationColumns = [
     }
 ];
 
+const allTimberTransportationColumns= [
+    {
+        title: "Reference Number",
+        key: "application_code",
+    },{
+        title: "Name of Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Pieces",
+        key: "total_pieces",
+    },
+    {
+        title: "Address",
+        key: "address",
+    },
+    {
+        title: "Status",
+        key: "status",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }];
+
+const timberTransportationColumns = [
+    {
+        title: "Reference Number",
+        key: "application_code",
+    },{
+        title: "Name of Applicant",
+        key: "name",
+    },
+    {
+        title: "Total Pieces",
+        key: "total_pieces",
+    },
+    {
+        title: "Address",
+        key: "address",
+    },
+    {
+        title: "Submitted date",
+        key: "submission_timestamp",
+    },
+    {
+        title: "Last updated date",
+        key: "updated_at",
+    }
+];
+
 onMounted(() => {
     fetchPayment();
     loadGnDivisionChart();
@@ -548,6 +617,10 @@ onMounted(() => {
     fetchAllAnimalApplication();
     fetchValuationApplication();
     fetchAllValuationApplication();
+    fetchValuationApplication();
+    fetchAllValuationApplication();
+    fetchAllTimberTransportingApplication();
+    fetchTimberTransportingApplication();
 });
 
 async function fetchCitizen() {
@@ -565,14 +638,14 @@ async function fetchTimberCuttingApplication() {
         }
     });
     isLoading.value = false;
-    timberCuttingApplications.value = data.data; // Ensure the response is handled correctly
+    timberTransportationApplications.value = data.data; // Ensure the response is handled correctly
 }
 
 async function fetchAllTimberCuttingApplication() {
     isLoading.value = true;
     const {data} = await Http.get("timberCuttingPermitApplication");
     isLoading.value = false;
-    allTimberCuttingApplications.value = data.data;
+    allTimberTransportationApplications.value = data.data;
 }
 
 async function fetchIndividualBusinessApplication() {
@@ -660,6 +733,24 @@ async function fetchValuationApplication() {
 async function fetchAllValuationApplication() {
     isLoading.value = true;
     const {data} = await Http.get("valuation");
+    isLoading.value = false;
+    allValuationApplications.value = data.data;
+}
+
+async function fetchTimberTransportingApplication() {
+    isLoading.value = true;
+    const { data } = await Http.get("timberTransportingPermitApplicationByStatus", {
+        params: {
+            status: 'Escalated'
+        }
+    });
+    isLoading.value = false;
+    valuationApplications.value = data.data;
+}
+
+async function fetchAllTimberTransportingApplication() {
+    isLoading.value = true;
+    const {data} = await Http.get("timberTransportingPermitApplication");
     isLoading.value = false;
     allValuationApplications.value = data.data;
 }

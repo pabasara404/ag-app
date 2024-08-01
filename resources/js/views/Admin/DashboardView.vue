@@ -22,19 +22,27 @@
             </div>
         </n-gi>
     </n-grid>
-    <div class="flex flex-row">
-        <div id="app" class="m-2 border-solid border-2 w-100 p-2 h-90 rounded-md">
-            <div class="bar-chart-container">
-                <BarChart></BarChart>
+
+    <n-grid x-gap="12" :cols="3" class="white-background">
+        <n-gi>
+            <div id="app" class="m-2 border-solid border-2 w-100 p-2 h-90 rounded-md">
+                <div class="bar-chart-container">
+                    <BarChart></BarChart>
+                </div>
             </div>
-        </div>
-        <div class="m-2 border-solid border-2 p-2 w-100 rounded-md">
-            <canvas ref="lineChart"></canvas>
-        </div>
-        <div class="m-2 basis-1/4 max-h-90 border-solid border-2 w-100 rounded-md w-96 p-2">
-            <canvas ref="donutChart"></canvas>
-        </div>
-    </div>
+        </n-gi>
+        <n-gi>
+            <div class="m-2 border-solid border-2 p-2 w-100 rounded-md">
+                <canvas ref="lineChart"></canvas>
+            </div>
+        </n-gi>
+        <n-gi>
+            <div class="m-2 basis-1/4 max-h-90 border-solid border-2 w-100 rounded-md w-96 p-2">
+                <canvas ref="donutChart"></canvas>
+            </div>
+        </n-gi>
+    </n-grid>
+
 </template>
 
 <script setup>

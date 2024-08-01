@@ -61,8 +61,8 @@ class TimberTransportingPermitApplicationAction
 
             // Create related models
             $gnDivision = GnDivision::create($dto->gn_division);
-            $privateLand = PrivateLandDetail::create($dto->private_lands);
-            $boundaries = Boundaries::create($dto->boundaries);
+            $privateLand = PrivateLandDetail::create($dto->private_land);
+            $boundaries = Boundaries::create($dto->boundary);
 
             // Associate the GN Division if it exists
             if (!empty($dto->gn_division)) {
