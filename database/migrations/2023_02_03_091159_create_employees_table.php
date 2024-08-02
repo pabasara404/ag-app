@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('address');
-            $table->string('nic');
-            $table->string('contact_number');
-            $table->date('date_of_birth');
+            $table->string('name')->nullable();
+            $table->string('address')->nullable();
+            $table->string('nic')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->foreignId('role_id')->nullable()->references('id')->on('roles');
             $table->timestamps();

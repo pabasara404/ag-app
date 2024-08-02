@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,11 @@ Route::get('/', function () {
 Route::get('/{vue_capture?}', function() {
     return view('welcome');
 })->where('vue_capture', '[\/\w\.-]*');
+
+// routes/web.php
+
+Route::get('/password/reset/{token}', [PasswordResetController::class, 'showResetForm'])
+    ->name('password.reset');
+
+//Route::post('/password/reset', [PasswordResetController::class, 'reset'])
+//    ->name('password.update');

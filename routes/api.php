@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AnimalTransportationController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\SetPasswordController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CitizenController;
 use App\Http\Controllers\EmployeeController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\GnOfficerController;
 use App\Http\Controllers\IncomeCertificateController;
 use App\Http\Controllers\IndividualBusinessController;
 use App\Http\Controllers\MahapolaController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PresidentFundController;
 use App\Http\Controllers\RoleController;
@@ -194,3 +197,11 @@ Route::put('treeCuttingReason/{treeCuttingReason}', [TreeCuttingReasonController
 Route::delete('treeCuttingReason/{treeCuttingReason}', [TreeCuttingReasonController::class, 'destroy']);
 Route::post('treeCuttingReason', [TreeCuttingReasonController::class, 'store']);
 
+//// Route to show the password reset form
+//Route::get('/password/reset/{token}', [PasswordResetController::class, 'showResetForm'])
+//    ->name('password.reset');
+//// Route to handle the password reset
+//Route::post('/password/reset', [PasswordResetController::class, 'reset'])
+//    ->name('password.update');
+
+Route::post('/password/reset', [PasswordResetController::class, 'reset']);
