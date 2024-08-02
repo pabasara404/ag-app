@@ -22,12 +22,6 @@
 
 <script setup>
 import { h, onMounted, ref } from "vue";
-import {
-    PencilSharp as PencilIcon,
-    Add as AddIcon,
-    TrashBin as TrashBinIcon,
-    Eye as EyeIcon,
-} from "@vicons/ionicons5";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";

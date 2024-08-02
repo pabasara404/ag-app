@@ -65,6 +65,7 @@ Route::get('employee', [EmployeeController::class, 'index']);
 Route::put('employee/{employee}', [EmployeeController::class, 'update']);
 Route::delete('employee/{employee}', [EmployeeController::class, 'destroy']);
 Route::post('employee', [EmployeeController::class, 'store']);
+Route::post('checkEmail', [EmployeeController::class, 'checkEmail']);
 
 //routes for GNOfficer
 Route::get('gnOfficer', [GnOfficerController::class, 'index']);

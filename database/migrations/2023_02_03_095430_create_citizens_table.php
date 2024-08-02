@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('citizens', function ( Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('nic');
             $table->string('contact_number');
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->timestamps();

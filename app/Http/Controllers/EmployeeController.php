@@ -8,6 +8,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Mail\SetPasswordMail;
 use App\Models\Employee;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,8 @@ class EmployeeController extends Controller
         $employeeData = $request->except('user'); // Exclude the nested user array
         $employeeData['user_id'] = $user->id; // Associate user with employee
 
-        Employee::create($employeeData);
+        // Ensure that employeeData includes all necessary fields
+        $employee = Employee::create($employeeData);
 
         // Generate a password reset token and store it in the password resets table
         $token = Str::random(60);
@@ -111,8 +113,26 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        // Get the user associated with the employee
+        $user = $employee->user;
+
+        // Delete the employee
         $employee->delete();
+
+        // If a user is associated, delete the user as well
+        if ($user) {
+            $user->delete();
+        }
 
         return response()->noContent();
     }
+
+    public function checkEmail(Request $request)
+    {
+        $email = $request->input('email');
+        $exists = User::where('email', $email)->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
+
 }

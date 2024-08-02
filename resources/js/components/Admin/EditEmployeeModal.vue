@@ -19,10 +19,7 @@
                 </n-page-header>
                 <n-form ref="formRef" :model="formValue">
                     <n-form-item label="Full Name" path="user.name">
-                        <n-input
-                            v-model:value="formValue.user.name"
-                            placeholder="Full Name"
-                        />
+                        <n-input v-model:value="formValue.user.name" placeholder="Full Name" />
                     </n-form-item>
                     <n-form-item label="Phone" path="phone">
                         <n-input
@@ -31,16 +28,10 @@
                         />
                     </n-form-item>
                     <n-form-item label="Email" path="user.email">
-                        <n-input
-                            v-model:value="formValue.user.email"
-                            placeholder="Enter Email"
-                        />
+                        <n-input v-model:value="formValue.user.email" placeholder="Enter Email" />
                     </n-form-item>
                     <n-form-item label="NIC" path="nic">
-                        <n-input
-                            v-model:value="formValue.nic"
-                            placeholder="NIC"
-                        />
+                        <n-input v-model:value="formValue.nic" placeholder="NIC" />
                     </n-form-item>
                     <n-form-item label="Role" path="user.role_id">
                         <n-dropdown
@@ -93,7 +84,7 @@ const roleOptions = ref([]);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
-    employee: Object,
+    employee: Object
 });
 
 const formValue = ref({
@@ -174,12 +165,19 @@ const isNewEmployee = computed(() => {
 async function save() {
     try {
         if (isNewEmployee.value) {
+            const emailResponse = await Http.post("checkEmail", { email: formValue.value.user.email });
+            if (emailResponse.data.exists) {
+                message.error("Email already exists!");
+                return;
+            }
+
             const response = await Http.post("employee", formValue.value);
-            if (response.status === 200) {
+            if (response.status === 204) {
                 message.success("Employee added successfully. An email has been sent to set the password.");
             }
         } else {
             await Http.put(`employee/${formValue.value.id}`, formValue.value);
+            message.success("Employee updated successfully.");
         }
         emit("close", false);
     } catch (error) {
