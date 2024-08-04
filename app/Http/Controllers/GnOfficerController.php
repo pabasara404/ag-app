@@ -141,4 +141,6 @@ class GnOfficerController extends Controller
 
         return response()->json(['exists' => $exists]);
     }
+
+
 }

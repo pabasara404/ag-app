@@ -139,7 +139,7 @@ const rules = {
         }
     ],
     'user.email': [
-        {type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"]}
+        {required: true, type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"]}
     ],
     nic: [
         {required: true, message: "NIC is required", trigger: "blur"},
@@ -179,6 +179,11 @@ async function save() {
                 message.error("Email already exists!");
                 return;
             }
+            const nicResponse = await Http.post("checkNic", {nic: formValue.value.nic});
+            if (nicResponse.data.exists) {
+                message.error("NIC already exists!");
+                return;
+            }
 
             const response = await Http.post("employee", formValue.value);
             if (response.status === 204) {
@@ -195,9 +200,6 @@ async function save() {
     }
 }
 
-function handleSelect(key) {
-    message.info(String(key));
-}
 
 const fetchRoles = async () => {
     try {
@@ -228,17 +230,6 @@ const selectedRole = computed(() => {
     });
 });
 
-function handleValidateClick(e) {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-        if (!errors) {
-            message.success("Valid");
-        } else {
-            console.log(errors);
-            message.error("Invalid");
-        }
-    });
-}
 </script>
 
 <style scoped></style>

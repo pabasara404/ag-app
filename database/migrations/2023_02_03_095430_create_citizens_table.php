@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('address')->nullable();
             $table->string('nic');
-            $table->string('contact_number');
+            $table->string('contact_number')->nullable();;
             $table->date('date_of_birth')->nullable();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');

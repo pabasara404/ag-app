@@ -123,4 +123,12 @@ class EmployeeController extends Controller
         return response()->json(['exists' => $exists]);
     }
 
+    public function checkNic(Request $request)
+    {
+        $nic = $request->input('nic');
+        $exists = Employee::where('nic', $nic)->exists();
+
+        return response()->json(['exists' => $exists]);
+    }
+
 }

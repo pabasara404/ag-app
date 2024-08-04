@@ -66,6 +66,7 @@ Route::put('employee/{employee}', [EmployeeController::class, 'update']);
 Route::delete('employee/{employee}', [EmployeeController::class, 'destroy']);
 Route::post('employee', [EmployeeController::class, 'store']);
 Route::post('checkEmail', [EmployeeController::class, 'checkEmail']);
+Route::post('checkNic', [EmployeeController::class, 'checkNic']);
 
 //routes for GNOfficer
 Route::get('gnOfficer', [GnOfficerController::class, 'index']);
@@ -73,6 +74,7 @@ Route::put('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'update']);
 Route::delete('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'destroy']);
 Route::post('gnOfficer', [GnOfficerController::class, 'store']);
 Route::post('checkEmail', [GnOfficerController::class, 'checkEmail']);
+Route::post('checkNic', [CitizenController::class, 'checkNic']);
 
 //routes for citizen
 Route::get('citizen', [CitizenController::class, 'index']);
@@ -80,6 +82,8 @@ Route::get('citizen-by-user-id', [CitizenController::class, 'show']);
 Route::put('citizen/{citizen}', [CitizenController::class, 'update']);
 Route::delete('citizen/{citizen}', [CitizenController::class, 'destroy']);
 Route::post('citizen', [CitizenController::class, 'store']);
+Route::post('checkEmail', [CitizenController::class, 'checkEmail']);
+Route::post('checkNic', [CitizenController::class, 'checkNic']);
 
 //routes for individualBusiness
 //Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
