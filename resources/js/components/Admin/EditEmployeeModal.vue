@@ -17,11 +17,11 @@
                     <n-h2 v-if="!isNewEmployee">Edit Employee</n-h2>
                     <n-h2 v-else>Add New Employee</n-h2>
                 </n-page-header>
-                <n-form ref="formRef" :model="formValue">
+                <n-form ref="formRef" :model="formValue" :rules="rules">
                     <n-form-item label="Full Name" path="user.name">
                         <n-input v-model:value="formValue.user.name" placeholder="Full Name" />
                     </n-form-item>
-                    <n-form-item label="Phone" path="phone">
+                    <n-form-item label="Phone" path="contact_number">
                         <n-input
                             v-model:value="formValue.contact_number"
                             placeholder="Phone Number"
@@ -46,15 +46,15 @@
                             </n-button>
                         </n-dropdown>
                     </n-form-item>
-                    <n-form-item label="Address">
+                    <n-form-item label="Address" path="address">
                         <n-input
                             type="textarea"
                             v-model:value="formValue.address"
-                            maxlength="100"
+                            maxlength="255"
                             show-count
                         />
                     </n-form-item>
-                    <n-form-item label="Date of Birth">
+                    <n-form-item label="Date of Birth" path="date_of_birth">
                         <n-date-picker v-model:value="selectedDOB" type="date" />
                     </n-form-item>
                     <n-form-item>
@@ -124,23 +124,31 @@ watch(
 );
 
 const rules = {
-    user: {
-        name: {
-            required: true,
-            message: "Please input your name",
-            trigger: "blur",
-        },
-        email: {
-            required: true,
-            message: "Please input your email",
-            trigger: ["input", "blur"],
-        },
-    },
-    phone: {
-        required: true,
-        message: "Please input your number",
-        trigger: ["input"],
-    },
+    'user.name': [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    'user.email': [
+        {type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"]}
+    ],
+    nic: [
+        {required: true, message: "NIC is required", trigger: "blur"},
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
 };
 
 onMounted(() => {
@@ -164,8 +172,9 @@ const isNewEmployee = computed(() => {
 
 async function save() {
     try {
+        await formRef.value.validate();
         if (isNewEmployee.value) {
-            const emailResponse = await Http.post("checkEmail", { email: formValue.value.user.email });
+            const emailResponse = await Http.post("checkEmail", {email: formValue.value.user.email});
             if (emailResponse.data.exists) {
                 message.error("Email already exists!");
                 return;

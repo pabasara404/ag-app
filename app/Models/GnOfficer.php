@@ -12,6 +12,7 @@ class GnOfficer extends Model
     protected $fillable = [
         'name',
         'contact_number',
+        'user_id'
     ];
 
     public function user(){

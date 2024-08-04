@@ -17,16 +17,19 @@
           ><n-h2 v-if="!isNewGNOfficer">Edit GNOfficer</n-h2>
           <n-h2 v-else>Add New GNOfficer</n-h2>
         </n-page-header>
-        <n-form ref="formRef" :model="formValue">
-          <n-form-item label="Name" path="user.Name">
-            <n-input v-model:value="formValue.name" placeholder="Enter Name" />
+        <n-form ref="formRef" :model="formValue" :rules="rules">
+          <n-form-item label="Name" path="user.name">
+            <n-input v-model:value="formValue.user.name" placeholder="Enter Name" />
           </n-form-item>
-          <n-form-item label="Phone" path="phone">
+          <n-form-item label="Phone" path="contact_number">
             <n-input
               v-model:value="formValue.contact_number"
               placeholder="Phone Number"
             />
           </n-form-item>
+            <n-form-item label="Email" path="user.email">
+                <n-input v-model:value="formValue.user.email" placeholder="Enter Email" />
+            </n-form-item>
           <n-form-item>
             <n-button @click="save">
               {{ isNewGNOfficer ? "Add GNOfficer" : "Update GNOfficer" }}
@@ -64,6 +67,11 @@ const formValue = ref({
     id: "",
     name: "",
     contact_number: "",
+    user: {
+        name: "",
+        email: "",
+        role_id: "2",
+    },
 });
 
 watch(
@@ -71,62 +79,70 @@ watch(
   (newValue) => {
     isShowing.value = newValue;
     formValue.value = { ...props.GNOfficer };
+      if (!formValue.value.user) {
+          formValue.value.user = {
+              name: "",
+              email: "",
+              role_id: "2",
+          };
+      }
   }
 );
 
+watch(
+    () => formValue.value.user.name,
+    (newName) => {
+        formValue.value.name = newName;
+    }
+);
+
 const rules = {
-  user: {
-    Name: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
+    'user.name': [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    'user.email': [
+        { required: true, type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"]}
+    ]
 };
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
+
 
 const isNewGNOfficer = computed(() => {
   return !formValue.value.id;
 });
 
 async function save() {
-  if (isNewGNOfficer.value) {
-    await Http.post(`gnOfficer`, formValue.value);
-    emit("close");
+    try {
+        await formRef.value.validate();
+        if (isNewGNOfficer.value) {
+          const emailResponse = await Http.post("checkEmail", {email: formValue.value.user.email});
+          if (emailResponse.data.exists) {
+              message.error("Email already exists!");
+              return;
+          }
 
-    return;
+          const response = await Http.post(`gnOfficer`, formValue.value);
+          if (response.status === 204) {
+              message.success("Employee added successfully. An email has been sent to set the password.");
+          }
+        }else{
+              await Http.put(`gnOfficer/${formValue.value.id}`, formValue.value);
+              message.success("Employee updated successfully.");
+          }
+          emit("close", false);
+    } catch(error){
+        message.error("Failed to save employee data.");
+        console.error(error);
+    }
   }
 
-  await Http.put(`gnOfficer/${formValue.value.id}`, formValue.value);
-  emit("close");
-}
 function handleSelect(key) {
   message.info(String(key));
 }

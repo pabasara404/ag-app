@@ -17,7 +17,8 @@ class GnOfficerResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "contact_number" => $this->contact_number
+            "contact_number" => $this->contact_number,
+            "user" => $this->user
             ];
     }
 }

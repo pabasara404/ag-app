@@ -17,8 +17,8 @@
           ><n-h2 v-if="!isNewCitizen">Edit Citizen</n-h2>
           <n-h2 v-else>Add New Citizen</n-h2>
         </n-page-header>
-        <n-form ref="formRef" :model="formValue">
-          <n-form-item label="First Name" path="user.firstName">
+        <n-form ref="formRef" :model="formValue"  :rules="rules">
+          <n-form-item label="Full Name"  path="user.name">
             <n-input v-model:value="formValue.name" placeholder="Enter Name" />
           </n-form-item>
           <n-form-item label="Phone" path="phone">

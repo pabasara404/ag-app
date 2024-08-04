@@ -127,6 +127,7 @@ function addNewGNOfficer() {
     id: "",
     name: "",
     contact_number: "",
+      email:""
   };
 
   isShowingEditGNOfficerModal.value = true;

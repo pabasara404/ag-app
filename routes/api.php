@@ -72,6 +72,7 @@ Route::get('gnOfficer', [GnOfficerController::class, 'index']);
 Route::put('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'update']);
 Route::delete('gnOfficer/{gnOfficer}', [GnOfficerController::class, 'destroy']);
 Route::post('gnOfficer', [GnOfficerController::class, 'store']);
+Route::post('checkEmail', [GnOfficerController::class, 'checkEmail']);
 
 //routes for citizen
 Route::get('citizen', [CitizenController::class, 'index']);

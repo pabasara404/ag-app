@@ -69,18 +69,6 @@ class EmployeeController extends Controller
 
 
     /**
-     * Send a password reset link to the user.
-     *
-     * @param \App\Models\User $user
-     * @return void
-     */
-    protected function sendPasswordResetLink(User $user)
-    {
-        $token = Password::createToken($user);
-        $user->sendPasswordResetNotification($token);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Employee $employee
