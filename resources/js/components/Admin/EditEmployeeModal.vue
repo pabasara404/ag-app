@@ -22,10 +22,7 @@
                         <n-input v-model:value="formValue.user.name" placeholder="Full Name" />
                     </n-form-item>
                     <n-form-item label="Phone" path="contact_number">
-                        <n-input
-                            v-model:value="formValue.contact_number"
-                            placeholder="Phone Number"
-                        />
+                        <n-input v-model:value="formValue.contact_number" placeholder="Phone Number" />
                     </n-form-item>
                     <n-form-item label="Email" path="user.email">
                         <n-input v-model:value="formValue.user.email" placeholder="Enter Email" />
@@ -47,12 +44,7 @@
                         </n-dropdown>
                     </n-form-item>
                     <n-form-item label="Address" path="address">
-                        <n-input
-                            type="textarea"
-                            v-model:value="formValue.address"
-                            maxlength="255"
-                            show-count
-                        />
+                        <n-input type="textarea" v-model:value="formValue.address" maxlength="255" show-count />
                     </n-form-item>
                     <n-form-item label="Date of Birth" path="date_of_birth">
                         <n-date-picker v-model:value="selectedDOB" type="date" />
@@ -68,12 +60,10 @@
         </n-card>
     </n-modal>
 </template>
-
 <script setup>
 import { computed, ref, watch, onMounted } from "vue";
 import { useMessage } from "naive-ui";
 import { ArrowDropDownRound as ArrowDropDownRoundIcon } from "@vicons/material";
-
 import Http from "@/services/http";
 import moment from "moment";
 
@@ -139,10 +129,10 @@ const rules = {
         }
     ],
     'user.email': [
-        {required: true, type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"]}
+        { required: true, type: 'email', message: "Email should be a valid email address", trigger: ["input", "blur"] }
     ],
     nic: [
-        {required: true, message: "NIC is required", trigger: "blur"},
+        { required: true, message: "NIC is required", trigger: "blur" },
         {
             pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
             message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
@@ -150,10 +140,6 @@ const rules = {
         }
     ]
 };
-
-onMounted(() => {
-    fetchRoles();
-});
 
 const selectedDOB = computed({
     get: () => {
@@ -184,6 +170,10 @@ async function save() {
                 message.error("NIC already exists!");
                 return;
             }
+            if (!formValue.value.user.role_id) {
+                message.error("Please Select a Role");
+                return;
+            }
 
             const response = await Http.post("employee", formValue.value);
             if (response.status === 204) {
@@ -200,6 +190,9 @@ async function save() {
     }
 }
 
+onMounted(() => {
+    fetchRoles();
+});
 
 const fetchRoles = async () => {
     try {
@@ -229,7 +222,7 @@ const selectedRole = computed(() => {
         return roleForDropdown.key === formValue.value.user.role_id;
     });
 });
-
 </script>
+
 
 <style scoped></style>
