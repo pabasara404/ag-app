@@ -6,6 +6,7 @@ use App\Http\Resources\GnDivisionResource;
 use App\Models\GnDivision;
 use App\Http\Requests\StoreGnDivisionRequest;
 use App\Http\Requests\UpdateGnDivisionRequest;
+use Illuminate\Http\Response;
 
 class GnDivisionController extends Controller
 {
@@ -17,14 +18,14 @@ class GnDivisionController extends Controller
     public function index()
     {
         return GnDivisionResource::collection(
-            GnDivision::with('gnOfficer')->get()
+            GnDivision::with('gn_officer')->get()
         );
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -35,11 +36,14 @@ class GnDivisionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreGnDivisionRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreGnDivisionRequest $request)
     {
-        GnDivision::create($request->toArray());
+        $gnDivisionData = $request->all();
+        $gnDivisionData['gn_officer_id'] = $request->input('gn_officer.id');
+
+        GnDivision::create($gnDivisionData);
 
         return response()->noContent();
     }
@@ -48,7 +52,7 @@ class GnDivisionController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\GnDivision  $gnDivision
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(GnDivision $gnDivision)
     {
@@ -59,7 +63,7 @@ class GnDivisionController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\GnDivision  $gnDivision
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(GnDivision $gnDivision)
     {
@@ -71,11 +75,14 @@ class GnDivisionController extends Controller
      *
      * @param  \App\Http\Requests\UpdateGnDivisionRequest  $request
      * @param  \App\Models\GnDivision  $gnDivision
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(UpdateGnDivisionRequest $request, GnDivision $gnDivision)
+    public function update(UpdateGnDivisionRequest $request, GnDivision $gnDivision): Response
     {
-        $gnDivision->update($request->toArray());
+        $gnDivisionData = $request->all();
+        $gnDivisionData['gn_officer_id'] = $request->input('gn_officer.id');
+
+        $gnDivision->update($gnDivisionData);
 
         return response()->noContent();
     }
@@ -84,7 +91,7 @@ class GnDivisionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\GnDivision  $gnDivision
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(GnDivision $gnDivision)
     {

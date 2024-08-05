@@ -29,7 +29,7 @@ class GnDivision extends Model
         return $this->hasMany(Citizen::class);
     }
 
-    public function gnOfficer(){
+    public function gn_officer(){
         return $this->belongsTo(GnOfficer::class);
     }
 }

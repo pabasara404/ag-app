@@ -17,7 +17,7 @@
           ><n-h2 v-if="!isNewCitizen">Edit Citizen</n-h2>
           <n-h2 v-else>Add New Citizen</n-h2>
         </n-page-header>
-        <n-form ref="formRef" :model="formValue"  :rules="rules">
+        <n-form ref="formRef" :model="formValue" :rules="rules">
           <n-form-item label="Full Name"  path="user.name">
             <n-input v-model:value="formValue.user.name" placeholder="Enter Name" />
           </n-form-item>
@@ -59,19 +59,12 @@
 <script setup>
 import { computed, ref, watch, onMounted } from "vue";
 import { useMessage } from "naive-ui";
-import {
-  ArchiveOutline as ArchiveIcon,
-  Close as CloseIcon,
-} from "@vicons/ionicons5";
-import { ArrowDropDownRound as ArrowDropDownRoundIcon } from "@vicons/material";
-
 import Http from "@/services/http";
 import moment from "moment";
 
 const formRef = ref(null);
 const message = useMessage();
 const isShowing = ref(false);
-const roleOptions = ref([]);
 const emit = defineEmits(["close", "save"]);
 const props = defineProps({
   isShowing: Boolean,

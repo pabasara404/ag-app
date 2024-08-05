@@ -8,7 +8,7 @@
     <n-layout style="padding-left: 8px">
       <n-page-header>
         <div class="flex justify-between ...">
-          <n-h2 v-if="isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
+          <n-h2 v-if="!isNewTimberCuttingPermitApplication">Review Timber Cutting Permit Application</n-h2>
           <n-h2 v-else>Timber Cutting Permit Application</n-h2>
         </div>
       </n-page-header>
@@ -17,6 +17,7 @@
 
       <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item
+              v-if="!isNewTimberCuttingPermitApplication"
               label="Application Reference Number" path="application_code">
               <n-input
                   :disabled="true"
