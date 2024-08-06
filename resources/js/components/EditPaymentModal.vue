@@ -313,6 +313,83 @@ const applicationFields = computed(() => {
     return fieldMappings[formValue.value.payment_type] || [];
 });
 
+function addApplicationDetailsToPdf(pdf, applicationLabel, details) {
+    let y = 20; // Starting y position for text
+    const pageHeight = 297; // A4 page height in mm
+    const margin = 10;
+    const lineHeight = 7; // Adjust this value to change line spacing
+
+    // Function to add a new page if the y position exceeds page height
+    function checkPageBreak() {
+        if (y >= pageHeight - margin) {
+            pdf.addPage();
+            y = margin;
+        }
+    }
+
+    // Function to format values
+    function formatValue(value) {
+        if (typeof value === 'object' && value !== null) {
+            if (Array.isArray(value)) {
+                return value.map(v => (typeof v === 'object' ? JSON.stringify(v, null, 2) : v)).join(', ');
+            } else {
+                return JSON.stringify(value, null, 2);
+            }
+        } else if (value == null) {
+            return 'N/A'; // Handle null values
+        } else {
+            return value.toString();
+        }
+    }
+
+    // Function to print details
+    function printDetails(details, indent = 0) {
+        Object.keys(details).forEach(key => {
+            // Exclude 'id' and 'status' fields
+            if (!key.toLowerCase().includes('id') && key.toLowerCase() !== 'status') {
+                const label = key.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                let value = details[key];
+
+                pdf.setFont("helvetica", "bold");
+                pdf.text(`${' '.repeat(indent)}${label}:`, margin, y);
+                pdf.setFont("helvetica", "normal");
+
+                if (typeof value === 'object' && value !== null) {
+                    y += lineHeight;
+                    checkPageBreak();
+                    if (Array.isArray(value)) {
+                        value.forEach((item, index) => {
+                            pdf.text(`${' '.repeat(indent + 2)}[${index + 1}]`, margin, y);
+                            y += lineHeight;
+                            checkPageBreak();
+                            printDetails(item, indent + 4);
+                        });
+                    } else {
+                        printDetails(value, indent + 2);
+                    }
+                } else {
+                    pdf.text(formatValue(value), margin + 80, y);
+                    y += lineHeight;
+                    checkPageBreak();
+                }
+            }
+        });
+    }
+
+    // Add application label as title
+    pdf.setFontSize(16);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(applicationLabel, margin, y);
+    y += 15;
+
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+
+    printDetails(details);
+
+    return y; // Return the current y position for further additions (like QR code)
+}
+
 async function save() {
     try {
         const response = await Http.post(`/payment`, formValue.value);
@@ -325,27 +402,38 @@ async function save() {
         }
 
         const applicationDetails = formValue.value.applicationDetails;
+        const applicationLabel = selectedPaymentType ? selectedPaymentType.label : 'Application Details';
         const pdf = new jsPDF("p", "mm", "a4");
-        pdf.text("Application Details", 10, 10);
-        let y = 20;
+
+        let y = addApplicationDetailsToPdf(pdf, applicationLabel, applicationDetails);
 
         // Generate a QR code of the application code
         const qrCodeUrl = await QRCode.toDataURL(formValue.value.application_code);
         const qrCodeImage = new Image();
         qrCodeImage.src = qrCodeUrl;
 
+        // Check if there's enough space left for the QR code
+        if (y + 60 > pdf.internal.pageSize.height) {
+            pdf.addPage();
+            y = 20; // Reset y position
+        }
+
         // Add the QR code image to the PDF
         pdf.addImage(qrCodeImage, 'JPEG', 10, y, 50, 50);
-        y += 60;
-        y += 5;
+        y += 60; // Adjust y for next content
 
         pdf.save("Application.pdf");
         emit('close');
     } catch (error) {
-        message.error(error.response.data.error || 'Error saving payment');
+        if (error.response && error.response.data && error.response.data.error) {
+            message.error(error.response.data.error);
+        } else {
+            message.error('Error saving payment');
+        }
         console.error(error);
     }
 }
+
 
 
 async function searchApplication(e) {
