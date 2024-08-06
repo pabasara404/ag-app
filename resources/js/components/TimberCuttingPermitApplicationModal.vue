@@ -161,7 +161,7 @@
             placeholder="To West"
           />
         </n-form-item>
-        <n-card title="Enter details of the trees that you want to cut and click Add Tree Detail button.">
+        <n-card v-if="isNewTimberCuttingPermitApplication" title="Enter details of the trees that you want to cut and click Add Tree Detail button.">
           <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
@@ -335,8 +335,10 @@
         ><br/>
           <n-card v-if="!isNewTimberCuttingPermitApplication">
               <n-h3>By GN Officer</n-h3>
-              <n-form-item label="Checked Date" path="checked_date">
-                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+              <n-form-item  label="Checked Date" path="checked_date">
+                  <n-date-picker
+                      :disabled="initialStatus==='Pending'"
+                      v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item>
               </n-form-item>
@@ -344,6 +346,7 @@
                   label="Any comment about application"
               >
                   <n-input
+                      :disabled="initialStatus==='Pending'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"
@@ -354,6 +357,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -379,8 +383,8 @@
           </n-form-item>
         </div>
       </n-form>
-        <n-space vertical>
-            <n-qr-code :value="text" />
+        <n-space v-if="initialStatus==='Approved'" vertical>
+            <n-qr-code :value="formValue.application_code" />
         </n-space>
     </n-layout>
     <template #footer></template>
@@ -486,31 +490,6 @@ const treeDetailsForm = ref({
     age: "5 years"
 });
 
-const rules = {
-    name: [
-        { required: false, message: 'Please input your name', trigger: 'blur' },
-        { pattern: /^[A-Za-z\s]+$/, message: 'Name must be letters only', trigger: 'blur' }
-    ],
-    address: [{ required: false, message: 'Please input your address', trigger: 'blur' }],
-    contact_number: [{ required: false, message: 'Please input your number', trigger: ['input', 'blur'] }],
-    land_deed_number: [{ required: false, message: 'Please input the land deed number', trigger: 'blur' }],
-    selectedDeedDate: [{ required: false, message: 'Please select the deed date', trigger: 'blur' }],
-    land_name: [{ required: false, message: 'Please input the land name', trigger: 'blur' }],
-    land_size: [{ required: false, message: 'Please input the land size', trigger: 'blur' }],
-    plan_number: [{ required: false, message: 'Please input the plan number', trigger: 'blur' }],
-    plan_plot_number: [{ required: false, message: 'Please input the plan plot number', trigger: 'blur' }],
-    selectedPlanDate: [
-        { required: false, message: 'Please select the plan date', trigger: 'blur' },
-        { validator: (rule, value) => {
-                if (new Date(value) > new Date()) {
-                    return new Error('Plan date cannot be in the future');
-                }
-                return true;
-            },
-            trigger: 'blur'
-        }
-    ]
-};
 
 watch(
   () => props.isShowing,
@@ -525,8 +504,8 @@ const isNewTimberCuttingPermitApplication = computed(() => {
     return !formValue.value.id;
 });
 const certifyAndSubmit = async () => {
-    formRef.value.validate((errors) => {
-        if (!errors) {
+    console.log("certifyAndSubmit: ",props.initialStatus);
+    console.log(formValue.status);
             if (isNewTimberCuttingPermitApplication.value) {
                 formValue.status = "Submitted";
                 Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
@@ -540,10 +519,7 @@ const certifyAndSubmit = async () => {
             Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value).then(() => {
                 emit("close", false);
             });
-        } else {
-            console.log('Form validation failed', errors);
-        }
-    });
+
 };
 
 const updateStatus = async (status) => {

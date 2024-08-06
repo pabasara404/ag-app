@@ -18,7 +18,7 @@ class TimberCuttingPermitApplicationController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
         return TimberCuttingPermitApplicationResource::collection(
             TimberCuttingPermitApplication::with(
@@ -27,10 +27,32 @@ class TimberCuttingPermitApplicationController extends Controller
                 "deed_detail",
                 "land_detail",
                 "boundary",
-//                "citizen",
-                "tree_cutting_reasons")->get()
-
+                "user",
+                "tree_cutting_reasons"
+            )->get()
         );
+    }
+
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = TimberCuttingPermitApplication::with(
+            "gn_division",
+            "tree_details",
+            "deed_detail",
+            "land_detail",
+            "boundary",
+            "user",
+            "tree_cutting_reasons"
+        )->where('user_id', $userId)->get();
+
+        return TimberCuttingPermitApplicationResource::collection($applications);
     }
 
     /**

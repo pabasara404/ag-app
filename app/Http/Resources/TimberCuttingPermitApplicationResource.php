@@ -38,6 +38,7 @@ class TimberCuttingPermitApplicationResource extends JsonResource
             "comment"=>$this->comment,
             "updated_at"=>$this->updated_at,
             "application_code"=>$this->application_code,
+            "user"=>$this->user,
 
         ];
     }

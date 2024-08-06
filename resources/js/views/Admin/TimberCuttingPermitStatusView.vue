@@ -45,8 +45,7 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
     />
 </template>
@@ -105,6 +104,7 @@ const columns = [
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
                         initialStatus.value = row.status;
+                        console.log(row.status);
                     },
                 },
                 { default: () => "Edit Application" }
@@ -134,15 +134,25 @@ const columns = [
     }
 ];
 
+function handleEditApplicationModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
 onMounted(() => {
     fetchApplication();
 });
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("timberCuttingPermitApplication");
-    isLoading.value = false;
-    applications.value = data.data;
+    try {
+        const { data } = await Http.get("/userTimberCuttingPermitApplications");
+        applications.value = data.data;
+    } catch (error) {
+        console.error("Failed to fetch applications", error);
+    } finally {
+        isLoading.value = false;
+    }
 }
 </script>
 
