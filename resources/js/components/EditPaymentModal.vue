@@ -173,47 +173,18 @@ const rules = {
     },
 };
 const paymentTypeOptions = [
-    {
-        label: "Timber Cutting Payment",
-        key: "timber_cutting_permit_applications",
-    },
-    {
-        label: "Timber Transporting Payment",
-        key: "timber_transporting_applications",
-    },
-    {
-        label: "Individual Business Registration Certificate Payment",
-        key: "individual_businesses",
-    },
-    {
-        label: "Firm Registration Certificate Payment",
-        key: "firms",
-    },
-    {
-        label: "Income Certificate Payment",
-        key: "income_certificates",
-    },
-    {
-        label: "Animal Transportation Permit Payment",
-        key: "animal_transportations",
-    },
-    {
-        label: "President Fund Payment",
-        key: "president_funds",
-    },
-    {
-        label: "Mahapola Payment",
-        key: "mahapolas",
-    },
-    {
-        label: "Excise License Payment",
-        key: "excises",
-    },
-    {
-        label: "Valuation Report Payment",
-        key: "valuations",
-    },
+    { label: "Timber Cutting Payment", key: "timber_cutting_permit_applications", route: "timberCuttingPermitApplication" },
+    { label: "Timber Transporting Payment", key: "timber_transporting_applications", route: "timberTransportingPermitApplication" },
+    { label: "Individual Business Registration Certificate Payment", key: "individual_businesses", route: "individualBusiness" },
+    { label: "Firm Registration Certificate Payment", key: "firms", route: "firmApplication" },
+    { label: "Income Certificate Payment", key: "income_certificates", route: "incomeCertificate" },
+    { label: "Animal Transportation Permit Payment", key: "animal_transportations", route: "animalTransportation" },
+    { label: "President Fund Payment", key: "president_funds", route: "presidentFundApplication" },
+    { label: "Mahapola Payment", key: "mahapolas", route: "mahapolaApplication" },
+    { label: "Excise License Payment", key: "excises", route: "exciseApplication" },
+    { label: "Valuation Report Payment", key: "valuations", route: "valuation" },
 ];
+
 
 
 const selectedPaymentType = computed(() => {
@@ -347,14 +318,15 @@ async function save() {
         const response = await Http.post(`/payment`, formValue.value);
         message.success('Payment saved successfully');
 
-        const applicationId = formValue.value.applicationDetails.id;
-        await Http.put(`/timberCuttingPermitApplication/${applicationId}`, {
-            status: 'Issued'
-        });
+        const selectedPaymentType = paymentTypeOptions.find(option => option.key === formValue.value.payment_type);
+        if (selectedPaymentType) {
+            const applicationId = formValue.value.applicationDetails.id;
+            await Http.put(`/${selectedPaymentType.route}/${applicationId}`, { status: 'Issued' });
+        }
 
         const applicationDetails = formValue.value.applicationDetails;
         const pdf = new jsPDF("p", "mm", "a4");
-        pdf.text("Timber Cutting Permit Application", 10, 10);
+        pdf.text("Application Details", 10, 10);
         let y = 20;
 
         // Generate a QR code of the application code
@@ -365,10 +337,9 @@ async function save() {
         // Add the QR code image to the PDF
         pdf.addImage(qrCodeImage, 'JPEG', 10, y, 50, 50);
         y += 60;
-
         y += 5;
-        pdf.save("Application.pdf");
 
+        pdf.save("Application.pdf");
         emit('close');
     } catch (error) {
         message.error(error.response.data.error || 'Error saving payment');
@@ -376,9 +347,9 @@ async function save() {
     }
 }
 
+
 async function searchApplication(e) {
     e.preventDefault();
-
     try {
         isLoading.value = true;
         const response = await Http.get(`/applicationDetails`, {
