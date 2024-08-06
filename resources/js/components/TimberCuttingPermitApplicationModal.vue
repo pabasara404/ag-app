@@ -407,7 +407,7 @@
         <div class="flex justify-end">
           <n-form-item>
             <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
               <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
         </div>

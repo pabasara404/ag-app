@@ -99,7 +99,6 @@ import {
     Storefront as BusinessIcon,
     DocumentText as DocumentTextIcon,
     Car as CarIcon,
-    Diamond as DiamondIcon,
     Document as DocumentIcon,
     Newspaper as LogoBitcoinIcon,
     Map as MapIcon,
@@ -108,9 +107,8 @@ import {
     Moon as MoonIcon,
     BarChart as BarChartIcon,
     MoonOutline as MoonOutlineIcon,
-    // PersonCircle as PersonCircleIcon,
+    Search as SearchIcon
 } from "@vicons/ionicons5";
-
 import { Tree as LeafIcon} from "@vicons/carbon";
 import { EmojiTransportationFilled as CartIcon} from "@vicons/material";
 
@@ -202,6 +200,20 @@ const menuOptions = [
         key: "timberCuttingManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(LeafIcon),
+    },{
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "applicationSearch",
+                    },
+                },
+                { default: () => "Application Search" }
+            ),
+        key: "timberCuttingManagement",
+        authorizedBy: ["Employee", "Admin"],
+        icon: renderIcon(SearchIcon),
     },
 
     {

@@ -82,6 +82,16 @@ const routes = [
                 },
                 to:"name",
                 component: () => import("./views/Admin/TimberCuttingMainView.vue"),
+            }, {
+                path: "applicationSearch",
+                name: "applicationSearch",
+                meta: {
+                    middleware: "auth",
+                    title: `Application Search`,
+                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                },
+                to:"name",
+                component: () => import("./views/Admin/ApplicationSearchView.vue"),
             },{
                 path: "timberCuttingPermitRenewal",
                 name: "TimberCuttingPermitRenewal",

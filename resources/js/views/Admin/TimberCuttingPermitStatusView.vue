@@ -127,7 +127,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Issued" ? h(
+            return row.status === "Awaiting Payment" ? h(
                 NButton,
                 {
                     round: true,

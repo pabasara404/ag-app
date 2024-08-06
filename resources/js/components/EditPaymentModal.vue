@@ -27,7 +27,7 @@
                     </n-form-item>
                     <n-form-item label="Application Code" path="user.firstName">
                         <n-input v-model:value="formValue.application_code" placeholder="Enter Application Code" :value="applicationCode" />
-                        <n-button class="mx-1.5" attr-type="button" @click="handleValidateClick">
+                        <n-button class="mx-1.5" attr-type="button" @click="searchApplication">
                             <n-icon size="25"><SearchIcon /></n-icon>
                         </n-button>
                     </n-form-item>
@@ -98,7 +98,8 @@ import {computed, onMounted, ref, watch} from "vue";
 import { useMessage } from "naive-ui";
 import { ArchiveOutline as ArchiveIcon, Search as SearchIcon } from "@vicons/ionicons5";
 import { ArrowDropDownRound as ArrowDropDownRoundIcon } from "@vicons/material";
-
+import jsPDF from "jspdf";
+import QRCode from 'qrcode';
 import Http from "@/services/http";
 import moment from "moment";
 
@@ -242,50 +243,7 @@ const selectedDate = computed({
 
 const isNewPayment = computed(() => {
     return !formValue.value.id;
-});async function save() {
-    try {
-        const response = await Http.post(`/payment`, formValue.value);
-        message.success('Payment saved successfully');
-
-        const applicationId = formValue.value.applicationDetails.id;
-        await Http.put(`/timberCuttingPermitApplication/${applicationId}`, {
-            status: 'Issued'
-        });
-
-
-        emit('close');
-    } catch (error) {
-        message.error(error.response.data.error || 'Error saving payment');
-        console.error(error);
-    }
-}
-
-async function handleValidateClick(e) {
-    e.preventDefault();
-
-    try {
-        isLoading.value = true;
-        const response = await Http.get(`/applicationDetails`, {
-            params: {
-                table_name: formValue.value.payment_type,
-                application_code: formValue.value.application_code
-            }
-        });
-
-        if (response.data) {
-            // Display the retrieved application details in the n-card
-            formValue.value.applicationDetails = response.data;
-            isLoading.value = false;
-        } else {
-            message.error("Application not found");
-            formValue.value.applicationDetails = null;
-        }
-    } catch (error) {
-        message.error(error.response.data.error || 'Error retrieving application details');
-        console.error(error);
-        formValue.value.applicationDetails = null;
-    }
-}
+});
 
 // Define a mapping of fields for each payment type
 const fieldMappings = {
@@ -383,6 +341,66 @@ const fieldMappings = {
 const applicationFields = computed(() => {
     return fieldMappings[formValue.value.payment_type] || [];
 });
+
+async function save() {
+    try {
+        const response = await Http.post(`/payment`, formValue.value);
+        message.success('Payment saved successfully');
+
+        const applicationId = formValue.value.applicationDetails.id;
+        await Http.put(`/timberCuttingPermitApplication/${applicationId}`, {
+            status: 'Issued'
+        });
+
+        const applicationDetails = formValue.value.applicationDetails;
+        const pdf = new jsPDF("p", "mm", "a4");
+        pdf.text("Timber Cutting Permit Application", 10, 10);
+        let y = 20;
+
+        // Generate a QR code of the application code
+        const qrCodeUrl = await QRCode.toDataURL(formValue.value.application_code);
+        const qrCodeImage = new Image();
+        qrCodeImage.src = qrCodeUrl;
+
+        // Add the QR code image to the PDF
+        pdf.addImage(qrCodeImage, 'JPEG', 10, y, 50, 50);
+        y += 60;
+
+        y += 5;
+        pdf.save("Application.pdf");
+
+        emit('close');
+    } catch (error) {
+        message.error(error.response.data.error || 'Error saving payment');
+        console.error(error);
+    }
+}
+
+async function searchApplication(e) {
+    e.preventDefault();
+
+    try {
+        isLoading.value = true;
+        const response = await Http.get(`/applicationDetails`, {
+            params: {
+                table_name: formValue.value.payment_type,
+                application_code: formValue.value.application_code
+            }
+        });
+
+        if (response.data) {
+            formValue.value.applicationDetails = response.data;
+            isLoading.value = false;
+        } else {
+            message.error("Application not found");
+            formValue.value.applicationDetails = null;
+        }
+    } catch (error) {
+        message.error(error.response.data.error || 'Error retrieving application details');
+        console.error(error);
+        formValue.value.applicationDetails = null;
+    }
+}
 </script>
 
 <style scoped></style>

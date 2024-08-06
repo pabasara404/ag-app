@@ -33,7 +33,7 @@ class PaymentController extends Controller
 
         $application = DB::table($applicationTable)
             ->where('application_code', $applicationCode)
-            ->where('status', 'issued')
+            ->where('status', 'Awaiting Payment')
             ->first();
 
         if (!$application) {
