@@ -11,22 +11,6 @@
           <n-h2>President Fund Application Form</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-<!--        <n-watermark-->
-
-<!--            image="../../images/Emblem_of_Sri_Lanka.svg.png"-->
-<!--            cross-->
-<!--            fullscreen-->
-<!--            :font-size="16"-->
-<!--            :line-height="16"-->
-<!--            :width="384"-->
-<!--            :height="384"-->
-<!--            :x-offset="12"-->
-<!--            :y-offset="0"-->
-<!--            :image-width="64"-->
-<!--            :image-opacity="0.24"-->
-<!--        />-->
-<!--   v-if="initialStatus === 'issued'"-->
       <n-form ref="formRef" :model="formValue">
           <n-form-item
               label="Application Reference Number" path="application_code">

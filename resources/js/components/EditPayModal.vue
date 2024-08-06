@@ -8,30 +8,24 @@
                 </n-page-header>
                 <n-form ref="formRef" :model="formValue">
                     <n-form-item label="Name with Initials" path="user.firstName">
-                        <n-input v-model:value="formValue.name" placeholder="Enter Name" :value="userName" />
+                        <n-input v-model:value="formValue.name" placeholder="Enter Name" />
                     </n-form-item>
-                    <n-form-item label="Payment Type" path="role">
-                        <template v-if="!paymentType">
-                            <n-dropdown trigger="hover" placement="bottom-start" :options="paymentTypeOptions" @select="handleSelect">
-                                <n-button>
-                                    {{
-                                        selectedPaymentType ? selectedPaymentType.label : "Payment Type"
-                                    }}
-                                    <n-icon><ArrowDropDownRoundIcon /></n-icon>
-                                </n-button>
-                            </n-dropdown>
-                        </template>
-                        <template v-else>
-                            <n-input v-model:value="formValue.payment_type" :value="paymentType" readonly />
-                        </template>
+                    <n-form-item label="Payment Type " label-placement="left" path="role">
+                        <n-dropdown trigger="hover" placement="bottom-start" :options="paymentTypeOptions" @select="handleSelect">
+                            <n-button>
+                                {{
+                                    selectedPaymentType ? selectedPaymentType.label : "Payment Type"
+                                }}
+                                <n-icon><ArrowDropDownRoundIcon /></n-icon>
+                            </n-button>
+                        </n-dropdown>
                     </n-form-item>
                     <n-form-item label="Application Code" path="user.firstName">
-                        <n-input v-model:value="formValue.application_code" placeholder="Enter Application Code" :value="applicationCode" />
+                        <n-input v-model:value="formValue.application_code" placeholder="Enter Application Code" />
                         <n-button class="mx-1.5" attr-type="button" @click="handleValidateClick">
                             <n-icon size="25"><SearchIcon /></n-icon>
                         </n-button>
                     </n-form-item>
-                    <p>Click Search button to display details of the application.</p><br/>
                     <template v-if="formValue.applicationDetails">
                         <n-card  :loading="isLoading" title="Application Details">
                             <p v-for="(field, index) in applicationFields" :key="index">
@@ -110,33 +104,13 @@ const emit = defineEmits(["close", "save"]);
 const props = defineProps({
     isShowing: Boolean,
     application: Object,
-    applicationCode: String,
-    userName: String,
-    paymentType: String
+    applicationCode: String
 });
 watch(
     () => props.isShowing,
     (newValue) => {
         isShowing.value = newValue;
-        if (props.application) {
-            formValue.value = { ...props.application };
-            formValue.value.name = props.userName;
-            formValue.value.application_code = props.applicationCode;
-            formValue.value.payment_type = props.paymentType;
-        } else {
-            formValue.value = {
-                name: props.userName,
-                application_code: props.applicationCode,
-                payment_type: props.paymentType,
-                amount: "",
-                bank_receipt_no: "",
-                contact_number: "",
-                nic: "",
-                receipt_no: "",
-                paid_date: "",
-                applicationDetails: null
-            };
-        }
+        formValue.value = { ...props.application };
     }
 );
 const formValue = ref({
@@ -233,10 +207,10 @@ function handleSelect(selected) {
 
 const selectedDate = computed({
     get: () => {
-        return moment(formValue.value.paid_date).isValid() ? moment(formValue.value.paid_date).valueOf() : null;
+        return moment(formValue.value.paid_date).valueOf();
     },
     set: (epoch) => {
-        formValue.value.paid_date = moment(epoch).isValid() ? moment(epoch).format("YYYY-MM-DD") : "";
+        formValue.value.paid_date = moment(epoch).format("YYYY-MM-DD");
     },
 });
 
@@ -246,13 +220,6 @@ const isNewPayment = computed(() => {
     try {
         const response = await Http.post(`/payment`, formValue.value);
         message.success('Payment saved successfully');
-
-        const applicationId = formValue.value.applicationDetails.id;
-        await Http.put(`/timberCuttingPermitApplication/${applicationId}`, {
-            status: 'Issued'
-        });
-
-
         emit('close');
     } catch (error) {
         message.error(error.response.data.error || 'Error saving payment');

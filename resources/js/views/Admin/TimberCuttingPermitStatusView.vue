@@ -48,6 +48,13 @@
         @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
     />
+    <edit-payment-modal
+        :is-showing="isShowingEditPaymentModal"
+        @close="handleEditPaymentModalClose"
+        :application-code= "applicationCode"
+        :user-name="userName"
+        :payment-type="paymentType"
+    />
 </template>
 
 <script setup>
@@ -56,12 +63,19 @@ import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import EditPaymentModal from "@/components/EditPaymentModal.vue";
+
 
 const isLoading = ref(false);
 const applications = ref([]);
 const selectedApplication = ref(null);
 const initialStatus = ref(null);
+const applicationCode = ref(null);
+const userName = ref(null);
+const paymentType = ref(null);
 const isShowingEditApplicationModal = ref(false);
+const isShowingEditPaymentModal = ref(false);
+const selectedPayment = ref(false);
 
 const columns = [
     {
@@ -104,7 +118,6 @@ const columns = [
                         selectedApplication.value = row;
                         isShowingEditApplicationModal.value = true;
                         initialStatus.value = row.status;
-                        console.log(row.status);
                     },
                 },
                 { default: () => "Edit Application" }
@@ -124,8 +137,10 @@ const columns = [
                     size: "small",
                     onClick: () => {
                         selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
+                        isShowingEditPaymentModal.value = true;
+                        applicationCode.value = row.application_code;
+                        userName.value = row.user.name;
+                        paymentType.value = "timber_cutting_permit_applications";
                     },
                 },
                 { default: () => "Download" }
@@ -133,6 +148,11 @@ const columns = [
         }
     }
 ];
+
+function handleEditPaymentModalClose(){
+    isShowingEditPaymentModal.value = false;
+    fetchApplication();
+}
 
 function handleEditApplicationModalClose(){
     isShowingEditApplicationModal.value = false;

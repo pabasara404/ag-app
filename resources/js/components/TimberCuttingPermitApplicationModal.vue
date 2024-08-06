@@ -26,23 +26,27 @@
           </n-form-item>
         <n-form-item label="Name of the Applicant" path="name">
           <n-input
-            v-model:value="formValue.name"
+              :disabled="initialStatus==='Escalated'"
+              v-model:value="formValue.name"
             placeholder="Enter Name of the Applicant"
           />
         </n-form-item>
         <n-form-item label="Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.address"
             maxlength="255" show-count clearable
             placeholder="Address of the Applicant"
           /> </n-form-item
         ><n-form-item label="Telephone No." path="contact_number">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.contact_number"
             placeholder="Telephone Number" /></n-form-item
         >
           <n-form-item label="Are you a Timber seller?" path="timberSeller">
           <n-radio-group
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.timber_seller_checked_value"
             name="timberSeller"
           >
@@ -56,6 +60,7 @@
           label="Are you cutting trees for non-commercial use?"
           path="timberSeller"
           ><n-radio-group
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.non_commercial_use_checked_value"
             name="nonCommercialUse"
           >
@@ -66,10 +71,12 @@
           </n-radio-group>
         </n-form-item>
         <n-form-item
+            :disabled="initialStatus==='Escalated'"
           label="Grama Niladari Division"
           path="grama_niladari_division"
         >
           <n-dropdown
+              :disabled="initialStatus==='Escalated'"
             trigger="hover"
             placement="bottom-start"
             :options="gnDivisionsForDropdown"
@@ -87,15 +94,18 @@
         </n-form-item>
         <n-form-item label="Land Deed Number" path="land_deed_number">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.deed_detail.land_deed_number"
             placeholder="Land Deed Number"
           />
         </n-form-item>
         <n-form-item label="Land deed date" path="land_deed_date">
-          <n-date-picker v-model:value="selectedDeedDate" type="date" />
+          <n-date-picker
+              :disabled="initialStatus==='Escalated'" v-model:value="selectedDeedDate" type="date" />
         </n-form-item>
         <n-form-item label="Ownership of land" path="ownershipOfLand">
           <n-radio-group
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.ownership_of_land_checked_value"
             name="ownershipOfLand"
           >
@@ -112,12 +122,14 @@
         </n-form-item>
         <n-form-item label="Land Name" path="land_name">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.land_name"
             placeholder="Land Name"
           />
         </n-form-item>
         <n-form-item label="Land Size in perches" path="land_size">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.land_size"
             placeholder="Land Size in perches"
           />
@@ -130,33 +142,40 @@
         </n-form-item>
         <n-form-item label="Plan No." path="plan_number">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.plan_number"
             placeholder="Plan No."
           />
         </n-form-item>
         <n-form-item label="Plan Date" path="plan_date">
-          <n-date-picker v-model:value="selectedPlanDate" type="date" />
+          <n-date-picker
+              :disabled="initialStatus==='Escalated'" v-model:value="selectedPlanDate" type="date" />
         </n-form-item>
         <n-form-item label="Plan plot No." path="plan_plot_no">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.plan_plot_number"
             placeholder="Plan plot No."
           />
         </n-form-item>
         <n-form-item label="Boundaries:" path="boundary">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.boundary.north"
             placeholder="To North"
           />
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.boundary.south"
             placeholder="To South"
           />
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.boundary.east"
             placeholder="To East"
           />
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.boundary.west"
             placeholder="To West"
           />
@@ -165,6 +184,7 @@
           <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.sub_no"
               placeholder="Sub no"
             />
@@ -172,6 +192,7 @@
 
           <n-form-item label="Type">
             <n-input
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.type"
               placeholder="Type"
             />
@@ -179,6 +200,7 @@
 
           <n-form-item label="Height (feets)">
             <n-input
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.height"
               placeholder="Height (feets)"
             />
@@ -186,6 +208,7 @@
 
           <n-form-item label="Girth (feets)">
             <n-input
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.girth"
               placeholder="Girth (feets)"
             />
@@ -193,6 +216,7 @@
 
           <n-form-item label="Reproducibility">
             <n-radio-group
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.reproducibility"
               name="Reproducibility"
             >
@@ -205,6 +229,7 @@
 
           <n-form-item label="Age">
             <n-input
+                :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.age"
               placeholder="Age"
             />
@@ -248,6 +273,7 @@
 
         <n-form-item label="Reasons for cutting down tree/trees:">
           <n-select
+              :disabled="initialStatus==='Escalated'"
             v-model:value="selectedTreeCuttingReasons"
             multiple
             :options="treeCuttingReasonsForSelect"
@@ -257,6 +283,7 @@
           label="Have jackfruit, coconut, breadfruit and female palm trees been cut on this land before?"
         >
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.trees_cut_before"
             placeholder="If any, that number"
           />
@@ -265,6 +292,7 @@
           label="How many trees of that type are planted to replace the trees that are asked to be cut down?"
         >
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.planted_tree_count"
             placeholder="How many trees of that type are planted to replace the trees that are asked to be cut down?"
           />
@@ -273,6 +301,7 @@
           label="Briefly mention the road signs from the Divisional Secretariat to the land"
         >
           <n-input
+              :disabled="initialStatus==='Escalated'"
             type="textarea"
             v-model:value="formValue.road_to_land"
             placeholder="Briefly mention the road signs from the Divisional Secretariat to the land"
@@ -337,7 +366,7 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item  label="Checked Date" path="checked_date">
                   <n-date-picker
-                      :disabled="initialStatus==='Pending'"
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item>
@@ -346,7 +375,7 @@
                   label="Any comment about application"
               >
                   <n-input
-                      :disabled="initialStatus==='Pending'"
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"
@@ -357,7 +386,7 @@
                   path="status"
               >
                   <n-dropdown
-                      :disabled="initialStatus==='Pending'"
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -383,7 +412,7 @@
           </n-form-item>
         </div>
       </n-form>
-        <n-space v-if="initialStatus==='Approved'" vertical>
+        <n-space v-if="initialStatus==='Issued'" vertical>
             <n-qr-code :value="formValue.application_code" />
         </n-space>
     </n-layout>
@@ -504,17 +533,15 @@ const isNewTimberCuttingPermitApplication = computed(() => {
     return !formValue.value.id;
 });
 const certifyAndSubmit = async () => {
-    console.log("certifyAndSubmit: ",props.initialStatus);
-    console.log(formValue.status);
             if (isNewTimberCuttingPermitApplication.value) {
-                formValue.status = "Submitted";
+                formValue.value.status = "Submitted";
                 Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
                     emit("close", false);
                 });
                 return;
             }
-            if (props.initialStatus === "Pending" && formValue.status === "Pending") {
-                formValue.status = "Resubmitted";
+            if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+                formValue.value.status = "Resubmitted";
             }
             Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value).then(() => {
                 emit("close", false);

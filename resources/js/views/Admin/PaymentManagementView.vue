@@ -27,8 +27,7 @@
         <edit-payment-modal
             :payment="selectedPayment"
             :is-showing="isShowingEditPaymentModal"
-            @close="isShowingEditPaymentModal = $event"
-            @save="fetchPayment"
+            @close="handleEditPaymentModalClose"
         />
     </n-layout>
 </template>
@@ -130,6 +129,11 @@ const columns = [
         },
     },
 ];
+
+function handleEditPaymentModalClose(){
+    isShowingEditPaymentModal.value = false;
+    fetchPayment();
+}
 
 onMounted(() => {
     fetchPayment();
