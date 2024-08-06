@@ -16,14 +16,6 @@ class GnDivision extends Model
         'gn_officer_id',
     ];
 
-    public function timberCuttingPermitApplication()
-    {
-        return $this->hasMany(TimberCuttingPermitApplication::class);
-    }
-    public function timberTransportingPermitApplication()
-    {
-        return $this->hasMany(TimberTransportingPermitApplication::class);
-    }
     public function citizen()
     {
         return $this->hasMany(Citizen::class);

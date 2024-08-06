@@ -61,18 +61,15 @@ class TimberCuttingPermitApplicationAction
             // Create the TimberCuttingPermitApplication model with the generated application code
             $timberCuttingPermitApplication = TimberCuttingPermitApplication::create($timberCuttingPermitApplicationArray);
 
-            $gnDivision = GnDivision::create($dto->gn_division);
             $deedDetails = DeedDetail::create($dto->deed_detail);
             $landDetails = LandDetail::create($dto->land_detail);
             $boundaries = Boundaries::create($dto->boundary);
 
-            if (!empty($dto->gn_division)) {
-                $gnDivision = GnDivision::find($dto->gn_division['id']);
-                if ($gnDivision) {
-                    $timberCuttingPermitApplication->gn_division()->associate($gnDivision);
-                    $timberCuttingPermitApplication->save();
-                }
+            $gnDivision = GnDivision::find($dto->gn_division['id']);
+            if ($gnDivision) {
+                $timberCuttingPermitApplication->gn_division()->associate($gnDivision);
             }
+
             if (!empty($dto->user)) {
                 $user = User::find($dto->user['id']);
                 if ($user) {
