@@ -47,8 +47,8 @@
             name="timberSeller"
           >
             <n-space>
-              <n-radio :value="true" label="Yes"> Yes </n-radio>
-              <n-radio :value="false" label="No"> No </n-radio>
+              <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+              <n-radio :value="'No'" label="No"> No </n-radio>
             </n-space>
           </n-radio-group>
         </n-form-item>
@@ -60,8 +60,8 @@
             name="nonCommercialUse"
           >
             <n-space>
-              <n-radio :value="true" label="Yes"> Yes </n-radio>
-              <n-radio :value="false" label="No"> No </n-radio>
+              <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+              <n-radio :value="'No'" label="No"> No </n-radio>
             </n-space>
           </n-radio-group>
         </n-form-item>
@@ -161,7 +161,7 @@
             placeholder="To West"
           />
         </n-form-item>
-        <n-card title="Enter details of the trees in the land">
+        <n-card title="Enter details of the trees that you want to cut and click Add Tree Detail button.">
           <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
@@ -197,8 +197,8 @@
               name="Reproducibility"
             >
               <n-space>
-                <n-radio :value="true" label="Yes"> Yes </n-radio>
-                <n-radio :value="false" label="No"> No </n-radio>
+                <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                <n-radio :value="'No'" label="No"> No </n-radio>
               </n-space>
             </n-radio-group>
           </n-form-item>
@@ -209,11 +209,10 @@
               placeholder="Age"
             />
           </n-form-item>
-          <!--            </n-form>-->
-          <n-button @click="addTreeDetails">Add Detail</n-button>
+          <n-button @click="addTreeDetails">Add Tree Details</n-button>
         </n-card>
           <br/>
-      <label>Please select the trees you want to cut from the below table.</label>
+      <n-h3>Tree Details</n-h3>
         <n-form-item>
             <n-table :bordered="false" :single-line="false">
                 <thead>
@@ -229,9 +228,7 @@
                 </thead>
                 <tbody>
                 <tr :key="key" v-for="(tree_detail, key) in formValue.tree_details">
-                    <td>
-                        <n-checkbox v-model="tree_detail.want_to_cut" size="large" label="  " @update:checked="updateTreeCount"/>{{ tree_detail.sub_no }}
-                    </td>
+                    <td>{{ tree_detail.sub_no }}</td>
                     <td>{{ tree_detail.type}}</td>
                     <td>{{ tree_detail.height}}</td>
                     <td>{{ tree_detail.girth }}</td>
@@ -342,7 +339,6 @@
                   <n-date-picker v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item>
-                  <!--                     <n-time-picker v-model:value="formValue.checked_time" />-->
               </n-form-item>
               <n-form-item
                   label="Any comment about application"
@@ -429,8 +425,8 @@ const formValue = ref({
     name: "John Doe",
     address: "123 Main St",
     contact_number: "555-1234",
-    timber_seller_checked_value: true,
-    non_commercial_use_checked_value: false,
+    timber_seller_checked_value: "Yes",
+    non_commercial_use_checked_value: "No",
     gn_division: {
         id: "74",
         gn_code: "370",
@@ -462,8 +458,7 @@ const formValue = ref({
             type: "Pine",
             height: "10 meters",
             girth: "2 meters",
-            reproducibility: true,
-            want_to_cut:true,
+            reproducibility: "Yes",
             age:"12"}
     ],
     tree_cutting_reasons: [
@@ -477,16 +472,8 @@ const formValue = ref({
     checked_date:"",
     checked_time:"",
     comment:"",
-    application_code:""
-    // citizen_id:{
-    //    name: "John Doe",
-    //    address: "123 Main St",
-    //    nic: "200006458556",
-    //    contact_number: "071542157",
-    //     date_of_birth: "2000-05-20",
-    //     gn_division_id: "1",
-    //     user_id: "1"
-    // }
+    application_code:"",
+    user: getLocalAuthUser()
 });
 
 const treeDetailsForm = ref({
@@ -495,9 +482,8 @@ const treeDetailsForm = ref({
     type: "Pine",
     height: "10 meters",
     girth: "2 meters",
-    reproducibility: true,
-    age: "5 years",
-    want_to_cut: false
+    reproducibility: "Yes",
+    age: "5 years"
 });
 
 const rules = {
@@ -525,17 +511,6 @@ const rules = {
         }
     ]
 };
-
-
-
-onMounted(async () => {
-        await Http.get('citizen-by-user-id', {
-            params:{
-                user_id: getLocalAuthUser().id
-            }
-        })
-    }
-);
 
 watch(
   () => props.isShowing,
@@ -643,16 +618,16 @@ function handleStatusSelect(selected) {
 }
 
 const gnDivisionsForDropdown = computed(() => {
-  return GNDivisionOptions.value.map((gnDivisionOption) => {
-    return {
-      key: gnDivisionOption.id,
-      label: gnDivisionOption.name,
-    };
-  });
+    return GNDivisionOptions.value.map((gnDivisionOption) => {
+        return {
+            key: gnDivisionOption.id,
+            label: gnDivisionOption.name,
+        };
+    });
 });
 
 const selectedGramaNiladariDivision = computed(() => {
-    if (!formValue.value.gn_division || formValue.value.gn_division.id === null) {
+    if (!formValue.value.gn_division || !formValue.value.gn_division.id) {
         return null;
     }
     return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
@@ -660,6 +635,17 @@ const selectedGramaNiladariDivision = computed(() => {
     });
 });
 
+const selectGramaNiladariDivision = (key) => {
+    const selectedDivision = GNDivisionOptions.value.find(division => division.id === key);
+    if (selectedDivision) {
+        formValue.value.gn_division = {
+            id: selectedDivision.id,
+            gn_code: selectedDivision.gn_code,
+            name: selectedDivision.name,
+            mpa_code: selectedDivision.mpa_code,
+        };
+    }
+};
 const treeCuttingReasonsForSelect = computed(() => {
   return treeCuttingReasons.value.map((treeCuttingReason) => {
     return {
@@ -691,7 +677,6 @@ const selectedTreeCuttingReasons = computed({
 
 onMounted(() => {
   fetchGnDivisions();
-  // fetchTimberCuttingPermitApplication();
   fetchTreeCuttingReasons();
 });
 
@@ -713,51 +698,10 @@ async function fetchTreeCuttingReasons() {
     treeCuttingReasons.value = data;
 }
 
-function selectGramaNiladariDivision(key) {
-  formValue.value.grama_niladari_division = GNDivisionOptions.value.find(
-    (GNDivisionOption) => {
-      return GNDivisionOption.id === key;
-    }
-  );
-}
-function handleValidateClick(e) {
-  e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      message.success("Valid");
-    } else {
-      console.log(errors);
-      message.error("Invalid");
-    }
-  });
-}
-// function handleChange(e) {
-//   checkedValueRef.value = e.target.value;
-//   console.log(`Selected value: ${checkedValueRef.value}`);
-// }
-function handleChange(group, e) {
-  if (group === "nonCommercialUse") {
-    non_commercial_use_checked_value.value = e.target.value;
-    console.log(
-      `Selected non-commercial use value: ${non_commercial_use_checked_value.value}`
-    );
-  } else if (group === "timberSeller") {
-    timber_seller_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${timber_seller_checked_value.value}`
-    );
-  } else if (group === "ownershipOfLand") {
-    ownership_of_land_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${ownership_of_land_checked_value.value}`
-    );
-  }
-}
-
 const addTreeDetails = () => {
     formValue.value.tree_details.push({ ...treeDetailsForm.value, want_to_cut: false });
-    clearTreeForm(); // Clear the form after adding tree details
-    // updateTreeCount();
+    clearTreeForm();
+    updateTreeCount();
 
 };
 
@@ -768,7 +712,7 @@ const clearTreeForm = () => {
   treeDetailsForm.value.girth = "";
   treeDetailsForm.value.reproducibility = false;
   treeDetailsForm.value.age = "";
-    treeDetailsForm.value.want_to_cut = "";
+  treeDetailsForm.value.want_to_cut = "";
 };
 
 const removeRow = (index) => {
@@ -777,22 +721,11 @@ const removeRow = (index) => {
 };
 
 const updateTreeCount = () => {
-    if (formValue.value.tree_details) {
-        formValue.value.tree_count = formValue.value.tree_details.filter(tree => tree.want_to_cut).length;
-    } else {
-        formValue.value.tree_count = 0;
-    }
+    treeCount.value = formValue.value.tree_details.length;
+    formValue.value.tree_count = treeCount.value;
 };
 
-const treeCount = computed(() => formValue.value.tree_count);
-
-watch(
-    () => {
-        return formValue.value.tree_details ? formValue.value.tree_details.map(tree => tree.want_to_cut) : [];
-    },
-    updateTreeCount,
-    { deep: true }
-);
+const treeCount = ref(0);
 
 </script>
 

@@ -56,4 +56,9 @@ class User extends Authenticatable
     public function citizen(){
         return $this->hasOne(Citizen::class);
     }
+
+    public function timberCuttingPermitApplication()
+    {
+        return $this->hasOne(TimberCuttingPermitApplication::class);
+    }
 }

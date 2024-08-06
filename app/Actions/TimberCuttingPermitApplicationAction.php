@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TimberCuttingPermitApplicationAction
 {
@@ -41,18 +42,8 @@ class TimberCuttingPermitApplicationAction
             ->get();
     }
 
-//    public static function update(array $employee): bool
-//    {
-//        return EmployeeBuilder::whereId($employee['id'])
-//            ->update([
-//                'name' => $employee['name'],
-//                'address' => $employee['address'],
-//                'contact_number' => $employee['contact_number'],
-//                'date_of_birth' => $employee['date_of_birth'],
-//            ]);
-//    }
 
-    public static function store(array $timberCuttingPermitApplication, User $authUser = null)
+    public static function store(array $timberCuttingPermitApplication)
     {
         DB::beginTransaction();
         try {
@@ -82,6 +73,13 @@ class TimberCuttingPermitApplicationAction
                     $timberCuttingPermitApplication->save();
                 }
             }
+            if (!empty($dto->user)) {
+                $user = User::find($dto->user['id']);
+                if ($user) {
+                    $timberCuttingPermitApplication->user()->associate($user);
+                    $timberCuttingPermitApplication->save();
+                }
+            }
 
             $timberCuttingPermitApplication->deed_detail_id = $deedDetails->id;
             $timberCuttingPermitApplication->land_detail_id = $landDetails->id;
@@ -93,8 +91,8 @@ class TimberCuttingPermitApplicationAction
             });
 
             collect($dto->tree_details)->each(function ($treeDetail) use ($timberCuttingPermitApplication) {
-                $treeDetails = TreeDetail::create($treeDetail);
-                $timberCuttingPermitApplication->tree_details = $treeDetails;
+                $treeDetail['timber_cutting_permit_application_id'] = $timberCuttingPermitApplication->id;
+                TreeDetail::create($treeDetail);
             });
 
             DB::commit();

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('height');
             $table->string('girth');
-            $table->boolean('reproducibility');
-            $table->boolean('want_to_cut');
+            $table->string('reproducibility');
             $table->string('age');
             $table->foreignId('timber_cutting_permit_application_id')->nullable()->references('id')->on('timber_cutting_permit_applications');
             $table->timestamps();

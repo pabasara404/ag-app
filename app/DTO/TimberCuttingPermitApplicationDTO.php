@@ -29,6 +29,7 @@ class TimberCuttingPermitApplicationDTO
     public ?string $checked_time;
     public ?string $comment;
     public ?string $application_code;
+    public array $user;
 
 
     public function __construct(array $data)

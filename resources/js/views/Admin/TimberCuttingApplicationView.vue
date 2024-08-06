@@ -50,6 +50,7 @@
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
 import TimberCuttingPermitApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 
 const isShowingTimberCuttingPermitApplicationModal = ref(false);
@@ -61,8 +62,8 @@ function addNewApplication() {
         name: "John Doe",
         address: "123 Main St",
         contact_number: "555-1234",
-        timber_seller_checked_value: true,
-        non_commercial_use_checked_value: false,
+        timber_seller_checked_value: "Yes",
+        non_commercial_use_checked_value: "No",
         gn_division: {
             id: "74",
             gn_code: "370",
@@ -94,8 +95,7 @@ function addNewApplication() {
                 type: "Pine",
                 height: "10 meters",
                 girth: "2 meters",
-                reproducibility: true,
-                want_to_cut:true,
+                reproducibility: "Yes",
                 age:"12"}
         ],
         tree_cutting_reasons: [
@@ -109,15 +109,7 @@ function addNewApplication() {
         checked_date:"",
         checked_time:"",
         comment:"",
-        // citizen_id: {
-        //    name: "",
-        //    address: "",
-        //    nic: "",
-        //    contact_number: "",
-        //    date_of_birth: "",
-        //    gn_division_id: "",
-        //    user_id: ""
-        // }
+        user: getLocalAuthUser()
     };
 
     isShowingTimberCuttingPermitApplicationModal.value = true

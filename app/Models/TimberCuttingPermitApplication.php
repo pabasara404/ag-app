@@ -36,6 +36,7 @@ class TimberCuttingPermitApplication extends Model
         'tree_detail_id',
         'comment',
         'application_code',
+        'user_id'
     ];
 
     protected $casts = [
@@ -57,15 +58,14 @@ class TimberCuttingPermitApplication extends Model
     public function boundary(){
         return $this->belongsTo(Boundaries::class);
     }
-//    public function tree_count(){
-//        return $this->belongsTo(TreeCount::class);
-//    }
-    public function citizen(){
-        return $this->belongsTo(Citizen::class);
-    }
     public function tree_cutting_reasons(): BelongsToMany
     {
         return $this->belongsToMany(TreeCuttingReason::class,'permit_application_cutting_reason','permit_application_id','cutting_reason_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public static function generateApplicationCode()

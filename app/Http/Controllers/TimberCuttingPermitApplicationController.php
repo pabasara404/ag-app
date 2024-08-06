@@ -9,6 +9,7 @@ use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Models\TimberCuttingPermitApplication;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TimberCuttingPermitApplicationController extends Controller
 {
@@ -52,8 +53,8 @@ class TimberCuttingPermitApplicationController extends Controller
         StoreTimberCuttingPermitApplicationRequest $request
     )
     {
-        TimberCuttingPermitApplicationAction::store($request->toArray());
 
+        TimberCuttingPermitApplicationAction::store($request->toArray());
     }
 
     /**

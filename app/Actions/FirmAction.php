@@ -47,7 +47,6 @@ class FirmAction
             // Create firm
             $firm = Firm::create($firmArray);
 
-            // Associate gn_division
             if (!empty($dto->gn_division)) {
                 $gnDivision = GnDivision::find($dto->gn_division['id']);
                 if ($gnDivision) {

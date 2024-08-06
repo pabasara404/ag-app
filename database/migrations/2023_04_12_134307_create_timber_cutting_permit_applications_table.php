@@ -35,8 +35,7 @@ return new class extends Migration
             $table->foreignId('deed_detail_id')->nullable()->references('id')->on('deed_details');
             $table->foreignId('land_detail_id')->nullable()->references('id')->on('land_details');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');
-//            $table->foreignId('tree_count_id')->nullable()->references('id')->on('tree_counts');
-            $table->foreignId('citizen_id')->nullable()->references('id')->on('citizens');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
