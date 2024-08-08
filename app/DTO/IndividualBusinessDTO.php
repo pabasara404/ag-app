@@ -28,6 +28,7 @@ class IndividualBusinessDTO
     public string $status;
     public ?string $application_code;
     public array $gn_division;
+    public array $user;
 
     public function __construct(array $data)
     {

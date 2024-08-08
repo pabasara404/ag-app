@@ -11,38 +11,27 @@
           <n-h2>Application for Registration of a Business Name By an Individual</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-        <n-watermark
 
-            image="../../images/Emblem_of_Sri_Lanka.svg.png"
-            cross
-            fullscreen
-            :font-size="16"
-            :line-height="16"
-            :width="384"
-            :height="384"
-            :x-offset="12"
-            :y-offset="0"
-            :image-width="64"
-            :image-opacity="0.24"
-        />
-<!--   v-if="initialStatus === 'issued'"-->
-      <n-form ref="formRef" :model="formValue">
+      <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item
+              v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
           <n-input
+
               :disabled="true"
               v-model:value="formValue.application_code"
           />
         </n-form-item>
           <n-form-item label="The Business Name" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.business_name"
                   placeholder="Enter Name of the Business"
               />
           </n-form-item>
           <n-form-item label="The General Nature Of the Business" path="nature">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.nature"
             placeholder="The General Nature Of the Business"
           /> <n-tooltip trigger="hover">
@@ -53,24 +42,31 @@
         </n-tooltip></n-form-item
         ><n-form-item label="The Principal Place of the Business" path="principal_place">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.principal_place"
             placeholder="The Principal Place of the Business" /></n-form-item>
           <n-form-item label="Initial Capital of the Business" path="initial_capital">
           <n-input
+              :disabled="initialStatus==='Escalated'"
               v-model:value="formValue.initial_capital"
               placeholder="Initial Capital of the Business" /></n-form-item>
           <n-form-item label="If any Branch Office/ Store / Stores Warehouse is prevailing the address">
               <div v-for="(address, index) in formValue.addresses" :key="index">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="formValue.addresses[index].name"
                       placeholder="If any Branch Office/Store/Stores Warehouse is prevailing the address"
                   />
               </div>
           </n-form-item>
-          <n-button @click="addAddress">Add Another Address</n-button>
+          <n-button
+              :disabled="initialStatus==='Escalated'"
+              @click="addAddress">Add Another Address</n-button>
           <br /><br />
           <n-form-item label="The Date of Commencement of the Business" path="nature">
-              <n-date-picker v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
+              <n-date-picker
+                  :disabled="initialStatus==='Escalated'"
+                  v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
               <template #trigger>
                   <n-icon><InformationCircleOutlineIcon /></n-icon>
               </template>
@@ -78,6 +74,7 @@
           </n-tooltip></n-form-item>
           <n-form-item label="Full Name of Owner" path="ownerName">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.owner_detail.name"
                   placeholder="Full Name of Owner"
               /> <n-tooltip trigger="hover">
@@ -88,6 +85,7 @@
           </n-tooltip></n-form-item>
           <n-form-item label="If any previous Name for the Owner Name in full" path="ownerName">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.owner_detail.previous_name"
                   placeholder="If any previous Name for the Owner Name in full"
               /> <n-tooltip trigger="hover">
@@ -98,21 +96,25 @@
           </n-tooltip></n-form-item>
           <n-form-item label="The Nationality of the Owner" path="ownerNationality">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.owner_detail.nationality"
                   placeholder="The Nationality of the Owner" />
           </n-form-item>
           <n-form-item label="National Identity Card Number" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.owner_detail.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
           <n-form-item label="The Usual residence of the Owner" path="ownerResidence">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.owner_detail.residence"
                   placeholder="The Usual residence of the Owner" />
           </n-form-item>
-          <n-form-item label="If the Owner in any other business?" path="otherBusiness">
+          <n-form-item  label="If the Owner in any other business?" path="otherBusiness">
               <n-radio-group
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.is_other_business_value"
                   name="otherBusiness"
               >
@@ -123,22 +125,25 @@
               </n-radio-group>
           </n-form-item>
           <div v-if="formValue.is_other_business_value">
-              <n-card>
+              <n-card v-if="isNewApplication">
                   <n-form-item label="Business Registration no" path="registration_no">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="otherBusinessDetailsForm.registration_no"
                           placeholder="Business Registration number" />
                   </n-form-item>
                   <n-form-item label="Business Name">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="otherBusinessDetailsForm.business_name"
                           placeholder="Business Name"
                       />
                   </n-form-item>
               </n-card>
               <br/>
-              <n-button @click="addOtherBusinessDetails">Add Another Business</n-button>
-          </div>
+              <n-button
+                  :disabled="initialStatus==='Escalated'" @click="addOtherBusinessDetails">Add Another Business</n-button>
+
           <br/>
           <n-form-item>
               <n-table :bordered="false" :single-line="false">
@@ -162,8 +167,10 @@
                   </tbody>
               </n-table>
           </n-form-item>
+          </div>
           <n-form-item label="If the owner is a director of a cooperation?" path="is_director">
               <n-radio-group
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.is_director"
                   name="otherBusiness"
               >
@@ -174,22 +181,24 @@
               </n-radio-group>
           </n-form-item>
           <div v-if="formValue.is_director">
-              <n-card>
+              <n-card v-if="isNewApplication">
                   <n-form-item label="Registration no" path="registration_no">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="directorDetailsForm.registration_no"
                           placeholder="Registration number" />
                   </n-form-item>
                   <n-form-item label="Name">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="directorDetailsForm.name"
                           placeholder="Name"
                       />
                   </n-form-item>
               </n-card>
               <br/>
-              <n-button @click="addDirectorDetails">Add Director Details</n-button>
-          </div>
+              <n-button
+                  :disabled="initialStatus==='Escalated'" @click="addDirectorDetails">Add Director Details</n-button>
           <br/>
           <n-form-item>
               <n-table :bordered="false" :single-line="false">
@@ -213,13 +222,16 @@
                   </tbody>
               </n-table>
           </n-form-item>
+          </div>
           <n-form-item label="If the Business is carried on under any other name, such other business name" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.other_business_name"
                   placeholder="If the Business is carried on under any other name, such other business name" />
           </n-form-item>
           <n-form-item label="If the owner is a government officer?" path="timberSeller">
               <n-radio-group
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.government_officer_checked_value"
                   name="governmentOfficer"
               >
@@ -231,6 +243,7 @@
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
@@ -239,6 +252,7 @@
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -259,6 +273,7 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Ownership of land" path="ownershipOfLand">
                   <n-radio-group
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="formValue.ownership_of_land_checked_value"
                       name="ownershipOfLand"
                   >
@@ -274,14 +289,13 @@
                   </n-radio-group>
               </n-form-item>
               <n-form-item label="Checked Date" path="land_deed_date">
-<!--                  <n-input-group>-->
-                      <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-<!--                      <n-time-picker v-model:value="checked_time" />-->
-<!--                  </n-input-group>-->
+                      <n-date-picker
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'" v-model:value="selectedCheckedDate" type="date" />
               </n-form-item><n-form-item
               label="Any comment about application"
           >
               <n-input
+                  :disabled="initialStatus==='Pending'"
                   type="textarea"
                   v-model:value="formValue.comment"
                   placeholder="Any comment about application"
@@ -292,6 +306,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -367,7 +382,7 @@
         <div class="flex justify-end">
             <n-form-item>
                 <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
                 <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
             </n-form-item>
         </div>
@@ -453,6 +468,7 @@ const formValue = ref({
     checked_time: "",
     comment:"",
     application_code:"",
+    user: getLocalAuthUser()
 });
 
 const otherBusinessDetailsForm = ref({
@@ -464,6 +480,31 @@ const directorDetailsForm = ref({
     registration_no: "",
     name: "",
 });
+
+const rules = {
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
+};
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
@@ -482,52 +523,6 @@ function handleStatusSelect(selected) {
     formValue.value.status = selected;
 }
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
-const options = [
-  {
-    label: "Marina Bay Sands",
-    key: "Marina Bay Sands",
-  },
-  {
-    label: "Brown's Hotel, London",
-    key: "Brown's Hotel, London",
-  },
-  {
-    label: "Atlantis Bahamas, Nassau",
-    key: "Atlantis Bahamas, Nassau",
-  },
-  {
-    label: "The Beverly Hills Hotel, Los Angeles",
-    key: "The Beverly Hills Hotel, Los Angeles",
-  },
-];
-onMounted(async () => {
-        // await Http.get('citizen-by-user-id', {
-        //     params:{
-        //         user_id: getLocalAuthUser().id
-        //     }
-        // })
-    console.log(props.initialStatus);
-    }
-);
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -535,18 +530,29 @@ watch(
     formValue.value = {...props.application };
   }
 );
+
+const isNewApplication = computed(() => {
+    return !formValue.value.id;
+});
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("individualBusiness", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Submitted";
+            await Http.post("individualBusiness", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`individualBusiness/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
     }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`individualBusiness/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
 
 const updateStatus = async (status) => {
@@ -554,10 +560,12 @@ const updateStatus = async (status) => {
         await Http.put(`individualBusiness/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 
@@ -587,9 +595,7 @@ const selectedCheckedDate = computed({
     }
 });
 
-const isNewApplication = computed(() => {
-  return !formValue.value.id;
-});
+
 
 const gnDivisionsForDropdown = computed(() => {
     return GNDivisionOptions.value.map((gnDivisionOption) => {

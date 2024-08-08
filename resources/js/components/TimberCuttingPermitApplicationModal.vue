@@ -13,8 +13,6 @@
         </div>
       </n-page-header>
 
-
-
       <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item
               v-if="!isNewTimberCuttingPermitApplication"
@@ -127,7 +125,7 @@
             placeholder="Land Name"
           />
         </n-form-item>
-        <n-form-item label="Land Size in perches" path="land_size">
+        <n-form-item label="Land Size in perches" path="land_detail.land_size">
           <n-input
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.land_size"
@@ -140,18 +138,18 @@
             <span>1 Acre = 160 Perches = 4 Roods = 4,000 Sqm</span>
           </n-tooltip>
         </n-form-item>
-        <n-form-item label="Plan No." path="plan_number">
+        <n-form-item label="Plan No." path="land_detail.plan_number">
           <n-input
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.plan_number"
             placeholder="Plan No."
           />
         </n-form-item>
-        <n-form-item label="Plan Date" path="plan_date">
+        <n-form-item label="Plan Date" path="land_detail.plan_date">
           <n-date-picker
               :disabled="initialStatus==='Escalated'" v-model:value="selectedPlanDate" type="date" />
         </n-form-item>
-        <n-form-item label="Plan plot No." path="plan_plot_no">
+        <n-form-item label="Plan plot No." path="land_detail.plan_plot_no">
           <n-input
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.plan_plot_number"
@@ -181,7 +179,7 @@
           />
         </n-form-item>
         <n-card v-if="isNewTimberCuttingPermitApplication" title="Enter details of the trees that you want to cut and click Add Tree Detail button.">
-          <n-form-item label="Sub no">
+          <n-form-item label="Sub no" path="tree_details.sub_no">
             <n-input
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.sub_no"
@@ -189,7 +187,7 @@
             />
           </n-form-item>
 
-          <n-form-item label="Type">
+          <n-form-item path="tree_details.type" label="Type">
             <n-input
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.type"
@@ -197,7 +195,7 @@
             />
           </n-form-item>
 
-          <n-form-item label="Height (feets)">
+          <n-form-item label="Height (feets)" path="tree_details.height">
             <n-input
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.height"
@@ -205,7 +203,7 @@
             />
           </n-form-item>
 
-          <n-form-item label="Girth (feets)">
+          <n-form-item label="Girth (feets)" path="tree_details.girth">
             <n-input
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.girth"
@@ -213,7 +211,7 @@
             />
           </n-form-item>
 
-          <n-form-item label="Reproducibility">
+          <n-form-item label="Reproducibility" path="tree_details.Reproducibility">
             <n-radio-group
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.reproducibility"
@@ -226,7 +224,7 @@
             </n-radio-group>
           </n-form-item>
 
-          <n-form-item label="Age">
+          <n-form-item label="Age" path="tree_details.age">
             <n-input
                 :disabled="initialStatus==='Escalated'"
               v-model:value="treeDetailsForm.age"
@@ -271,7 +269,7 @@
           <label>Tree Count: {{ treeCount }}</label>
           <br/><br/>
 
-        <n-form-item label="Reasons for cutting down tree/trees:">
+        <n-form-item label="Reasons for cutting down tree/trees:" path="tree_cutting_reasons">
           <n-select
               :disabled="initialStatus==='Escalated'"
             v-model:value="selectedTreeCuttingReasons"
@@ -281,6 +279,7 @@
         </n-form-item>
         <n-form-item
           label="Have jackfruit, coconut, breadfruit and female palm trees been cut on this land before?"
+          path="trees_cut_before"
         >
           <n-input
               :disabled="initialStatus==='Escalated'"
@@ -289,6 +288,7 @@
           />
         </n-form-item>
         <n-form-item
+            path="planted_tree_count"
           label="How many trees of that type are planted to replace the trees that are asked to be cut down?"
         >
           <n-input
@@ -301,6 +301,7 @@
           label="Briefly mention the road signs from the Divisional Secretariat to the land"
         >
           <n-input
+              path="road_to_land"
               :disabled="initialStatus==='Escalated'"
             type="textarea"
             v-model:value="formValue.road_to_land"
@@ -366,8 +367,7 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item  label="Checked Date" path="checked_date">
                   <n-date-picker
-
-                      :disabled="initialStatus==='Escalated'"
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item>
@@ -514,6 +514,31 @@ const treeDetailsForm = ref({
     reproducibility: "Yes",
     age: "5 years"
 });
+
+const rules = {
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
+};
 
 
 watch(

@@ -86,13 +86,13 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('checkNic', [CitizenController::class, 'checkNic']);
 
 //routes for individualBusiness
-//Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
     Route::get('individualBusiness', [individualBusinessController::class, 'index']);
     Route::get('individualBusinessByStatus', [individualBusinessController::class, 'show']);
     Route::put('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'update']);
     Route::delete('individualBusiness/{individualBusiness}', [individualBusinessController::class, 'destroy']);
     Route::post('individualBusiness', [individualBusinessController::class, 'store']);
     Route::put('individualBusiness/{id}', [individualBusinessController::class, 'updateStatus']);
+    Route::get('userIndividualBusinessApplications', [individualBusinessController::class, 'userApplications']);
 
 
 // Example routes in api.php

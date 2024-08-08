@@ -104,9 +104,7 @@ const columns = [
                     secondary: true,
                     size: "small",
                     onClick: () => {
-                        selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
+                        updateStatus('Ceased')
                     },
                 },
                 { default: () => "Submit a Cessation" }
@@ -114,6 +112,19 @@ const columns = [
         }
     }
 ];
+
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`individualBusiness/${props.application.id}`, {
+            status: status
+        });
+        message.success("Cessation was submitted successfully");
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+    }
+};
 
 function getTypeFromCode(code) {
     const parts = code.split('/');

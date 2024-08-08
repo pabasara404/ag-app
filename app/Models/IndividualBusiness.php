@@ -28,7 +28,13 @@ class IndividualBusiness extends Model
         'owner_detail_id',
         'citizen_id',
         'gn_division_id',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function addresses(){
         return $this->hasMany(Address::class);

@@ -33,6 +33,7 @@ import BusinessIndividualApplicationModal from "@/components/BusinessIndividualA
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
+import {getLocalAuthUser} from "@/services/auth.js";
 
 
 function addNewApplication() {
@@ -80,6 +81,7 @@ function addNewApplication() {
         checked_time: "",
         comment:"",
         application_code:"",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

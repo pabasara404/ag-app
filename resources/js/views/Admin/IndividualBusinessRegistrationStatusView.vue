@@ -48,9 +48,15 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
+    />
+    <edit-payment-modal
+        :is-showing="isShowingEditPaymentModal"
+        @close="handleEditPaymentModalClose"
+        :application-code= "applicationCode"
+        :user-name="userName"
+        :payment-type="paymentType"
     />
 </template>
 
@@ -60,12 +66,17 @@ import { h, onMounted, ref } from "vue";
 import { NButton } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/BusinessIndividualApplicationModal.vue";
+import EditPaymentModal from "@/components/EditPaymentModal.vue";
 
 const isLoading = ref(false);
 const applications = ref([]);
 const selectedApplication = ref(null);
 const initialStatus = ref(null);
+const applicationCode = ref(null);
+const userName = ref(null);
+const paymentType = ref(null);
 const isShowingEditApplicationModal = ref(false);
+const isShowingEditPaymentModal = ref(false);
 
 const columns = [
     {
@@ -121,7 +132,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Issued" ? h(
+            return row.status === "Awaiting Payment" ? h(
                 NButton,
                 {
                     round: true,
@@ -141,15 +152,31 @@ const columns = [
     }
 ];
 
+
+function handleEditPaymentModalClose(){
+    isShowingEditPaymentModal.value = false;
+    fetchApplication();
+}
+
+function handleEditApplicationModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
 onMounted(() => {
     fetchApplication();
 });
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("individualBusiness");
-    isLoading.value = false;
-    applications.value = data.data;
+    try {
+        const { data } = await Http.get("/userIndividualBusinessApplications");
+        applications.value = data.data;
+    } catch (error) {
+        console.error("Failed to fetch applications", error);
+    } finally {
+        isLoading.value = false;
+    }
 }
 </script>
 

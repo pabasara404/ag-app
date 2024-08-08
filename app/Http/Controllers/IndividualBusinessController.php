@@ -30,6 +30,27 @@ class IndividualBusinessController extends Controller
     }
 
     /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = IndividualBusiness::with(
+            'addresses',
+            'owner_detail',
+            'other_businesses',
+            'director_details',
+            'gn_division',
+            "user",
+        )->where('user_id', $userId)->get();
+
+        return IndividualBusinessResource::collection($applications);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
