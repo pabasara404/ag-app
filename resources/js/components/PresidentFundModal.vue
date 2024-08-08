@@ -102,10 +102,10 @@
         </n-p>
         <n-form-item>
           <n-upload
-            multiple
-            directory-dnd
-            action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
-            :max="5"
+              multiple
+              directory-dnd
+              :on-success="handleUploadSuccess"
+              :on-error="handleUploadError"
           >
             <n-upload-dragger>
               <div style="margin-bottom: 12px">
@@ -186,6 +186,7 @@ const formValue = ref({
     submission_timestamp: "2023-07-15 10:00:00",
     comment: "This is a test comment",
     application_code: "bsdgh454564",
+    files: [],
 });
 
 const statusOptions = [

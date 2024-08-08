@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('submission_timestamp');
             $table->text('comment')->nullable();
             $table->string('application_code')->unique();
+            $table->json('file_paths')->nullable();
             $table->timestamps();
         });
     }

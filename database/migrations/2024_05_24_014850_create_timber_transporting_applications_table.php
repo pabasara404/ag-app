@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('contact_number');
             $table->string('address_of_timber');
             $table->string('is_timber_bought_checked_value');
-            $table->string('receipt_no');
-            $table->date('bought_date');
-            $table->string('road_to_timber_location');
+            $table->string('receipt_no')->nullable();
+            $table->date('bought_date')->nullable();
+            $table->string('road_to_timber_location')->nullable();
             $table->string('is_timber_private_land_checked_value');
             $table->string('end_location');
             $table->string('route');
@@ -35,6 +35,7 @@ return new class extends Migration
             $table->foreignId('private_land_id')->nullable()->references('id')->on('private_lands');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -31,6 +31,8 @@ const router = createRouter({
     routes, // short for `routes: routes`
 })
 
+export default router;
+
 
 router.beforeEach( (to, from, next) => {
     const isLoggedIn = !!localStorage.getItem('APP_DEMO_USER_TOKEN');

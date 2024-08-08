@@ -15,7 +15,7 @@
 
 
 
-      <n-form ref="formRef" :model="formValue">
+      <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
               <n-input
@@ -25,18 +25,21 @@
           </n-form-item>
         <n-form-item label="Name of the Applicant" path="name">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.name"
             placeholder="Enter Name of the Applicant"
           />
         </n-form-item>
         <n-form-item label="Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.address"
             placeholder="Address of the Applicant"
           />
         </n-form-item>
           <n-form-item label="Telephone No." path="contact_number">
             <n-input
+                :disabled="initialStatus==='Escalated'"
                 v-model:value="formValue.contact_number"
                 placeholder="Telephone Number" />
           </n-form-item>
@@ -45,6 +48,7 @@
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -62,34 +66,39 @@
           </n-form-item>
           <n-form-item label="Address of the timber" path="address_of_timber">
             <n-input
+                :disabled="initialStatus==='Escalated'"
                 v-model:value="formValue.address_of_timber"
                 placeholder="Address of the timber" />
           </n-form-item>
           <n-form-item label="Was timber bought?" path="timber_bought">
           <n-radio-group
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.is_timber_bought_checked_value"
             name="timberBought"
           >
             <n-space>
-              <n-radio :value="true" label="Yes"> Yes </n-radio>
-              <n-radio :value="false" label="No"> No </n-radio>
+              <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+              <n-radio :value="'No'" label="No"> No </n-radio>
             </n-space>
           </n-radio-group>
           </n-form-item>
-          <div v-if="formValue.is_timber_bought_checked_value">
+          <div v-if="formValue.is_timber_bought_checked_value === 'Yes'">
           <n-card>
               <n-form-item label=" Receipt no" path="receipt_no">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="formValue.receipt_no"
                       placeholder=" Receipt no" />
               </n-form-item>
               <n-form-item label="Bought Date" path="date">
-                  <n-date-picker v-model:value="selectedBoughtDate" type="date" />
+                  <n-date-picker
+                      :disabled="initialStatus==='Escalated'" v-model:value="selectedBoughtDate" type="date" />
               </n-form-item>
                   <n-form-item
                       label="How to go the location of timber from AG Office"
                   >
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           type="textarea"
                           v-model:value="formValue.road_to_timber_location"
                           placeholder="How to go the location of timber from AG Office"
@@ -100,50 +109,58 @@
           <br/>
           <n-form-item label="Was timber taken from a private land owner?" path="timber_private">
               <n-radio-group
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.is_timber_private_land_checked_value"
                   name="timberPrivate"
               >
                   <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
+                      <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                      <n-radio :value="'No'" label="No"> No </n-radio>
                   </n-space>
               </n-radio-group>
           </n-form-item>
           <n-form-item label="Land Deed Number" path="land_deed_number">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_deed_number"
                   placeholder="Land Deed Number"
               />
           </n-form-item>
           <n-form-item label="Registration Date" path="registration_date">
-              <n-date-picker v-model:value="selectedRegistrationDate" type="date" />
+              <n-date-picker
+                  :disabled="initialStatus==='Escalated'" v-model:value="selectedRegistrationDate" type="date" />
           </n-form-item>
           <n-form-item label="Plan plot No." path="plan_plot_no">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.plan_plot_number"
                   placeholder="Plan plot No."
               />
           </n-form-item>
           <n-form-item label="Registration office" path="registration_office">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.registration_office"
                   placeholder="Registration office"
               />
           </n-form-item>
           <n-form-item label="Plan No." path="plan_number">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.plan_number"
                   placeholder="Plan No."
               />
           </n-form-item>
           <n-form-item label="Land Name" path="land_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_name"
                   placeholder="Land Name"
               />
           </n-form-item>
           <n-form-item label="Land Size in perches" path="land_size">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_size"
                   placeholder="Land Size in perches"
               />
@@ -156,53 +173,62 @@
           </n-form-item>
           <n-form-item label="Boundaries:" path="boundary">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.boundary.north"
                   placeholder="To North"
               />
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.boundary.south"
                   placeholder="To South"
               />
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.boundary.east"
                   placeholder="To East"
               />
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.boundary.west"
                   placeholder="To West"
               />
           </n-form-item>
           <n-form-item label="End Location of the timber" path="end_location">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.end_location"
                   placeholder="End Location of the timber"
               />
           </n-form-item>
           <n-form-item label="Route that timber is transported" path="route">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.route"
                   placeholder="Route that timber is transported"
               />
           </n-form-item>
           <n-form-item label="Date timber is transported" path="timber_transport_date">
-              <n-date-picker v-model:value="selectedTimberTransportDate" type="date" />
+              <n-date-picker
+                  :disabled="initialStatus==='Escalated'"v-model:value="selectedTimberTransportDate" type="date" />
           </n-form-item>
           <n-form-item label="Plate number of the vehicle" path="plate_number">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.plate_number"
                   placeholder="Plate number of the vehicle"
               />
           </n-form-item>
-              <n-card title="Details about timber. (Use Standard measurements to complete the details.)">
-                                    <!--            <n-form ref="treeForm">-->
+              <n-card v-if="isNewApplication"  title="Details about the timber. (Use Standard measurements to complete the details.)">
                   <n-form-item label="Timber type">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.timber_type"
                           placeholder="Timber type"
                       />
                   </n-form-item>
                   <n-form-item label="Length(meters and millimeters)">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.length"
                           placeholder="Length(meters and millimeters)"
                       />
@@ -210,17 +236,18 @@
 
                   <n-form-item label="Width(mm)">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.width"
                           placeholder="Width(mm)"
                       />
                   </n-form-item>
                   <n-form-item label="Number of pieces">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.piece_count"
                           placeholder="Number of pieces"
                       />
                   </n-form-item>
-                  <!--            </n-form>-->
                   <n-button @click="addTreeDetails">Add Detail</n-button>
               </n-card>
               <n-form-item>
@@ -251,6 +278,7 @@
               </n-form-item>
           <n-form-item label="Total Number of pieces">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="totalPieces"
                   placeholder="Total Number of pieces"
                   disabled
@@ -312,12 +340,14 @@
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-                  <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+                  <n-date-picker
+                      :disabled="initialStatus==='Escalated'" v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item
                   label="Any comment about application"
               >
                   <n-input
+                      :disabled="initialStatus==='Pending'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"
@@ -328,6 +358,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -395,11 +426,11 @@ const formValue = ref({
         mpa_code: "204",
     },
     address_of_timber: "456 Oak St, Anytown, USA",
-    is_timber_bought_checked_value: true,
+    is_timber_bought_checked_value: "Yes",
     receipt_no: "ABC123",
     bought_date: "2022-01-01",
     road_to_timber_location: "Take the highway and exit at Main St.",
-    is_timber_private_land_checked_value: false,
+    is_timber_private_land_checked_value: "No",
     private_land: {
         land_deed_number: "123456",
         registration_date: "2021-01-01",

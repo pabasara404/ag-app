@@ -139,8 +139,13 @@
           <n-upload
             multiple
             directory-dnd
-            action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+            action="api/mahapolaApplication/upload"
             :max="5"
+            :with-credentials=true
+            :headers="{
+                'Content-Type': 'multipart/form-data',
+                'X-CSRF-TOKEN': csrf
+              }"
           >
             <n-upload-dragger>
               <div style="margin-bottom: 12px">
@@ -192,6 +197,7 @@ import {
 import Http from "@/services/http";
 import moment from "moment";
 import {getLocalAuthUser} from "@/services/auth.js";
+import { useCookies } from "vue3-cookies";
 
 const formRef = ref(null);
 const message = useMessage();
@@ -202,6 +208,8 @@ const props = defineProps({
     application: Object,
     initialStatus: String
 });
+
+const { cookies } = useCookies();
 
 const GNDivisionOptions = ref([]);
 
@@ -293,6 +301,10 @@ const updateStatus = async (status) => {
     }
 };
 
+const csrf = computed(()=>{
+    return cookies.get('XSRF-TOKEN');
+})
+
 const isNewApplication = computed(() => {
   return !formValue.value.id;
 });
@@ -314,8 +326,10 @@ const selectedGramaNiladariDivision = computed(() => {
   });
 });
 
+
 onMounted(() => {
   fetchGnDivisions();
+    console.log(cookies.get('XSRF-TOKEN'));
 });
 
 const fetchGnDivisions = async () => {

@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->timestamp('submission_timestamp');
             $table->text('comment')->nullable();
             $table->string('application_code')->unique();
+            $table->json('files')->nullable();
             $table->timestamps();
         });
     }

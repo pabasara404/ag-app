@@ -18,11 +18,13 @@ class PresidentFund extends Model
         'status',
         'submission_timestamp',
         'comment',
-        'application_code'
+        'application_code',
+        'file_paths'
     ];
 
     public function gn_division()
     {
         return $this->belongsTo(GNDivision::class);
     }
+
 }

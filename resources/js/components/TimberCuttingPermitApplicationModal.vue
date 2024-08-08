@@ -181,7 +181,6 @@
           />
         </n-form-item>
         <n-card v-if="isNewTimberCuttingPermitApplication" title="Enter details of the trees that you want to cut and click Add Tree Detail button.">
-          <!--            <n-form ref="treeForm">-->
           <n-form-item label="Sub no">
             <n-input
                 :disabled="initialStatus==='Escalated'"
@@ -366,7 +365,8 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item  label="Checked Date" path="checked_date">
                   <n-date-picker
-                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
+
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item>
@@ -375,7 +375,7 @@
                   label="Any comment about application"
               >
                   <n-input
-                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
+                      :disabled="initialStatus==='Pending'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"

@@ -13,6 +13,7 @@ use App\Models\TimberTransportingPermitApplication;
 use App\Models\Valuation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ApplicationController extends Controller
 {
@@ -153,4 +154,58 @@ class ApplicationController extends Controller
 
         return $relationships;
     }
+
+    public function searchApplications(Request $request)
+    {
+        $tableName = $request->input('table_name');
+        $applicationCode = $request->input('application_code');
+
+        Log::info('Table Name:', [$tableName]);
+        Log::info('Application Code:', [$applicationCode]);
+
+        if (empty($tableName) || empty($applicationCode)) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
+
+        $modelClass = $this->getModelClassFromTableName($tableName);
+
+        if (!$modelClass) {
+            return response()->json(['error' => 'Invalid table name'], 400);
+        }
+
+        // Retrieve application details with eager loading
+        $applicationDetails = $modelClass::where('application_code', $applicationCode)
+            ->with($this->getRelationships($modelClass)) // Eager load relationships
+            ->first();
+
+        Log::info('Application Details:', [$applicationDetails]);
+
+        if (!$applicationDetails) {
+            return response()->json(['error' => 'Application not found'], 404);
+        }
+
+        return response()->json(['data' => $applicationDetails]);
+    }
+
+
+
+    private function getModelClassFromTableName($tableName): ?string
+    {
+        $modelMap = [
+            'timber_cutting_permit_applications' => TimberCuttingPermitApplication::class,
+            'timber_transporting_applications' => TimberTransportingPermitApplication::class,
+            'individual_businesses' => IndividualBusiness::class,
+            'firms' => Firm::class,
+            'animal_transportations' => AnimalTransportation::class,
+            'president_funds' => PresidentFund::class,
+            'mahapolas' => Mahapola::class,
+            'excises' => Excise::class,
+            'valuations' => Valuation::class,
+        ];
+
+        return $modelMap[$tableName] ?? null;
+    }
+
+
+
 }

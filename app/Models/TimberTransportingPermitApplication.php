@@ -34,7 +34,13 @@ class TimberTransportingPermitApplication extends Model
         'application_code',
         'checked_date',
         'comment',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function gn_division(){
         return $this->belongsTo(GnDivision::class);

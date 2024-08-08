@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Actions\TimberTransportingPermitApplicationAction;
+use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Http\Resources\TimberTransportingPermitApplicationResource;
+use App\Models\TimberCuttingPermitApplication;
 use App\Models\TimberTransportingPermitApplication;
 use App\Http\Requests\StoreTimberTransportingPermitApplicationRequest;
 use App\Http\Requests\UpdateTimberTransportingPermitApplicationRequest;
@@ -21,7 +23,8 @@ class TimberTransportingPermitApplicationController extends Controller
             "timber_details",
             "boundary",
             "private_land",
-            "gn_division"
+            "gn_division",
+            "user",
         )->get();
 
         return TimberTransportingPermitApplicationResource::collection($applications);
@@ -74,5 +77,25 @@ class TimberTransportingPermitApplicationController extends Controller
         $application->save();
 
         return response()->json(['message' => 'Status updated successfully']);
+    }
+
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = TimberTransportingPermitApplication::with(
+            "timber_details",
+            "boundary",
+            "private_land",
+            "gn_division",
+            "user",
+        )->where('user_id', $userId)->get();
+
+        return TimberTransportingPermitApplicationResource::collection($applications);
     }
 }

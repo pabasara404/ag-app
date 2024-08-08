@@ -184,6 +184,20 @@ const menuOptions = [
         key: "gramaNiladariDivisionDetailsManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(MapIcon),
+    },{
+        label: () =>
+            h(
+                RouterLink,
+                {
+                    to: {
+                        name: "applicationSearch",
+                    },
+                },
+                { default: () => "Search Applications" }
+            ),
+        key: "applicationSearch",
+        authorizedBy: ["Employee", "Admin"],
+        icon: renderIcon(SearchIcon),
     },
 
     {
@@ -200,22 +214,7 @@ const menuOptions = [
         key: "timberCuttingManagement",
         authorizedBy: ["Employee", "Admin"],
         icon: renderIcon(LeafIcon),
-    },{
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: "applicationSearch",
-                    },
-                },
-                { default: () => "Application Search" }
-            ),
-        key: "timberCuttingManagement",
-        authorizedBy: ["Employee", "Admin"],
-        icon: renderIcon(SearchIcon),
     },
-
     {
         label: () =>
             h(

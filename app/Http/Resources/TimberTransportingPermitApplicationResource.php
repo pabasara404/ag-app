@@ -40,6 +40,7 @@ class TimberTransportingPermitApplicationResource extends JsonResource
             'status' => $this->status,
             "updated_at"=>$this->updated_at,
             "submission_timestamp"=>$this->submission_timestamp,
+            "user"=>$this->user,
 
         ];
 

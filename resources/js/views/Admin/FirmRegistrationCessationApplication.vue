@@ -20,7 +20,6 @@
 <script setup>
 import {
     Search as SearchIcon,
-
 } from "@vicons/ionicons5";
 import { ref } from 'vue';
 import Http from "@/services/http.js";

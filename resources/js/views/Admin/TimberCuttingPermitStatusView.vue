@@ -75,7 +75,6 @@ const userName = ref(null);
 const paymentType = ref(null);
 const isShowingEditApplicationModal = ref(false);
 const isShowingEditPaymentModal = ref(false);
-const selectedPayment = ref(false);
 
 const columns = [
     {

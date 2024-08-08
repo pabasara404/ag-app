@@ -95,4 +95,8 @@ class MahapolaController extends Controller
         $mahapolas = MahapolaAction::getApplicationByStatus($statuses);
         return response()->json(['data' => $mahapolas]);
     }
+
+    public function upload(Request $request){
+        dd($request);
+    }
 }

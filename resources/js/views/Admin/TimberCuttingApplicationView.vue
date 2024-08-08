@@ -28,7 +28,7 @@
         grama niladhari report stating the clear holding of the land.
       </n-li>
     </n-ul>
-    <div class="flex justify-center ... p-8">
+    <div class="flex justify-center p-8">
       <n-button
         @click="addNewApplication"
         type="warning"
