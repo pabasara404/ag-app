@@ -34,6 +34,7 @@ return new class extends Migration
             $table->date('checked_date');
             $table->text('comment');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

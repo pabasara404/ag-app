@@ -258,7 +258,8 @@
                     <td>{{ tree_detail.girth }}</td>
                     <td>{{ tree_detail.reproducibility }}</td>
                     <td>{{ tree_detail.age }}</td>
-                    <td><n-button @click="removeRow(key)">
+                    <td><n-button
+                        :disabled="initialStatus==='Escalated'" @click="removeRow(key)">
                         <n-icon>
                             <clear-outlined-icon/>
                         </n-icon>
@@ -445,13 +446,8 @@ const props = defineProps({
     application: Object,
     initialStatus: String
 });
-const non_commercial_use_checked_value = ref(false);
-const timber_seller_checked_value = ref(false);
-const ownership_of_land_checked_value = ref(false);
-const timberCuttingPermitApplications = ref([]);
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
-const text = ref('The rain dampened the sky');
 
 const formValue = ref({
     id: "",
@@ -533,20 +529,26 @@ const isNewTimberCuttingPermitApplication = computed(() => {
     return !formValue.value.id;
 });
 const certifyAndSubmit = async () => {
-            if (isNewTimberCuttingPermitApplication.value) {
-                formValue.value.status = "Submitted";
-                Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
-                    emit("close", false);
-                });
-                return;
-            }
-            if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-                formValue.value.status = "Resubmitted";
-            }
-            Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value).then(() => {
+    try{
+        if (isNewTimberCuttingPermitApplication.value) {
+            formValue.value.status = "Submitted";
+            Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
+                message.success("Application was submitted successfully!");
                 emit("close", false);
             });
-
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`timberCuttingPermitApplication/${formValue.value.id}`, formValue.value).then(() => {
+            message.success("Application was updated successfully!");
+            emit("close", false);
+        });
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
+    }
 };
 
 const updateStatus = async (status) => {
@@ -554,10 +556,12 @@ const updateStatus = async (status) => {
         await Http.put(`timberCuttingPermitApplication/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 

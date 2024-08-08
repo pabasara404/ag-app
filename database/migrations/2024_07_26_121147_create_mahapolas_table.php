@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->string('application_code')->unique();
             $table->json('files')->nullable();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

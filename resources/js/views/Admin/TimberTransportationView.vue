@@ -24,13 +24,13 @@
                 />
             </div>
         </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('timberTransportationPermitRenewal')" title="Permit Renewal Request" hoverable>
-            <div class="flex justify-center ">
-                <img width="125" src="../../.././images/apply.jpeg" />
-            </div>
-        </n-card>
+<!--        <n-card-->
+<!--            class="my-6"-->
+<!--            @click="handleCardClick('timberTransportationPermitRenewal')" title="Permit Renewal Request" hoverable>-->
+<!--            <div class="flex justify-center ">-->
+<!--                <img width="125" src="../../.././images/apply.jpeg" />-->
+<!--            </div>-->
+<!--        </n-card>-->
         <n-card
             class="my-6"
             @click="handleCardClick('timberTransportationReviewApplication')" title="Review the Applications" hoverable>

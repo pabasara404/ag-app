@@ -250,6 +250,7 @@
                   </n-form-item>
                   <n-button @click="addTreeDetails">Add Detail</n-button>
               </n-card>
+          <n-h3>Timber Details</n-h3>
               <n-form-item>
                   <n-table :bordered="false" :single-line="false">
                       <thead>
@@ -267,7 +268,7 @@
                           <td>{{ timber_detail.length}}</td>
                           <td>{{ timber_detail.width }}</td>
                           <td>{{ timber_detail.piece_count }}</td>
-                          <td><n-button @click="removeRow(key)">
+                          <td><n-button :disabled="initialStatus==='Escalated'" @click="removeRow(key)">
                               <n-icon>
                                   <clear-outlined-icon/>
                               </n-icon>
@@ -278,7 +279,7 @@
               </n-form-item>
           <n-form-item label="Total Number of pieces">
               <n-input
-                  :disabled="initialStatus==='Escalated'"
+                  :disabled="true"
                   v-model:value="totalPieces"
                   placeholder="Total Number of pieces"
                   disabled
@@ -341,7 +342,7 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
                   <n-date-picker
-                      :disabled="initialStatus==='Escalated'" v-model:value="selectedCheckedDate" type="date" />
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'" v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item
                   label="Any comment about application"
@@ -379,11 +380,14 @@
         <div class="flex justify-end">
           <n-form-item>
               <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+              <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
               <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
         </div>
       </n-form>
+        <n-space v-if="initialStatus==='Issued'" vertical>
+            <n-qr-code :value="formValue.application_code" />
+        </n-space>
     </n-layout>
     <template #footer></template>
   </n-modal>
@@ -401,8 +405,10 @@ import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
   ClearOutlined as ClearOutlinedIcon,
 } from "@vicons/material";
+const message = useMessage();
 import Http from "@/services/http";
 import moment from "moment";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
 const isShowing = ref(false);
@@ -469,7 +475,8 @@ const formValue = ref({
     comment: "",
     status: "Submitted",
     submission_timestamp:"",
-    application_code:""
+    application_code:"",
+    user: getLocalAuthUser()
 });
 
 const treeDetailsForm = ref({
@@ -503,75 +510,48 @@ watch(
     () => props.isShowing,
     (newValue) => {
         isShowing.value = newValue;
-        formValue.value = {
-            ...{
-                id: "",
-                name: "",
-                address: "",
-                contact_number: "",
-                gn_division: {
-                    id: "",
-                    gn_code: "",
-                    name: "",
-                    mpa_code: "",
-                },
-                address_of_timber: "",
-                is_timber_bought_checked_value: false,
-                receipt_no: "",
-                bought_date: "",
-                road_to_timber_location: "",
-                is_timber_private_land_checked_value: false,
-                private_land: {
-                    land_deed_number: "",
-                    registration_date: "",
-                    plan_plot_number: "",
-                    registration_office: "",
-                    plan_number: "",
-                    land_name: "",
-                    land_size: "",
-                },
-                boundary: {
-                    north: "",
-                    south: "",
-                    east: "",
-                    west: "",
-                },
-                end_location: "",
-                route: "",
-                timber_transport_date: "",
-                plate_number: "",
-                timber_details: [],
-                total_pieces: "6",
-                checked_date: "",
-                comment: "",
-                status: "",
-                submission_timestamp: "",
-                application_code: "",
-            },
-            ...props.application,
-        };
+        formValue.value = {...props.application};
     }
 );
 
 async function certifyAndSubmit() {
-    console.log("Submitting form:", formValue.value);
+   try{
+       if (isNewApplication.value) {
+           formValue.value.status = "Submitted";
+           await Http.post("timberTransportingPermitApplication", formValue.value);
+           message.success("Application was submitted successfully!");
+           emit("close", false);
+           return;
+       }
 
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("timberTransportingPermitApplication", formValue.value);
-        emit("close", false);
-        return;
-    }
+       if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+           formValue.value.status = "Resubmitted";
+       }
 
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-
-    console.log(`Updating timberTransportingPermitApplication/${formValue.value.id} with data:`, formValue.value);
-
-    await Http.put(`timberTransportingPermitApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
+       await Http.put(`timberTransportingPermitApplication/${formValue.value.id}`, formValue.value);
+       message.success("Application was updated successfully!");
+       emit("close", false);
+   }catch (e) {
+       console.error(e);
+       message.error("An error occurred while saving the Application");
+   }
 }
+
+
+const updateStatus = async (status) => {
+    try {
+        await Http.put(`timberTransportingPermitApplication/${props.application.id}`, {
+            status: status
+        });
+        message.success("Application was updated successfully!");
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
+    }
+};
+
 
 const selectedRegistrationDate = computed({
   get: () => {
@@ -670,10 +650,8 @@ const selectGramaNiladariDivision = (key) => {
 const fetchGnDivisions = async () => {
     try {
         const response = await Http.get("gnDivision");
-        const data = response.data.data; // Assuming the API response contains the data you need
-        // console.log(data);
+        const data = response.data.data;
         GNDivisionOptions.value = data;
-        // console.log(GNDivisionOptions.value);
     } catch (error) {
         console.error(error);
     }
@@ -699,23 +677,8 @@ const selectedStatus = computed(() => {
 });
 
 function handleStatusSelect(selected) {
-    console.log(selected);
     formValue.value.status = selected;
 }
-
-
-const updateStatus = async (status) => {
-    try {
-        await Http.put(`timberTransportingPermitApplication/${props.application.id}`, {
-            status: status
-        });
-        emit('save');
-        emit('close', false);
-    } catch (error) {
-        console.error("Failed to update status:", error);
-    }
-};
-
 
 const addTreeDetails = () => {
     formValue.value.timber_details.push({...treeDetailsForm.value});

@@ -31,18 +31,12 @@ const selectedApplication = ref(false);
 const inverted = ref(false);
 const isLoading = ref(false);
 const initialStatus = ref(null);
-const options = [
-    {
-        label: "Sort By Recently Added",
-        key: "1",
-    },
-    {
-        label: "Sort By Oldest Added",
-        key: "2",
-    },
-];
 const applications = ref([]);
 const columns = [
+    {
+        title: "Reference Number",
+        key: "application_code",
+    },
     {
         title: "Name of Applicant",
         key: "name",
@@ -59,10 +53,6 @@ const columns = [
         title: "Status",
         key: "status",
     },
-    // {
-    //   title: "Role",
-    //   key: "role",
-    // },
     {
         title: "Submitted date",
         key: "submission_timestamp",

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->timestamps();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
         });
     }
 

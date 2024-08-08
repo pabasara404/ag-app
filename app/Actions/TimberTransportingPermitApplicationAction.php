@@ -59,16 +59,18 @@ class TimberTransportingPermitApplicationAction
             // Create the TimberTransportingPermitApplication model instance
             $timberTransportingPermitApplication = TimberTransportingPermitApplication::create($dtoArray);
 
-            // Create related models
-            $gnDivision = GnDivision::create($dto->gn_division);
             $privateLand = PrivateLandDetail::create($dto->private_land);
             $boundaries = Boundaries::create($dto->boundary);
 
-            // Associate the GN Division if it exists
-            if (!empty($dto->gn_division)) {
-                $gnDivision = GnDivision::find($dto->gn_division['id']);
-                if ($gnDivision) {
-                    $timberTransportingPermitApplication->gn_division()->associate($gnDivision);
+            $gnDivision = GnDivision::find($dto->gn_division['id']);
+            if ($gnDivision) {
+                $timberTransportingPermitApplication->gn_division()->associate($gnDivision);
+            }
+
+            if (!empty($dto->user)) {
+                $user = User::find($dto->user['id']);
+                if ($user) {
+                    $timberTransportingPermitApplication->user()->associate($user);
                     $timberTransportingPermitApplication->save();
                 }
             }

@@ -69,6 +69,9 @@ const isLoading = ref(false);
 const applications = ref([]);
 const selectedApplication = ref(null);
 const initialStatus = ref(null);
+const applicationCode = ref(null);
+const userName = ref(null);
+const paymentType = ref(null);
 const isShowingEditApplicationModal = ref(false);
 const isShowingEditPaymentModal = ref(false);
 
@@ -132,8 +135,9 @@ const columns = [
                     size: "small",
                     onClick: () => {
                         selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
+                        isShowingEditPaymentModal.value = true;
+                        applicationCode.value = row.application_code;
+                        userName.value = row.user.name;
                         paymentType.value = "timber_transporting_applications";
                     },
                 },

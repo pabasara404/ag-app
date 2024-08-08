@@ -9,8 +9,7 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleModalClose"
         :initial-status="initialStatus"
     />
 </template>
@@ -30,6 +29,10 @@ const isShowingEditApplicationModal = ref(false);
 
 
 const columns = [
+    {
+        title: "Reference Number",
+        key: "application_code",
+    },
     {
         title: "Name of Applicant",
         key: "name",
@@ -93,6 +96,12 @@ const columns = [
         },
     },
 ];
+
+function handleModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
 onMounted(() => {
     fetchApplication();
 });
@@ -105,7 +114,7 @@ async function fetchApplication() {
         }
     });
     isLoading.value = false;
-    applications.value = data.data; // Ensure the response is handled correctly
+    applications.value = data.data;
 }
 async function deleteApplication(application) {
     isLoading.value = true;

@@ -117,7 +117,7 @@ async function fetchApplication() {
         }
     });
     isLoading.value = false;
-    applications.value = data.data; // Ensure the response is handled correctly
+    applications.value = data.data;
 }
 async function deleteApplication(application) {
     isLoading.value = true;

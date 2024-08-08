@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp')->nullable();
             $table->string('comment')->nullable();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

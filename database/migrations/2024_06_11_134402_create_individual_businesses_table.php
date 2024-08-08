@@ -30,10 +30,9 @@ return new class extends Migration
             $table->string('status')->default('Submitted');
             $table->string('comment')->nullable();
             $table->timestamp('submission_timestamp')->nullable();
-//            $table->timestamps('checked_time');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->foreignId('owner_detail_id')->nullable()->references('id')->on('owner_details');
-            $table->foreignId('citizen_id')->nullable()->references('id')->on('citizens');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
 
         });
     }
