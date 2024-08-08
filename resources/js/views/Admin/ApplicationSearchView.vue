@@ -52,7 +52,7 @@
 import { h, ref, computed } from 'vue';
 import { Search as SearchIcon } from '@vicons/ionicons5';
 import Http from '@/services/http';
-import { NButton, NIcon } from 'naive-ui';
+import {NButton, NIcon, useMessage} from 'naive-ui';
 import PageHeader from '@/components/PageHeader.vue';
 
 const selectedApplication = ref({});
@@ -61,6 +61,7 @@ const inverted = ref(false);
 const isLoading = ref(false);
 const searchTerm = ref('');
 const applications = ref([]);
+const message = useMessage();
 
 const permitTypeOptions = [
     { label: "Timber Cutting Permit", key: "TCP", route: "timberCuttingPermitApplication", table: "timber_cutting_permit_applications" },
@@ -97,7 +98,7 @@ const columns = [
 function getTypeFromCode(code) {
     const parts = code.split('/');
     if (parts.length < 3) {
-        console.error('Invalid application code format');
+        message.error('Invalid application code format!');
         return null;
     }
     return parts[2]; // Return the type code directly

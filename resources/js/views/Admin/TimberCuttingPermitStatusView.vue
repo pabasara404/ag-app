@@ -78,6 +78,10 @@ const isShowingEditPaymentModal = ref(false);
 
 const columns = [
     {
+        title: "Reference Number",
+        key: "application_code",
+    },
+    {
         title: "Name of Applicant",
         key: "name",
     },
