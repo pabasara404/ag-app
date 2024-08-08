@@ -44,7 +44,7 @@
             v-model:value="formValue.contact_number"
             placeholder="Telephone Number" /></n-form-item
         >
-          <n-form-item label="Are you a Timber seller?" path="timberSeller">
+          <n-form-item label="Are you a Timber seller?" path="timber_seller_checked_value">
           <n-radio-group
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.timber_seller_checked_value"
@@ -58,7 +58,7 @@
         </n-form-item>
           <n-form-item
           label="Are you cutting trees for non-commercial use?"
-          path="timberSeller"
+          path="non_commercial_use_checked_value"
           ><n-radio-group
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.non_commercial_use_checked_value"
@@ -73,7 +73,7 @@
         <n-form-item
             :disabled="initialStatus==='Escalated'"
           label="Grama Niladari Division"
-          path="grama_niladari_division"
+          path="gn_division"
         >
           <n-dropdown
               :disabled="initialStatus==='Escalated'"
@@ -92,18 +92,18 @@
             </n-button>
           </n-dropdown>
         </n-form-item>
-        <n-form-item label="Land Deed Number" path="land_deed_number">
+        <n-form-item label="Land Deed Number" path="deed_detail.land_deed_number">
           <n-input
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.deed_detail.land_deed_number"
             placeholder="Land Deed Number"
           />
         </n-form-item>
-        <n-form-item label="Land deed date" path="land_deed_date">
+        <n-form-item label="Land deed date" path="deed_detail.land_deed_date">
           <n-date-picker
               :disabled="initialStatus==='Escalated'" v-model:value="selectedDeedDate" type="date" />
         </n-form-item>
-        <n-form-item label="Ownership of land" path="ownershipOfLand">
+        <n-form-item label="Ownership of land" path="ownership_of_land_checked_value">
           <n-radio-group
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.ownership_of_land_checked_value"
@@ -120,7 +120,7 @@
             </n-space>
           </n-radio-group>
         </n-form-item>
-        <n-form-item label="Land Name" path="land_name">
+        <n-form-item label="Land Name" path="land_detail.land_name">
           <n-input
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.land_detail.land_name"

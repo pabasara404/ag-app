@@ -40,9 +40,11 @@ class MahapolaAction
             $mahapola->save();
 
             DB::commit();
+
+            return $mahapola;
         } catch (Exception $exception) {
             DB::rollBack();
-            dd($exception);
+            dd($exception->getMessage());
         }
     }
 }

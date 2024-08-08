@@ -136,32 +136,35 @@
               </n-ul>
         </n-p>
         <n-form-item>
-          <n-upload
-            multiple
-            directory-dnd
-            action="api/mahapolaApplication/upload"
-            :max="5"
-            :with-credentials=true
-            :headers="{
-                'Content-Type': 'multipart/form-data',
-                'X-CSRF-TOKEN': csrf
-              }"
-          >
-            <n-upload-dragger>
-              <div style="margin-bottom: 12px">
-                <n-icon size="48" :depth="3">
-                  <archive-icon />
-                </n-icon>
-              </div>
-              <n-text style="font-size: 16px">
-                Click or drag a file to this area to upload
-              </n-text>
-              <n-p depth="3" style="margin: 8px 0 0 0">
-                Strictly prohibit from uploading sensitive information. For
-                example, your bank card PIN or your credit card expiry date.
-              </n-p>
-            </n-upload-dragger>
-          </n-upload>
+<!--          <n-upload-->
+<!--              ref="uploadRef"-->
+<!--              :default-upload="false"-->
+<!--            multiple-->
+<!--            directory-dnd-->
+<!--            :action="`api/mahapolaApplication/upload?id=${submittedApplicationId.value}`"-->
+<!--            :max="5"-->
+<!--            :with-credentials=true-->
+<!--              :on-change="(file, selectedFileList, event)=>{-->
+<!--                  // fileList = selectedFileList;-->
+<!--                  console.log(selectedFileList);-->
+<!--              }"-->
+<!--          >-->
+<!--            <n-upload-dragger>-->
+<!--              <div style="margin-bottom: 12px">-->
+<!--                <n-icon size="48" :depth="3">-->
+<!--                  <archive-icon />-->
+<!--                </n-icon>-->
+<!--              </div>-->
+<!--              <n-text style="font-size: 16px">-->
+<!--                Click or drag a file to this area to upload-->
+<!--              </n-text>-->
+<!--              <n-p depth="3" style="margin: 8px 0 0 0">-->
+<!--                Strictly prohibit from uploading sensitive information. For-->
+<!--                example, your bank card PIN or your credit card expiry date.-->
+<!--              </n-p>-->
+<!--            </n-upload-dragger>-->
+<!--          </n-upload>-->
+            <v-file-input clearable label="Upload files" multiple variant="outlined"></v-file-input>
         </n-form-item>
         <n-p
           >I certify that I have the legal right to the land related to felling
@@ -199,7 +202,9 @@ import moment from "moment";
 import {getLocalAuthUser} from "@/services/auth.js";
 import { useCookies } from "vue3-cookies";
 
+const submittedApplicationId = ref(0);
 const formRef = ref(null);
+const uploadRef = ref(null);
 const message = useMessage();
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
@@ -212,6 +217,7 @@ const props = defineProps({
 const { cookies } = useCookies();
 
 const GNDivisionOptions = ref([]);
+
 
 const formValue = ref({
     id: "",
@@ -268,6 +274,13 @@ const rules = {
   },
 };
 
+const uploadAction = computed(()=>{
+   return `api/mahapolaApplication/upload?id=${submittedApplicationId.value}`;
+});
+
+const fileList = ref();
+
+
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -278,7 +291,15 @@ watch(
 async function certifyAndSubmit() {
     if (isNewApplication.value) {
         formValue.value.status = "Submitted";
-        await Http.post("mahapolaApplication", formValue.value);
+        const { data } = await Http.post("mahapolaApplication", formValue.value);
+        submittedApplicationId.value = data.id;
+        console.log(fileList.value);
+
+        await uploadRef.value?.submit({
+            action: "somapala"
+        });
+        submittedApplicationId.value = 0;
+
         emit("close", false);
         return;
     }
@@ -329,7 +350,7 @@ const selectedGramaNiladariDivision = computed(() => {
 
 onMounted(() => {
   fetchGnDivisions();
-    console.log(cookies.get('XSRF-TOKEN'));
+    // console.log(cookies.get('XSRF-TOKEN'));
 });
 
 const fetchGnDivisions = async () => {

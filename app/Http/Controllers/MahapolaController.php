@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Actions\MahapolaAction;
 use App\Actions\PresidentFundAction;
 use App\Http\Resources\MahapolaResource;
+use App\Models\FileDetail;
 use App\Models\Mahapola;
 use App\Http\Requests\StoreMahapolaRequest;
 use App\Http\Requests\UpdateMahapolaRequest;
 use App\Models\PresidentFund;
+use App\Services\FileDetailService;
+use App\Services\FileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MahapolaController extends Controller
 {
@@ -36,7 +40,7 @@ class MahapolaController extends Controller
      */
     public function store(StoreMahapolaRequest $request)
     {
-        MahapolaAction::store($request->toArray());
+        return MahapolaAction::store($request->toArray());
     }
 
     /**
@@ -97,6 +101,15 @@ class MahapolaController extends Controller
     }
 
     public function upload(Request $request){
-        dd($request);
+        $path = FileService::upload($request->file, 'mahapola');
+
+        FileDetailService::store([
+            'name' => $path,
+            'path' => $path,
+            'type' => $request->file->getMimeType(),
+        ]);
+
+//        Mahapola::
+
     }
 }

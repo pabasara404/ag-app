@@ -199,8 +199,6 @@ async function handleSave() {
             return;
         }
 
-        // If email is not duplicate, proceed with save
-        console.log('Saving employee...');
         await save();
     } catch (error) {
         console.error(error);

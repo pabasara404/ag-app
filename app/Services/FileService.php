@@ -2,6 +2,7 @@
 // app/Services/FileService.php
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File;
 
@@ -33,7 +34,7 @@ class FileService
      * @param mixed $model
      * @return false|string
      */
-    public function upload(\Illuminate\Http\File $file, $path)
+    public static function upload(UploadedFile $file, $path)
     {
         $path = Storage::putFile($path, $file);
 
