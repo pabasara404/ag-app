@@ -122,7 +122,6 @@ async function handleSearch() {
                     application_code: searchTerm.value
                 }
             });
-            console.log('API Response:', data);
 
             if (data && data.data) {
                 applications.value = [data.data];
@@ -134,7 +133,11 @@ async function handleSearch() {
                 selectedApplicationTitle.value = ''; // Clear the title
             }
         } catch (error) {
-            console.error('Error fetching applications:', error);
+            if (error.response && error.response.status === 404) {
+                message.error('No application found with the provided reference number.');
+            } else {
+                // console.error('Error fetching applications:', error);
+            }
             applications.value = [];
             selectedApplication.value = {};
             selectedApplicationTitle.value = ''; // Clear the title
