@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('receipt_no');
             $table->date('paid_date');
-            $table->string('contact_number');
-            $table->string('nic');
+            $table->string('contact_number')->nullable();
+            $table->string('nic')->nullable();
             $table->string('file_path')->nullable();
             $table->unsignedBigInteger('application_id');
             $table->string('application_table');

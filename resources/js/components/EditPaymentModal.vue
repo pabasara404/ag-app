@@ -6,7 +6,7 @@
                     <n-h2 v-if="!isNewPayment">Edit Payment</n-h2>
                     <n-h2 v-else>Add New Payment</n-h2>
                 </n-page-header>
-                <n-form ref="formRef" :model="formValue">
+                <n-form ref="formRef" :rules="rules" :model="formValue">
                     <n-form-item label="Name with Initials" path="user.firstName">
                         <n-input v-model:value="formValue.name" placeholder="Enter Name" :value="userName" />
                     </n-form-item>
@@ -81,8 +81,8 @@
                             </n-upload-dragger>
                         </n-upload>
                     </n-form-item>
-                    <n-form-item>
-                        <n-button @click="save" >
+                    <n-form-item class="flex justify-end">
+                        <n-button @click="save" :disabled="!formValue.applicationDetails">
                             {{ isNewPayment ? "Add Payment" : "Update Payment" }}
                         </n-button>
                     </n-form-item>
@@ -154,35 +154,20 @@ const formValue = ref({
 });
 
 const rules = {
-    user: {
-        firstName: {
-            required: true,
-            message: "Please input your name",
-            trigger: "blur",
-        },
-        age: {
-            required: true,
-            message: "Please input your age",
-            trigger: ["input", "blur"],
-        },
-    },
-    phone: {
-        required: true,
-        message: "Please input your number",
-        trigger: ["input"],
-    },
+
 };
+
 const paymentTypeOptions = [
-    { label: "Timber Cutting Payment", key: "timber_cutting_permit_applications", route: "timberCuttingPermitApplication" },
-    { label: "Timber Transporting Payment", key: "timber_transporting_applications", route: "timberTransportingPermitApplication" },
-    { label: "Individual Business Registration Certificate Payment", key: "individual_businesses", route: "individualBusiness" },
-    { label: "Firm Registration Certificate Payment", key: "firms", route: "firmApplication" },
-    { label: "Income Certificate Payment", key: "income_certificates", route: "incomeCertificate" },
-    { label: "Animal Transportation Permit Payment", key: "animal_transportations", route: "animalTransportation" },
-    { label: "President Fund Payment", key: "president_funds", route: "presidentFundApplication" },
-    { label: "Mahapola Payment", key: "mahapolas", route: "mahapolaApplication" },
-    { label: "Excise License Payment", key: "excises", route: "exciseApplication" },
-    { label: "Valuation Report Payment", key: "valuations", route: "valuation" },
+    { label: "Timber Cutting Permit", key: "timber_cutting_permit_applications", route: "timberCuttingPermitApplication" },
+    { label: "Timber Transporting Permit", key: "timber_transporting_applications", route: "timberTransportingPermitApplication" },
+    { label: "Individual Business Registration Certificate", key: "individual_businesses", route: "individualBusiness" },
+    { label: "Firm Registration Certificate", key: "firms", route: "firmApplication" },
+    { label: "Income Certificate", key: "income_certificates", route: "incomeCertificate" },
+    { label: "Animal Transportation Permit", key: "animal_transportations", route: "animalTransportation" },
+    { label: "President Fund", key: "president_funds", route: "presidentFundApplication" },
+    { label: "Mahapola", key: "mahapolas", route: "mahapolaApplication" },
+    { label: "Excise License Permit", key: "excises", route: "exciseApplication" },
+    { label: "Valuation Report", key: "valuations", route: "valuation" },
 ];
 
 
@@ -223,7 +208,6 @@ const fieldMappings = {
         { label: "Name of the Applicant", key: "name" },
         { label: "Address", key: "address" },
         { label: "Tree Count", key: "tree_count" },
-        // Add more fields as necessary
     ],
     timber_transporting_applications: [
         { label: "Application Code", key: "application_code" },
@@ -231,7 +215,6 @@ const fieldMappings = {
         { label: "Transport Date", key: "transport_date" },
         { label: "Vehicle Number", key: "plate_number" },
         { label: "Route", key: "route" },
-        // Add more fields as necessary
     ],
     individual_businesses: [
         { label: "Application Code", key: "application_code" },
@@ -240,7 +223,6 @@ const fieldMappings = {
         { label: "Principle Place", key: "principal_place" },
         { label: "Initial Capital", key: "initial_capital" },
         { label: "Contact Number", key: "contact_number" },
-        // Add more fields as necessary
     ],
     firms: [
         { label: "Application Code", key: "application_code" },
@@ -249,7 +231,6 @@ const fieldMappings = {
         { label: "Principle Place", key: "principal_place" },
         { label: "Initial Capital", key: "initial_capital" },
         { label: "Submission Timestamp", key: "submission_timestamp" },
-        // Add more fields as necessary
     ],
     income_certificates: [
         { label: "Application Code", key: "application_code" },
@@ -260,7 +241,6 @@ const fieldMappings = {
         { label: "Submitting Institute", key: "submitting_institute" },
         { label: "Total Annual Income", key: "total_annual_income" },
         { label: "Checked Date", key: "checked_date" },
-        // Add more fields as necessary
     ],
     animal_transportations: [
         { label: "Application Code", key: "application_code" },
@@ -271,7 +251,6 @@ const fieldMappings = {
         { label: "Cost per Animal", key: "cost_per_animal" },
         { label: "Issued Date", key: "issued_date" },
         { label: "Expire Date", key: "expire_date" },
-        // Add more fields as necessary
     ],
     valuations: [
         { label: "Application Code", key: "application_code" },
@@ -280,7 +259,6 @@ const fieldMappings = {
         { label: "Valuation Amount", key: "valuation_amount" },
         { label: "Reason", key: "reason" },
         { label: "Land Name", key: "land_name" },
-        // Add more fields as necessary
     ],
     excises: [
         { label: "Application Code", key: "application_code" },
@@ -289,7 +267,6 @@ const fieldMappings = {
         { label: "Business Name", key: "business_name" },
         { label: "Issued Date", key: "issued_date" },
         { label: "Expire Date", key: "expire_date" },
-        // Add more fields as necessary
     ],
     president_funds: [
         { label: "Application Code", key: "application_code" },
@@ -297,7 +274,6 @@ const fieldMappings = {
         { label: "Address", key: "address" },
         { label: "NIC", key: "nic" },
         { label: "Contact Number", key: "contact_number" },
-        // Add more fields as necessary
     ],
     mahapolas: [
         { label: "Application Code", key: "application_code" },
@@ -305,7 +281,6 @@ const fieldMappings = {
         { label: "Address", key: "address" },
         { label: "NIC", key: "nic" },
         { label: "Contact Number", key: "contact_number" },
-        // Add more fields as necessary
     ],
 };
 
@@ -387,13 +362,13 @@ function addApplicationDetailsToPdf(pdf, applicationLabel, details) {
 
     printDetails(details);
 
-    return y; // Return the current y position for further additions (like QR code)
+    return y;
 }
 
 async function save() {
     try {
         const response = await Http.post(`/payment`, formValue.value);
-        message.success('Payment saved successfully');
+        message.success('Payment saved successfully. Download will begin shortly');
 
         const selectedPaymentType = paymentTypeOptions.find(option => option.key === formValue.value.payment_type);
         if (selectedPaymentType) {
