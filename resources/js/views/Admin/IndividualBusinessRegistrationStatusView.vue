@@ -142,8 +142,10 @@ const columns = [
                     size: "small",
                     onClick: () => {
                         selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
+                        isShowingEditPaymentModal.value = true;
+                        applicationCode.value = row.application_code;
+                        userName.value = row.user.name;
+                        paymentType.value = "individual_businesses";
                     },
                 },
                 { default: () => "Download" }

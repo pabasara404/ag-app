@@ -119,8 +119,8 @@
                   name="otherBusiness"
               >
                   <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
+                      <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                      <n-radio :value="'No'" label="No"> No </n-radio>
                   </n-space>
               </n-radio-group>
           </n-form-item>
@@ -158,7 +158,7 @@
                   <tr :key="key" v-for="(other_business, key) in formValue.other_businesses">
                       <td>{{ other_business.registration_no}}</td>
                       <td>{{ other_business.business_name}}</td>
-                      <td><n-button @click="removeBusinessRow(key)">
+                      <td><n-button :disabled="initialStatus==='Escalated'" @click="removeBusinessRow(key)">
                           <n-icon>
                               <clear-outlined-icon/>
                           </n-icon>
@@ -175,8 +175,8 @@
                   name="otherBusiness"
               >
                   <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
+                      <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                      <n-radio :value="'No'" label="No"> No </n-radio>
                   </n-space>
               </n-radio-group>
           </n-form-item>
@@ -213,7 +213,7 @@
                   <tr :key="key" v-for="(director_detail, key) in formValue.director_details">
                       <td>{{ director_detail.registration_no}}</td>
                       <td>{{ director_detail.business_name}}</td>
-                      <td><n-button @click="removeDirRow(key)">
+                      <td><n-button :disabled="initialStatus==='Escalated'" @click="removeDirRow(key)">
                           <n-icon>
                               <clear-outlined-icon/>
                           </n-icon>
@@ -236,8 +236,8 @@
                   name="governmentOfficer"
               >
                   <n-space>
-                      <n-radio :value="true" label="Yes"> Yes </n-radio>
-                      <n-radio :value="false" label="No"> No </n-radio>
+                      <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                      <n-radio :value="'No'" label="No"> No </n-radio>
                   </n-space>
               </n-radio-group>
           </n-form-item>
@@ -273,7 +273,7 @@
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Ownership of land" path="ownershipOfLand">
                   <n-radio-group
-                      :disabled="initialStatus==='Escalated'"
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       v-model:value="formValue.ownership_of_land_checked_value"
                       name="ownershipOfLand"
                   >
@@ -697,39 +697,6 @@ function addAddress() {
     formValue.value.addresses.push({ id: "", name: "" });
 }
 
-function handleValidateClick(e) {
-  e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      message.success("Valid");
-    } else {
-      console.log(errors);
-      message.error("Invalid");
-    }
-  });
-}
-// function handleChange(e) {
-//   checkedValueRef.value = e.target.value;
-//   console.log(`Selected value: ${checkedValueRef.value}`);
-// }
-function handleChange(group, e) {
-  if (group === "nonCommercialUse") {
-    non_commercial_use_checked_value.value = e.target.value;
-    console.log(
-      `Selected non-commercial use value: ${non_commercial_use_checked_value.value}`
-    );
-  } else if (group === "timberSeller") {
-    timber_seller_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${timber_seller_checked_value.value}`
-    );
-  } else if (group === "ownershipOfLand") {
-    ownership_of_land_checked_value.value = e.target.value;
-    console.log(
-      `Selected timber seller value: ${ownership_of_land_checked_value.value}`
-    );
-  }
-}
 
 const addOtherBusinessDetails = () => {
     formValue.value.other_businesses.push({...otherBusinessDetailsForm.value});

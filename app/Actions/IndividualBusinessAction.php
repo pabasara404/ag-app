@@ -67,13 +67,14 @@ class IndividualBusinessAction
                 $individualBusiness->director_details()->save($directorDetails);
             });
 
-            if (!empty($dto->user)) {
-                $user = User::find($dto->user['id']);
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
                 if ($user) {
                     $individualBusiness->user()->associate($user);
                     $individualBusiness->save();
                 }
             }
+
 
             DB::commit();
         } catch (Exception $exception) {

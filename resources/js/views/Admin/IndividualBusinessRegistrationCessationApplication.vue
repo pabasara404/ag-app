@@ -1,6 +1,6 @@
 <template>
     <PageHeader title="Submit a Notice of Cessation of Business" />
-    <p>Please enter your Application Code in here:</p>
+    <p>Please enter your Application Code/ Reference Number in here:</p><br/>
     <div class="flex justify-center w-full">
         <div class="w-2/5 flex">
             <n-input
@@ -39,6 +39,18 @@
                 </div>
                 <div v-html="formatData(selectedApplication)"></div>
             </n-card>
+            <n-modal
+                @close="handleEditApplicationModalClose"
+                v-model:show="showModal"
+                :mask-closable="false"
+                preset="dialog"
+                title="Dialog"
+                content="Are you sure?"
+                positive-text="Confirm"
+                negative-text="Cancel"
+                @positive-click="onPositiveClick"
+                @negative-click="onNegativeClick"
+            />
         </div>
     </div>
 </template>
@@ -57,6 +69,8 @@ const selectedApplication = ref({});
 const selectedApplicationTitle = ref('');
 const inverted = ref(false);
 const isLoading = ref(false);
+const showModalRef = ref(false);
+const showModal = ref(false);
 const searchTerm = ref('');
 const applications = ref([]);
 const message = useMessage();
@@ -104,7 +118,7 @@ const columns = [
                     secondary: true,
                     size: "small",
                     onClick: () => {
-                        updateStatus('Ceased')
+                        showModal.value = true
                     },
                 },
                 { default: () => "Submit a Cessation" }
@@ -113,18 +127,19 @@ const columns = [
     }
 ];
 
-const updateStatus = async (status) => {
-    try {
-        await Http.put(`individualBusiness/${props.application.id}`, {
-            status: status
-        });
-        message.success("Cessation was submitted successfully");
-        emit('save');
-        emit('close', false);
-    } catch (error) {
-        console.error("Failed to update status:", error);
-    }
-};
+
+
+async function onPositiveClick() {
+    await updateStatus('Ceased')
+    showModalRef.value = false;
+    await handleSearch();
+}
+
+function onNegativeClick() {
+    showModalRef.value = false;
+}
+
+
 
 function getTypeFromCode(code) {
     const parts = code.split('/');
@@ -159,7 +174,6 @@ async function handleSearch() {
                     application_code: searchTerm.value
                 }
             });
-            console.log('API Response:', data);
 
             if (data && data.data) {
                 applications.value = [data.data];
@@ -189,6 +203,24 @@ async function handleSearch() {
         selectedApplicationTitle.value = ''; // Clear the title
     }
 }
+
+const updateStatus = async (status) => {
+    if (!selectedApplication.value.id) {
+        message.error("No application selected.");
+        return;
+    }
+    try {
+        await Http.put(`individualBusiness/${selectedApplication.value.id}`, {
+            status: status
+        });
+        message.success("Application was updated successfully!");
+        emit('save');
+        emit('close', false);
+    } catch (error) {
+        console.error("Failed to update status:", error);
+        // message.error("An error occurred while saving the application");
+    }
+};
 
 
 

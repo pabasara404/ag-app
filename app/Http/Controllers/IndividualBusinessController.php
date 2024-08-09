@@ -10,6 +10,7 @@ use App\Http\Requests\StoreIndividualBusinessRequest;
 use App\Http\Requests\UpdateIndividualBusinessRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class IndividualBusinessController extends Controller
 {
@@ -32,9 +33,9 @@ class IndividualBusinessController extends Controller
     /**
      * Display a listing of the resource for the authenticated user.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
-    public function userApplications()
+    public function userApplications(): AnonymousResourceCollection
     {
         $userId = auth()->id();
 
@@ -44,7 +45,7 @@ class IndividualBusinessController extends Controller
             'other_businesses',
             'director_details',
             'gn_division',
-            "user",
+            'user',
         )->where('user_id', $userId)->get();
 
         return IndividualBusinessResource::collection($applications);
