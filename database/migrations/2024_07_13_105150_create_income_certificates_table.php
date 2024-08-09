@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('income_tax_number')->nullable();
             $table->string('is_samurdhi_beneficiary')->nullable();
             $table->date('checked_date')->nullable();
-            $table->string('status');
+            $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp')->useCurrent();
             $table->time('checked_time')->nullable();
             $table->text('comment')->nullable();

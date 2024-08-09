@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('valuations', function (Blueprint $table) {
-            $table->id(); $table->string('application_code');
+            $table->id();
+            $table->string('application_code');
             $table->string('name');
             $table->string('address');
             $table->decimal('valuation_amount', 10, 2);
@@ -25,14 +26,14 @@ return new class extends Migration
             $table->string('size');
             $table->string('length');
             $table->string('width');
-            $table->string('notary_officer_name');
+            $table->string('notary_officer_name')->nullable();
             $table->string('plan_number');
-            $table->date('plan_date');
-            $table->string('land_name');
-            $table->string('status');
+            $table->date('plan_date')->nullable();
+            $table->string('land_name')->nullable();
+            $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp');
-            $table->date('checked_date');
-            $table->text('comment');
+            $table->date('checked_date')->nullable();
+            $table->text('comment')->nullable();
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();

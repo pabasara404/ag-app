@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nic');
             $table->string('contact_number');
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
-            $table->string('status');
+            $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp');
             $table->text('comment')->nullable();
             $table->string('application_code')->unique();

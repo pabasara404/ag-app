@@ -1,0 +1,54 @@
+<template>
+    <PageHeader title="Individual Business Registration Management" />
+    <div class="flex justify-evenly flex-wrap px-20">
+        <n-card
+            @click="handleCardClick('individualBusiness')"
+            title="Apply to a Registration of a Business Owned by an Individual"
+            hoverable
+            class="my-6"
+        >
+            <div class="flex justify-center">
+                <img
+                    width="125"
+                    src="../../.././images/registration.jpeg"
+                />
+            </div>
+        </n-card>
+        <n-card
+            class="my-6"
+            @click="handleCardClick('individualBusinessRegistrationStatus')" title="View Individual Business Application Status" hoverable>
+            <div class="flex justify-center ">
+                <img
+                    width="125"
+                    src="../../.././images/application status tracking black and white simple clipart.jpeg"
+                />
+            </div>
+        </n-card>
+        <n-card
+            class="my-6"
+            @click="handleCardClick('individualCessation')" title="Submit a Notice of Cessation of Business" hoverable>
+            <div class="flex justify-center ">
+                <img width="125" src="../../.././images/cessation.jpeg" />
+            </div>
+        </n-card>
+    </div>
+    <router-view />
+</template>
+
+<script setup>
+import { useRouter } from "vue-router";
+import PageHeader from "@/components/PageHeader.vue";
+
+const router = useRouter();
+
+const handleCardClick = (route) => {
+    router.push(`${route}`);
+    console.log("Clicked");
+};
+</script>
+
+<style scoped>
+.n-card {
+    max-width: 350px;
+}
+</style>

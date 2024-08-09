@@ -18,7 +18,7 @@
           <n-li>If you are purchasing timber from a saw mill you should represent the relevant bill and the registered certificate of the saw mill.</n-li>
           <n-li>If you are purchasing timber from a personal land you should represent the sales receipt which is certified by the Grama Niladhari.</n-li>
       </n-ul>
-    <div class="flex justify-center ... p-8">
+    <div class="flex justify-center p-8">
       <n-button
         @click="addNewApplication"
         type="warning"
@@ -40,7 +40,7 @@
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
 import TimberTransportingPermitApplicationModal from "@/components/TimberTransportingPermitApplicationModal.vue";
-
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const isShowingTimberTransportingPermitApplicationModal = ref(false);
 const selectedApplication = ref(false);
@@ -58,11 +58,11 @@ function addNewApplication() {
             mpa_code: "204",
         },
         address_of_timber: "456 Oak St, Anytown, USA",
-        is_timber_bought_checked_value: true,
+        is_timber_bought_checked_value: "Yes",
         receipt_no: "ABC123",
         bought_date: "2022-01-01",
         road_to_timber_location: "Take the highway and exit at Main St.",
-        is_timber_private_land_checked_value: false,
+        is_timber_private_land_checked_value: "No",
         private_land: {
             land_deed_number: "123456",
             registration_date: "2021-01-01",
@@ -101,12 +101,12 @@ function addNewApplication() {
         comment: "",
         status: "Submitted",
         submission_timestamp:"",
-        application_code:""
+        application_code:"",
+        user: getLocalAuthUser()
     };
 
-    isShowingTimberTransportingPermitApplicationModal.value = true;
+    isShowingTimberTransportingPermitApplicationModal.value = true
 }
-
 </script>
 
 <style scoped></style>

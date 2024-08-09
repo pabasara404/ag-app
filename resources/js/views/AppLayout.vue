@@ -138,7 +138,7 @@ const menuOptions = [
                         { default: () => "Employee Details Management" }
                     ),
                 key: "employeeDetailsManagement",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: [ "Admin"],
             },
             {
                 label: () =>
@@ -152,7 +152,7 @@ const menuOptions = [
                         { default: () => "GN Officer Details Management" }
                     ),
                 key: "gramaNiladhariDetails",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["Admin"],
             },
             {
                 label: () =>
@@ -166,7 +166,7 @@ const menuOptions = [
                         { default: () => "Citizen Details Management" }
                     ),
                 key: "citizenDetailsManagement",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["Admin"],
             },
         ],
     },
@@ -182,7 +182,7 @@ const menuOptions = [
                 { default: () => "Grama Niladari Division Details Management" }
             ),
         key: "gramaNiladariDivisionDetailsManagement",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(MapIcon),
     },{
         label: () =>
@@ -196,7 +196,7 @@ const menuOptions = [
                 { default: () => "Search Applications" }
             ),
         key: "applicationSearch",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(SearchIcon),
     },
 
@@ -212,7 +212,7 @@ const menuOptions = [
                 { default: () => "Timber Cutting Process Management" }
             ),
         key: "timberCuttingManagement",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(LeafIcon),
     },
     {
@@ -227,13 +227,13 @@ const menuOptions = [
                 { default: () => "Timber Transportation Process and Permits" }
             ),
         key: "timberTransportationProcessAndPermits",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(CarIcon),
     },
     {
         label: "Business Registration Certificates",
         key: "businessRegistrationCertificates",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(BusinessIcon),
         children: [
             {
@@ -248,7 +248,7 @@ const menuOptions = [
                         { default: () => "Individual Business Registration" }
                     ),
                 key: "individualBusinessRegistration",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
             },
             {
                 label: () =>
@@ -262,7 +262,7 @@ const menuOptions = [
                         { default: () => "Firm Registration" }
                     ),
                 key: "firmRegistration",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
             }
         ],
     },
@@ -278,13 +278,13 @@ const menuOptions = [
                 { default: () => "Requesting & Issuing Income Certificates" }
             ),
         key: "requestingAndIssuingIncomeCertificates",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(DocumentTextIcon),
     },
     {
         label: "Welfare Information Verification",
         key: "welfareInformationVerification",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(LogoBitcoinIcon),
         children: [
             {
@@ -299,7 +299,7 @@ const menuOptions = [
                         { default: () => "President Fund Information Verification" }
                     ),
                 key: "presidentFund",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
             },
             {
                 label: () =>
@@ -313,7 +313,7 @@ const menuOptions = [
                         { default: () => "Mahapola Application Processing" }
                     ),
                 key: "mahapola",
-                authorizedBy: ["Employee", "Admin"],
+                authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
             },
         ],
     },
@@ -329,7 +329,7 @@ const menuOptions = [
                 { default: () => "Animal Transportation Permit" }
             ),
         key: "animalTransportationPermit",
-        authorizedBy: ["Client", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(CartIcon),
     },
     {
@@ -344,7 +344,7 @@ const menuOptions = [
                 { default: () => "Excise License Management" }
             ),
         key: "exciseLicensing",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(WineIcon),
     },
     {
@@ -359,7 +359,7 @@ const menuOptions = [
                 { default: () => "Valuation Report Issuing" }
             ),
         key: "valuationReportIssuing",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GuestUser", "GeneralUser", "Admin"],
         icon: renderIcon(DocumentIcon),
     },
     {
@@ -374,7 +374,7 @@ const menuOptions = [
                 { default: () => "Payment Management" }
             ),
         key: "paymentManagement",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(BookIcon),
     },{
         label: () =>
@@ -388,14 +388,14 @@ const menuOptions = [
                 { default: () => "Report Management" }
             ),
         key: "reportManagement",
-        authorizedBy: ["Employee", "Admin"],
+        authorizedBy: ["GeneralUser", "Admin"],
         icon: renderIcon(BarChartIcon),
     },
 ];
 // const signOut = () => store.dispatch("auth/logout");
 
 const authUserSideBarItems = computed(() => {
-    const authUserRole = 'Admin';
+    const authUserRole = () => getLocalAuthUser()?.role?.role_type;
 
     return menuOptions.filter((option) => {
         return option.authorizedBy.includes(authUserRole);

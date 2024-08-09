@@ -1,6 +1,7 @@
 <template>
   <n-layout class="pl-2">
     <PageHeader title="Business Registration Firm Application"/>
+      <n-h4><i><u>Business Names Statute Of Trade, Coporations and Non—incoporated Trade Institutions of the Western Province No. 05 of 2011</u></i></n-h4>
       <n-p>Required documents to obtain the registration of a firm:</n-p>
       <n-ul>
           <n-li>1. Duly filled application.</n-li>
@@ -9,7 +10,7 @@
       </n-ul>
     <div class="flex justify-center ... p-8">
       <n-button
-        @click="isShowingApplicationModal = true"
+          @click="addNewApplication"
         type="warning"
         secondary
         bordered
@@ -19,6 +20,7 @@
     </div>
     <business-firm-application-modal
       :is-showing="isShowingApplicationModal"
+      :application="selectedApplication"
       @close="isShowingApplicationModal = $event"
     />
   </n-layout>
@@ -29,9 +31,61 @@ import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
 import BusinessFirmApplicationModal from "@/components/BusinessFirmApplicationModal.vue";
 
-
+const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
+import {getLocalAuthUser} from "@/services/auth.js";
 
+function addNewApplication() {
+    selectedApplication.value = {
+        id: "",
+        business_name: "Tech Innovators",
+        nature: "Technology",
+        principal_place: "123 Tech Lane",
+        initial_capital: "50000",
+        addresses: [
+            { id: "", name: "Main Office" },
+            { id: "", name: "Branch Office" }
+        ],
+        start_date: "2024-01-01",
+        partner_details: [
+            {
+                id: "",
+                full_name: "John Doe",
+                previous_name: "John Smith",
+                government_officer_checked_value: "Yes",
+                nationality: "American",
+                nic: "A1234567",
+                contact_number: "123-456-7890",
+                residence: "456 Elm Street",
+                is_other_occupation_value: "Yes",
+                occupation: "Engineer",
+                is_other_business_value: "Yes",
+                other_partnered_businesses: [
+                    { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
+                ],
+                is_director: "Yes",
+                director_details: [
+                    { id: "", business_name: "Tech Holdings", registration_no: "D123" }
+                ]
+            }
+        ],
+        gn_division: {
+            id: "74",
+            gn_code: "370",
+            name: "Kotugoda",
+            mpa_code: "204",
+        },
+        checked_date: "2024-07-01",
+        comment: "",
+        status: "Submitted",
+        ownership_of_land_checked_value: "Rent",
+        submission_timestamp:"",
+        application_code:"",
+        user: getLocalAuthUser()
+    };
+
+    isShowingApplicationModal.value = true
+}
 </script>
 
 <style scoped></style>

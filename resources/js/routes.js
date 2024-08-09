@@ -1,7 +1,7 @@
 import {getLocalAuthUser} from "@/services/auth.js";
 
 const authUserRole = () => getLocalAuthUser()?.role?.role_type;
-console.log('4 ', authUserRole);
+// console.log('4 ', authUserRole);
 
 const routes = [
     {
@@ -48,7 +48,7 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Employee`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
                 component: () => import(`./views/${authUserRole()}/EmployeeView.vue`),
             },
@@ -58,9 +58,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Grama Niladari`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
-                component: () => import("./views/Admin/GNOfficerView.vue"),
+                component: () => import(`./views/${authUserRole()}/GNOfficerView.vue`),
             },
             {
                 path: "citizen",
@@ -68,9 +68,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Citizen`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/CitizenView.vue"),
+                component: () => import(`./views/${authUserRole()}/CitizenView.vue`),
             },
             {
                 path: "timberCutting",
@@ -81,17 +81,17 @@ const routes = [
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
                 to:"name",
-                component: () => import("./views/Admin/TimberCuttingMainView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingMainView.vue`),
             }, {
                 path: "applicationSearch",
                 name: "applicationSearch",
                 meta: {
                     middleware: "auth",
                     title: `Application Search`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
                 to:"name",
-                component: () => import("./views/Admin/ApplicationSearchView.vue"),
+                component: () => import(`./views/${authUserRole()}/ApplicationSearchView.vue`),
             },{
                 path: "timberCuttingPermitRenewal",
                 name: "TimberCuttingPermitRenewal",
@@ -100,7 +100,7 @@ const routes = [
                     title: `Timber Cutting Permit Renewal`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberCuttingPermitRenewalRequestView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingPermitRenewalRequestView.vue`),
             },
             {
                 path: "timberCuttingPermitStatus",
@@ -110,7 +110,7 @@ const routes = [
                     title: `Timber Cutting Permit Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberCuttingPermitStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingPermitStatusView.vue`),
             },
             {
                 path: "timberCuttingIssuePermits",
@@ -118,9 +118,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Timber Cutting Issue Permits`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberCuttingIssuePermitsView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingIssuePermitsView.vue`),
             },
             {
                 path: "timberCuttingApplication",
@@ -130,7 +130,7 @@ const routes = [
                     title: `Timber Cutting Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberCuttingApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingApplicationView.vue`),
             },
             {
                 path: "timberCuttingReviewApplication",
@@ -138,9 +138,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Timber Cutting Review Application`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberCuttingReviewApplicationsView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberCuttingReviewApplicationsView.vue`),
             },
             {
                 path: "exciseLicensePermitStatus",
@@ -150,7 +150,7 @@ const routes = [
                     title: `View Excise License Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ExciseLicensePermitStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/ExciseLicensePermitStatusView.vue`),
             },
             {
                 path: "exciseLicenseApplication",
@@ -160,7 +160,7 @@ const routes = [
                     title: `Apply to a Excise License`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ExciseLicenseApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/ExciseLicenseApplicationView.vue`),
             }, {
                 path: "presidentFundStatus",
                 name: "PresidentFundPermitStatus",
@@ -169,7 +169,7 @@ const routes = [
                     title: `Upload a President Fund Request`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/PresidentFundPermitStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/PresidentFundPermitStatusView.vue`),
             },
             {
                 path: "presidentFundApplication",
@@ -179,25 +179,25 @@ const routes = [
                     title: `View President Fund Request Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/PresidentFundApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/PresidentFundApplicationView.vue`),
             }, {
                 path: "presidentFundReview",
                 name: "PresidentFundReview",
                 meta: {
                     middleware: "auth",
                     title: `View President Fund Request Review`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/PresidentFundPermitReviewView.vue"),
+                component: () => import(`./views/${authUserRole()}/PresidentFundPermitReviewView.vue`),
             }, {
                 path: "presidentFundApprove",
                 name: "PresidentFundApprove",
                 meta: {
                     middleware: "auth",
                     title: `View President Fund Request Approval`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
-                component: () => import("./views/Admin/PresidentFundPermitApproveView.vue"),
+                component: () => import(`./views/${authUserRole()}/PresidentFundPermitApproveView.vue`),
             },{
                 path: "mahapolaStatus",
                 name: "MahapolaPermitStatus",
@@ -206,7 +206,7 @@ const routes = [
                     title: `Upload a Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/MahapolaPermitStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/MahapolaPermitStatusView.vue`),
             },
             {
                 path: "mahapolaApplication",
@@ -216,25 +216,25 @@ const routes = [
                     title: `View Application Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/MahapolaApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/MahapolaApplicationView.vue`),
             }, {
                 path: "mahapolaReview",
                 name: "MahapolaReview",
                 meta: {
                     middleware: "auth",
                     title: `Review Mahapola Applications`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/MahapolaPermitReviewView.vue"),
+                component: () => import(`./views/${authUserRole()}/MahapolaPermitReviewView.vue`),
             }, {
                 path: "mahapolaApprove",
                 name: "MahapolaApprove",
                 meta: {
                     middleware: "auth",
                     title: `Approve Mahapola Applications`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/MahapolaPermitApproveView.vue"),
+                component: () => import(`./views/${authUserRole()}/MahapolaPermitApproveView.vue`),
             },
             {
                 path: "gramaNiladariDivision",
@@ -242,9 +242,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `GN Division`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
-                component: () => import("./views/Admin/GNDivisionView.vue"),
+                component: () => import(`./views/${authUserRole()}/GNDivisionView.vue`),
             },
             {
                 path: "timberTransportation",
@@ -254,7 +254,7 @@ const routes = [
                     title: `Timber Transportation Process and Permits`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationView.vue`),
             },{
                 path: "timberTransportationPermitRenewal",
                 name: "TimberTransportationPermitRenewal",
@@ -263,7 +263,7 @@ const routes = [
                     title: `Timber Transportation Permit Renewal`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationPermitRenewalRequestView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationPermitRenewalRequestView.vue`),
             },
             {
                 path: "timberTransportationPermitStatus",
@@ -273,7 +273,7 @@ const routes = [
                     title: `Timber Transportation Permit Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationPermitStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationPermitStatusView.vue`),
             },
             {
                 path: "timberTransportationIssuePermits",
@@ -281,9 +281,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Timber Transportation Issue Permits`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationIssuePermitsView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationIssuePermitsView.vue`),
             },
             {
                 path: "timberTransportationApplication",
@@ -293,7 +293,7 @@ const routes = [
                     title: `Timber Transportation Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationApplicationView.vue`),
             },
             {
                 path: "timberTransportationReviewApplication",
@@ -301,9 +301,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Timber Transportation Review Application`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/TimberTransportationReviewApplicationsView.vue"),
+                component: () => import(`./views/${authUserRole()}/TimberTransportationReviewApplicationsView.vue`),
             },
             {
                 path: "firmView",
@@ -313,7 +313,7 @@ const routes = [
                     title: `Firm Registration`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/FirmRegistrationView.vue"),
+                component: () => import(`./views/${authUserRole()}/FirmRegistrationView.vue`),
             },
             {
                 path: "individualView",
@@ -323,7 +323,7 @@ const routes = [
                     title: `Individual Business Registration`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IndividualBusinessRegistrationView.vue"),
+                component: () => import(`./views/${authUserRole()}/IndividualBusinessRegistrationView.vue`),
             }, {
                 path: "individualBusiness",
                 name: "Individual Business",
@@ -332,7 +332,7 @@ const routes = [
                     title: `Individual Business Registration Management`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationIndividualApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/BusinessRegistrationIndividualApplicationView.vue`),
             },
             {
                 path: "firm",
@@ -342,7 +342,7 @@ const routes = [
                     title: `Apply to a Registration by a Firm`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/BusinessRegistrationFirmApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/BusinessRegistrationFirmApplicationView.vue`),
             },
             {
                 path: "individualBusinessRegistrationStatus",
@@ -352,7 +352,7 @@ const routes = [
                     title: `View Individual Business Application Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IndividualBusinessRegistrationStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/IndividualBusinessRegistrationStatusView.vue`),
             },{
                 path: "firmBusinessRegistrationStatus",
                 name: "firmBusinessRegistrationStatus",
@@ -361,7 +361,7 @@ const routes = [
                     title: `View Firm Application Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/FirmRegistrationStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/FirmRegistrationStatusView.vue`),
             },
             {
                 path: "individualCessation",
@@ -371,7 +371,7 @@ const routes = [
                     title: `Submit a Notice of Cessation of Business`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IndividualBusinessRegistrationCessationApplication.vue"),
+                component: () => import(`./views/${authUserRole()}/IndividualBusinessRegistrationCessationApplication.vue`),
             },
             {
                 path: "firmCessation",
@@ -381,7 +381,7 @@ const routes = [
                     title: `Submit a Notice of Cessation of Business`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/FirmRegistrationCessationApplication.vue"),
+                component: () => import(`./views/${authUserRole()}/FirmRegistrationCessationApplication.vue`),
             },
             {
                 path: "firmRegistrationReviewApplication",
@@ -389,36 +389,36 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Review the Applications`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/FirmRegistrationReviewApplicationsView.vue"),
+                component: () => import(`./views/${authUserRole()}/FirmRegistrationReviewApplicationsView.vue`),
             },{
                 path: "individualBusinessRegistrationReviewApplication",
                 name: "individualBusinessRegistrationReviewApplication",
                 meta: {
                     middleware: "auth",
                     title: `Review the Applications`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IndividualBusinessRegistrationReviewApplicationsView.vue"),
+                component: () => import(`./views/${authUserRole()}/IndividualBusinessRegistrationReviewApplicationsView.vue`),
             },{
                 path: "firmRegistrationIssuePermits",
                 name: "firmRegistrationIssuePermits",
                 meta: {
                     middleware: "auth",
                     title: `Issue the Certificates`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin','GeneralUser']
                 },
-                component: () => import("./views/Admin/FirmRegistrationIssuePermitsView.vue"),
+                component: () => import(`./views/${authUserRole()}/FirmRegistrationIssuePermitsView.vue`),
             },{
                 path: "individualBusinessRegistrationIssuePermits",
                 name: "individualBusinessRegistrationIssuePermits",
                 meta: {
                     middleware: "auth",
                     title: `Issue the Certificates`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IndividualBusinessRegistrationIssuePermitsView.vue"),
+                component: () => import(`./views/${authUserRole()}/IndividualBusinessRegistrationIssuePermitsView.vue`),
             },
             {
                 path: "requestingAndIssuingIncomeCertificates",
@@ -428,7 +428,7 @@ const routes = [
                     title: `Requesting & Issuing Income Certificates`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/RequestingAndIssuingIncomeCertificatesView.vue"),
+                component: () => import(`./views/${authUserRole()}/RequestingAndIssuingIncomeCertificatesView.vue`),
             },{
                 path: "incomeCertificateStatus",
                 name: "IncomeCertificateStatus",
@@ -437,7 +437,7 @@ const routes = [
                     title: `Income Certificate Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IncomeCertificateStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/IncomeCertificateStatusView.vue`),
             },
             {
                 path: "incomeCertificateIssue",
@@ -445,9 +445,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Income Certificate Issuance`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin',  'GeneralUser']
                 },
-                component: () => import("./views/Admin/IncomeCertificateIssueView.vue"),
+                component: () => import(`./views/${authUserRole()}/IncomeCertificateIssueView.vue`),
             },
             {
                 path: "incomeCertificateApplication",
@@ -457,7 +457,7 @@ const routes = [
                     title: `Income Certificate Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IncomeCertificateApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/IncomeCertificateApplicationView.vue`),
             },
             {
                 path: "incomeCertificateReview",
@@ -465,9 +465,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Income Certificate Review Application`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/IncomeCertificateReviewView.vue"),
+                component: () => import(`./views/${authUserRole()}/IncomeCertificateReviewView.vue`),
             },
             {
                 path: "welfareInformationVerification",
@@ -477,7 +477,7 @@ const routes = [
                     title: `Welfare Information Verification`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/WelfareInformationVerificationView.vue"),
+                component: () => import(`./views/${authUserRole()}/WelfareInformationVerificationView.vue`),
             },
             {
                 path: "presidentFund",
@@ -487,7 +487,7 @@ const routes = [
                     title: `President Fund Information Verification`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/PresidentFundView.vue"),
+                component: () => import(`./views/${authUserRole()}/PresidentFundView.vue`),
             },
             {
                 path: "mahapola",
@@ -497,7 +497,7 @@ const routes = [
                     title: `Mahapola Application Processing`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/MahapolaView.vue"),
+                component: () => import(`./views/${authUserRole()}/MahapolaView.vue`),
             },
             {
                 path: "animalTransportationPermit",
@@ -507,7 +507,7 @@ const routes = [
                     title: `Animal Transportation Permit`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/AnimalTransportationPermitView.vue"),
+                component: () => import(`./views/${authUserRole()}/AnimalTransportationPermitView.vue`),
             },
             {
                 path: "animalTransportationStatus",
@@ -517,7 +517,7 @@ const routes = [
                     title: `Animal Transportation Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/AnimalTransportationStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/AnimalTransportationStatusView.vue`),
             },
             {
                 path: "animalTransportationIssue",
@@ -525,9 +525,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Animal Transportation Issuance`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/AnimalTransportationIssueView.vue"),
+                component: () => import(`./views/${authUserRole()}/AnimalTransportationIssueView.vue`),
             },
             {
                 path: "animalTransportationApplication",
@@ -537,7 +537,7 @@ const routes = [
                     title: `Animal Transportation Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/AnimalTransportationApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/AnimalTransportationApplicationView.vue`),
             },
             {
                 path: "animalTransportationReview",
@@ -545,9 +545,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Animal Transportation Review Application`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/AnimalTransportationReviewView.vue"),
+                component: () => import(`./views/${authUserRole()}/AnimalTransportationReviewView.vue`),
             },
             {
                 path: "exciseLicensing",
@@ -555,9 +555,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Excise Licensing`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ExciseLicensingView.vue"),
+                component: () => import(`./views/${authUserRole()}/ExciseLicensingView.vue`),
             },
             {
                 path: "valuationReportIssuing",
@@ -565,9 +565,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Valuation Report Issuing`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportsView.vue"),
+                component: () => import(`./views/${authUserRole()}/ValuationReportsView.vue`),
             },
             {
                 path: "valuationReportStatus",
@@ -577,7 +577,7 @@ const routes = [
                     title: `Valuation Report Status`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportStatusView.vue"),
+                component: () => import(`./views/${authUserRole()}/ValuationReportStatusView.vue`),
             },
             {
                 path: "valuationReportIssue",
@@ -585,9 +585,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Valuation Report Issuance`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportIssueView.vue"),
+                component: () => import(`./views/${authUserRole()}/ValuationReportIssueView.vue`),
             },
             {
                 path: "valuationReportApplication",
@@ -597,7 +597,7 @@ const routes = [
                     title: `Valuation Report Application`,
                     allowed: ['Admin', 'GuestUser', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportApplicationView.vue"),
+                component: () => import(`./views/${authUserRole()}/ValuationReportApplicationView.vue`),
             },
             {
                 path: "valuationReportReview",
@@ -605,9 +605,9 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Valuation Report Review Application`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ValuationReportReviewView.vue"),
+                component: () => import(`./views/${authUserRole()}/ValuationReportReviewView.vue`),
             },
             {
                 path: "paymentManagement",
@@ -615,18 +615,18 @@ const routes = [
                 meta: {
                     middleware: "auth",
                     title: `Payment Management`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/PaymentManagementView.vue"),
+                component: () => import(`./views/${authUserRole()}/PaymentManagementView.vue`),
             },{
                 path: "reportManagement",
                 name: "reportManagement",
                 meta: {
                     middleware: "auth",
                     title: `Report Management`,
-                    allowed: ['Admin', 'GuestUser', 'GeneralUser']
+                    allowed: ['Admin', 'GeneralUser']
                 },
-                component: () => import("./views/Admin/ReportManagementView.vue"),
+                component: () => import(`./views/${authUserRole()}/ReportManagementView.vue`),
             },
         ],
     }

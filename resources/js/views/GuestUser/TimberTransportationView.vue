@@ -10,7 +10,7 @@
             <div class="flex justify-center">
                 <img
                     width="125"
-                    src="../../.././images/Timber%20cutting%20permit%20req4.jpeg"
+                    src="../../.././images/timber trans.jpeg"
                 />
             </div>
         </n-card>
@@ -21,30 +21,6 @@
                 <img
                     width="125"
                     src="../../.././images/application status tracking black and white simple clipart.jpeg"
-                />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('timberTransportationPermitRenewal')" title="Permit Renewal Request" hoverable>
-            <div class="flex justify-center ">
-                <img width="125" src="../../.././images/img.png" />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('timberTransportationReviewApplication')" title="Review the Applications" hoverable>
-            <div class="flex justify-center ">
-                <img width="125" src="../../.././images/img_1.png" />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('timberTransportationIssuePermits')" title="Issue Permits" hoverable>
-            <div class="flex justify-center ">
-                <img
-                    width="125"
-                    src="../../.././images/img_2.png"
                 />
             </div>
         </n-card>

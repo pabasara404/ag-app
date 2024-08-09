@@ -26,26 +26,9 @@
         </n-card>
         <n-card
             class="my-6"
-            @click="handleCardClick('timberCuttingPermitRenewal')" title="Permit Renewal Request" hoverable>
-            <div class="flex justify-center ">
-                <img width="125" src="../../.././images/img.png" />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
             @click="handleCardClick('timberCuttingReviewApplication')" title="Review the Applications" hoverable>
             <div class="flex justify-center ">
-                <img width="125" src="../../.././images/img_1.png" />
-            </div>
-        </n-card>
-        <n-card
-            class="my-6"
-            @click="handleCardClick('timberCuttingIssuePermits')" title="Issue Permits" hoverable>
-            <div class="flex justify-center ">
-                <img
-                    width="125"
-                    src="../../.././images/img_2.png"
-                />
+                <img width="125" src="../../.././images/review.jpeg" />
             </div>
         </n-card>
     </div>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->string('business_name');
             $table->date('issued_date');
-            $table->date('expire_date');
+            $table->date('expire_date')->nullable();
             $table->foreignId('gn_division_id')->nullable()->references('id')->on('gn_divisions');
             $table->string('status')->default('Active');
             $table->timestamp('submission_timestamp');
