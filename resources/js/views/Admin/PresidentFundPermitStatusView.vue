@@ -117,8 +117,8 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("presidentFundApplication");
-    // const {data} = await Http.get("userPresidentFundPermitApplications");
+    // const {data} = await Http.get("presidentFundApplication");
+    const {data} = await Http.get("userPresidentFundPermitApplications");
     isLoading.value = false;
     applications.value = data.data;
 }

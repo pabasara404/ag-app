@@ -209,8 +209,7 @@ onMounted(() => {
 async function fetchApplication() {
     isLoading.value = true;
     try {
-    const {data} = await Http.get("animalTransportation");
-    // const {data} = await Http.get("userAnimalTransportation");
+    const {data} = await Http.get("userAnimalTransportation");
     isLoading.value = false;
 
     // Add total_animal_count to each application

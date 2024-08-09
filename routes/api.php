@@ -145,7 +145,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('mahapolaApplication/{mahapolaApplication}', [MahapolaController::class, 'destroy']);
     Route::post('mahapolaApplication', [MahapolaController::class, 'store']);
     Route::post('mahapolaApplication/upload', [MahapolaController::class, 'upload']);
-    Route::get('mahapolaApplication/download', [MahapolaController::class, 'upload']);
+    Route::get('mahapolaApplication/download', [MahapolaController::class, 'download']);
     Route::put('mahapolaApplication/{id}', [MahapolaController::class, 'updateStatus']);
     Route::get('mahapolaByStatus', [MahapolaController::class, 'filterByStatus']);
     Route::get('userMahapolaApplications', [MahapolaController::class, 'userApplications']);

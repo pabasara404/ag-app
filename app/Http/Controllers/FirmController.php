@@ -37,9 +37,7 @@ class FirmController extends Controller
 
         $applications = Firm::with(
             'addresses',
-            'owner_detail',
-            'other_businesses',
-            'director_details',
+            'partners',
             'gn_division',
             'user',
         )->where('user_id', $userId)->get();

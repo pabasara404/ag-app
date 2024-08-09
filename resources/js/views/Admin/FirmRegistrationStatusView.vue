@@ -208,7 +208,7 @@ onMounted(() => {
 async function fetchApplication() {
     isLoading.value = true;
     try {
-        const { data } = await Http.get("/firmApplication");
+        const { data } = await Http.get("/userFirmApplications");
         applications.value = data.data;
     } catch (error) {
         console.error("Failed to fetch applications", error);

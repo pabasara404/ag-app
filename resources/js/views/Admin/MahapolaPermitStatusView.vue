@@ -111,7 +111,7 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("mahapolaApplication");
+    const {data} = await Http.get("userMahapolaApplications");
     isLoading.value = false;
     applications.value = data.data;
 }
