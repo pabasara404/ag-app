@@ -374,7 +374,12 @@ async function save() {
         const selectedPaymentType = paymentTypeOptions.find(option => option.key === formValue.value.payment_type);
         if (selectedPaymentType) {
             const applicationId = formValue.value.applicationDetails.id;
-            await Http.put(`/${selectedPaymentType.route}/${applicationId}`, { status: 'Issued' });
+            if(formValue.value.payment_type === 'income_certificates'){
+                await Http.put(`incomeCertificate/${applicationId}/status`, {
+                    status: 'Issued'
+                });
+            }else {
+            await Http.put(`/${selectedPaymentType.route}/${applicationId}`, { status: 'Issued' });}
         }
 
         const applicationDetails = formValue.value.applicationDetails;

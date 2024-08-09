@@ -12,6 +12,7 @@ class MahapolaDTO
     public string $submission_timestamp;
     public ?string $comment;
     public string $application_code;
+    public array $user;
 
     public function __construct(array $data)
     {

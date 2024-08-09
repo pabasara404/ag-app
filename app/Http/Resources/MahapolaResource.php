@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\FileDetail;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +23,8 @@ public function toArray(Request $request): array
         'comment' => $this->comment,
         'application_code' => $this->application_code,
         'updated_at' => $this->updated_at,
+        'file_details' => FileDetail::query()->whereIn('id', Json::decode($this->file_detail_ids) ?? [])->get(),
+        "user"=>$this->user,
         ];
     }
 }

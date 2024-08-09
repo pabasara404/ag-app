@@ -21,6 +21,7 @@ public function toArray(Request $request): array
         'comment' => $this->comment,
         'application_code' => $this->application_code,
         'updated_at' => $this->updated_at,
+        "user"=>$this->user,
         ];
     }
 }

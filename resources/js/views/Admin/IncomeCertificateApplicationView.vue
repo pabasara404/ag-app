@@ -1,7 +1,6 @@
 <template>
     <n-layout class="pl-2">
         <PageHeader title="Income Certificate Request Application"/>
-<!--        <n-h4><i><u>Business Names Statute Of Trade, Coporations and Non—incorporated Trade Institutions of the Western Province No. 05 of 2011</u></i></n-h4>-->
             <n-p>To get a income certificate please fill out the form below.The original copies of relevant documents must be submitted.</n-p>
             <n-p>Required documents to obtain an income certificate:</n-p>
             <n-ul>
@@ -30,6 +29,7 @@
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
 import ApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
@@ -38,44 +38,46 @@ const isShowingApplicationModal = ref(false);
 function addNewApplication() {
     selectedApplication.value = {
         id: "",
-        name: "",
-        address: "",
-        nic: "",
-        contact_number:"",
+        name: "John Doe",
+        address: "123 Main St, Colombo",
+        nic: "123456789V",
+        contact_number: "0712345678",
         gn_division: {
             id: "74",
             gn_code: "370",
             name: "Kotugoda",
             mpa_code: "204",
         },
-        purpose:"",
-        submitting_institute:"",
+        purpose: "Income Certificate Application",
+        submitting_institute: "Sample Institute",
         incomes: [
             {
-                id:"",
-                source_of_income: "",
-                registration_no:"",
-                name:"",size:"",
-                monthly_income:"",
-                annual_income:""
+                id: "",
+                source_of_income: "Salary",
+                registration_no: "REG001",
+                name: "Company A",
+                size: "Large",
+                monthly_income: "100000",
+                annual_income: "1200000"
             }
         ],
-        total_annual_income:"",
-        income_tax_number:"",
-        is_samurdhi_beneficiary:"",
+        total_annual_income: "1800000",
+        income_tax_number: "TAX123",
+        is_samurdhi_beneficiary: "Yes",
         samurdhi_details: {
             id: "",
-            subside_amount: "",
-            is_subsidiaries_returned: "",
-            recommendation: "",
-            checked_date:""
+            subside_amount: "5000",
+            is_subsidiaries_returned: "No",
+            recommendation: "Approved",
+            checked_date: "2023-05-15"
         },
         checked_date: "2023-01-01",
-        status: "",
-        submission_timestamp:"",
-        checked_time: "",
-        comment:"",
-        application_code:"",
+        status: "Pending",
+        submission_timestamp: "2023-07-15 10:00:00",
+        checked_time: "10:30:00",
+        comment: "This is a test comment",
+        application_code: "",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

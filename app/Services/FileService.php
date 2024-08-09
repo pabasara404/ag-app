@@ -13,18 +13,11 @@ class FileService
      *
      * @param array $files
      * @param mixed $model
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function download(array $files, $model)
+    public static function download($path, $name)
     {
-        foreach ($files as $file) {
-            $path = $file->store('uploads');
-            File::create([
-                'path' => $path,
-                'fileable_id' => $model->id,
-                'fileable_type' => get_class($model),
-            ]);
-        }
+        return Storage::download($path, $name);
     }
 
     /**

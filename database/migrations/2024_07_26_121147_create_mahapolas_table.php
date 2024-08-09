@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('submission_timestamp');
             $table->text('comment')->nullable();
             $table->string('application_code')->unique();
-            $table->json('files')->nullable();
+            $table->json('file_detail_ids')->nullable();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->timestamps();
         });

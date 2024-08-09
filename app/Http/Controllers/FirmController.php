@@ -7,15 +7,9 @@ use App\Http\Resources\FirmResource;
 use App\Models\Firm;
 use App\Http\Requests\StoreFirmRequest;
 use App\Http\Requests\UpdateFirmRequest;
-use App\Http\Requests\SearchFirmRequest;
-use App\Models\IndividualBusiness;
-use App\Models\OtherPartneredBusiness;
-use App\Models\Partner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class FirmController extends Controller
 {

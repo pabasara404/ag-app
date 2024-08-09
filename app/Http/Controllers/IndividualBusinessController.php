@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\IndividualBusinessAction;
-use App\Http\Requests\SearchIndividualBusinessRequest;
 use App\Http\Resources\IndividualBusinessResource;
 use App\Models\IndividualBusiness;
 use App\Http\Requests\StoreIndividualBusinessRequest;

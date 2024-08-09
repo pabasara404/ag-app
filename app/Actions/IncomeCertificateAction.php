@@ -42,10 +42,19 @@ class IncomeCertificateAction
                 $samurdhiDetail->save();
             }
 
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $incomeCertificate->user()->associate($user);
+                    $incomeCertificate->save();
+                }
+            }
+
             collect($dto['incomes'])->each(function ($income) use ($incomeCertificate) {
                 $income['income_certificate_id'] = $incomeCertificate->id;
                 $income = Income::create($income);
             });
+
 
             $gnDivision = GNDivision::find($dto['gn_division']['id']);
             $incomeCertificate->gn_division()->associate($gnDivision);

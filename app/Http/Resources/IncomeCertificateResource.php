@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 class IncomeCertificateResource extends JsonResource
 {
@@ -41,6 +42,7 @@ class IncomeCertificateResource extends JsonResource
             'comment' => $this->comment,
             'application_code' => $this->application_code,
             'updated_at' => $this->updated_at,
+            "user"=>$this->user,
         ];
     }
 }

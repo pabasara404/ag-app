@@ -14,8 +14,26 @@ class PresidentFundController extends Controller
 {
     public function index()
     {
-        $presidentFunds = PresidentFund::with('gn_division')->get();
+        $presidentFunds = PresidentFund::with('gn_division', 'user')->get();
         return PresidentFundResource::collection($presidentFunds);
+    }
+
+
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = PresidentFund::with(
+            "gn_division",
+            "user"
+        )->where('user_id', $userId)->get();
+
+        return PresidentFundResource::collection($applications);
     }
 
     public function store(StorePresidentFundRequest $request)

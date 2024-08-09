@@ -17,7 +17,6 @@
               v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
           <n-input
-
               :disabled="true"
               v-model:value="formValue.application_code"
           />

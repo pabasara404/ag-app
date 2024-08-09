@@ -11,6 +11,8 @@ use App\Http\Requests\UpdateIncomeCertificateRequest;
 use App\Models\IndividualBusiness;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class IncomeCertificateController extends Controller
 {
@@ -22,10 +24,13 @@ class IncomeCertificateController extends Controller
         $incomeCertificates = IncomeCertificate::with(
             'gn_division',
             'samurdhi_details',
-            'incomes')->get();
+            'incomes',
+            'user',
+        )->get();
 
         return IncomeCertificateResource::collection($incomeCertificates);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -85,4 +90,23 @@ class IncomeCertificateController extends Controller
 
         return response()->json(['message' => 'Status updated successfully']);
     }
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function userApplications(): AnonymousResourceCollection
+    {
+        $userId = auth()->id();
+
+        $applications = IncomeCertificate::with(
+            'gn_division',
+            'samurdhi_details',
+            'incomes',
+            'user',
+        )->where('user_id', $userId)->get();
+
+        return IncomeCertificateResource::collection($applications);
+    }
+
 }

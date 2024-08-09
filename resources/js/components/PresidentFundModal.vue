@@ -15,27 +15,32 @@
           <n-form-item
               label="Application Reference Number" path="application_code">
           <n-input
+              :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
               v-model:value="formValue.application_code"
           />
         </n-form-item>
           <n-form-item label="The Name of the Applicant" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   v-model:value="formValue.name"
                   placeholder="Ex: Siripala"
               />
           </n-form-item>
           <n-form-item label="The Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
             v-model:value="formValue.address"
             placeholder="401, Katana, Negombo"
           /> </n-form-item>
           <n-form-item label="National Identity Card Number" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   v-model:value="formValue.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
@@ -44,6 +49,7 @@
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -65,6 +71,7 @@
                       label="Any comment about application"
                   >
                   <n-input
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'||initialStatus==='Approved'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"
@@ -76,6 +83,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'||initialStatus==='Approved'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -187,7 +195,35 @@ const formValue = ref({
     comment: "This is a test comment",
     application_code: "bsdgh454564",
     files: [],
+    user: getLocalAuthUser()
 });
+
+
+const rules = {
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
+};
+
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
@@ -206,25 +242,6 @@ function handleStatusSelect(selected) {
     formValue.value.status = selected;
 }
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
 
 watch(
   () => props.isShowing,
@@ -234,28 +251,36 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("presidentFundApplication", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Submitted";
+            await Http.post("presidentFundApplication", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`presidentFundApplication/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
     }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`presidentFundApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
-
 const updateStatus = async (status) => {
     try {
         await Http.put(`presidentFundApplication/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 

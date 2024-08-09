@@ -354,7 +354,7 @@
                     <n-h3>By GN Officer</n-h3>
                     <n-form-item label="Ownership of land" path="ownershipOfLand">
                         <n-radio-group
-                            :disabled="initialStatus==='Escalated'"
+                            :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                             v-model:value="formValue.ownership_of_land_checked_value"
                             name="ownershipOfLand"
                         >

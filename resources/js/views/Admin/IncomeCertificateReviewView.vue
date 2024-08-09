@@ -22,8 +22,7 @@
         <edit-application-modal
             :application="selectedApplication"
             :is-showing="isShowingEditApplicationModal"
-            @close="isShowingEditApplicationModal = $event"
-            @save="fetchApplication"
+            @close="handleModalClose"
             :initial-status="initialStatus"
         />
     </n-layout>
@@ -134,48 +133,15 @@ const columns = [
     },
 ];
 
+function handleModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
+
 onMounted(() => {
     fetchApplication();
 });
-//
-// function addNewApplication() {
-//     selectedApplication.value = {
-//         id: "",
-//         business_name: "",
-//         nature: "",
-//         principal_place: "",
-//         initial_capital: "",
-//         addresses: [],
-//         start_date: "",
-//         owner_detail: {
-//             name: "",
-//             previous_name: "",
-//             nationality: "",
-//             nic: "",
-//             residence: ""
-//         },
-//         is_other_business_value: "",
-//         other_businesses: [],
-//         is_director: "",
-//         director_details: [],
-//         other_business_name: "",
-//         government_officer_checked_value: "",
-//         contact_number: "",
-//         ownership_of_land_checked_value: "",
-//         checked_date: "",
-//         status: "",
-//         submission_timestamp: "",
-//         checked_time: "",
-//         comment: "",
-//         application_code: "",
-//     };
-//
-//     isShowingEditApplicationModal.value = true;
-// }
-
-function renderIcon(icon) {
-    return () => h(NIcon, null, {default: () => h(icon)});
-}
 
 async function fetchApplication() {
     isLoading.value = true;

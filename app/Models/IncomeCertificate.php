@@ -13,8 +13,14 @@ class IncomeCertificate extends Model
         'name', 'address', 'nic', 'contact_number', 'gn_division_id',
         'purpose', 'submitting_institute', 'total_annual_income',
         'income_tax_number', 'is_samurdhi_beneficiary', 'checked_date',
-        'status', 'submission_timestamp', 'checked_time', 'comment', 'application_code'
+        'status', 'submission_timestamp', 'checked_time', 'comment', 'application_code',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function gn_division()
     {

@@ -45,8 +45,7 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
     />
 </template>
@@ -54,7 +53,7 @@
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
-import { NButton } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/PresidentFundModal.vue";
 
@@ -63,6 +62,7 @@ const applications = ref([]);
 const selectedApplication = ref(null);
 const initialStatus = ref(null);
 const isShowingEditApplicationModal = ref(false);
+const message = useMessage();
 
 const columns = [
     {
@@ -85,7 +85,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return row.status === "Pending" || row.status === "Approved" ? h(
                 NButton,
                 {
                     round: true,
@@ -102,29 +102,14 @@ const columns = [
                 { default: () => "View Application" }
             ):null;
         }
-    },{
-        title: "",
-        key: "actions",
-        render(row) {
-            return row.status === "Approved" ? h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: () => {
-                        selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
-                    },
-                },
-                { default: () => "View Application" }
-            ) : null;
-        }
     }
 ];
+
+function handleEditApplicationModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
 
 onMounted(() => {
     fetchApplication();
@@ -133,6 +118,7 @@ onMounted(() => {
 async function fetchApplication() {
     isLoading.value = true;
     const {data} = await Http.get("presidentFundApplication");
+    // const {data} = await Http.get("userPresidentFundPermitApplications");
     isLoading.value = false;
     applications.value = data.data;
 }

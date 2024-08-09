@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AnimalTransportation;
 use App\Models\Excise;
 use App\Models\Firm;
+use App\Models\IncomeCertificate;
 use App\Models\IndividualBusiness;
 use App\Models\Mahapola;
 use App\Models\PresidentFund;
@@ -46,6 +47,9 @@ class ApplicationController extends Controller
                 break;
                 case 'president_funds':
                 $modelClass = PresidentFund::class;
+                break;
+                case 'income_certificates':
+                $modelClass = IncomeCertificate::class;
                 break;
                 case 'mahapolas':
                 $modelClass = Mahapola::class;

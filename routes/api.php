@@ -134,6 +134,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('presidentFundApplication', [PresidentFundController::class, 'store']);
     Route::put('presidentFundApplication/{id}', [PresidentFundController::class, 'updateStatus']);
     Route::get('presidentFundByStatus', [PresidentFundController::class, 'filterByStatus']);
+    Route::get('userPresidentFundPermitApplications', [PresidentFundController::class, 'userApplications']);
 
 //routes for mahapola
 //Route::get('mahapolaApplication/searchByReferenceNo', [MahapolaController::class, 'searchByReferenceNo']);
@@ -143,9 +144,10 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('mahapolaApplication/{mahapolaApplication}', [MahapolaController::class, 'destroy']);
     Route::post('mahapolaApplication', [MahapolaController::class, 'store']);
     Route::post('mahapolaApplication/upload', [MahapolaController::class, 'upload']);
+    Route::get('mahapolaApplication/download', [MahapolaController::class, 'upload']);
     Route::put('mahapolaApplication/{id}', [MahapolaController::class, 'updateStatus']);
     Route::get('mahapolaByStatus', [MahapolaController::class, 'filterByStatus']);
-
+    Route::get('userMahapolaApplications', [MahapolaController::class, 'userApplications']);
 
 
 //routes for animalTransportations
@@ -161,9 +163,10 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('incomeCertificate', [IncomeCertificateController::class, 'index']);
     Route::get('incomeCertificateByStatus', [IncomeCertificateController::class, 'show']);
     Route::post('incomeCertificate', [IncomeCertificateController::class, 'store']);
+    Route::put('incomeCertificate/{id}/status', [IncomeCertificateController::class, 'updateStatus']);
     Route::put('incomeCertificate/{incomeCertificate}', [IncomeCertificateController::class, 'update']);
-    Route::put('incomeCertificate/{id}', [IncomeCertificateController::class, 'updateStatus']);
     Route::delete('incomeCertificate/{incomeCertificate}', [IncomeCertificateController::class, 'destroy']);
+    Route::get('userIncomeCertificates', [IncomeCertificateController::class, 'userApplications']);
 
 //routes for timberCuttingPermitApplications
     Route::get('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'index']);

@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Issue Timber Cutting Applications" />
+    <PageHeader title="Issue Income Certificate Applications" />
     <n-data-table
         :loading="isLoading"
         :columns="columns"

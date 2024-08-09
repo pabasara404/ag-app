@@ -48,24 +48,38 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
+    />
+    <edit-payment-modal
+        :is-showing="isShowingEditPaymentModal"
+        @close="handleEditPaymentModalClose"
+        :application-code= "applicationCode"
+        :user-name="userName"
+        :payment-type="paymentType"
     />
 </template>
 
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
-import { NButton } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/IncomeAssessmentFormModal.vue";
+import EditPaymentModal from "@/components/EditPaymentModal.vue";
+import { generateApplicationPDF } from '@/utils/pdfUtils';
+const message = useMessage();
+
 
 const isLoading = ref(false);
 const applications = ref([]);
 const selectedApplication = ref(null);
 const initialStatus = ref(null);
+const applicationCode = ref(null);
+const userName = ref(null);
+const paymentType = ref(null);
 const isShowingEditApplicationModal = ref(false);
+const isShowingEditPaymentModal = ref(false);
 
 const columns = [
     {
@@ -121,7 +135,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Issued" ? h(
+            return row.status === "Awaiting Payment" ? h(
                 NButton,
                 {
                     round: true,
@@ -131,15 +145,61 @@ const columns = [
                     size: "small",
                     onClick: () => {
                         selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
+                        isShowingEditPaymentModal.value = true;
+                        applicationCode.value = row.application_code;
+                        userName.value = row.user.name;
+                        paymentType.value = "income_certificates";
                     },
                 },
                 { default: () => "Download" }
             ) : null;
         }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return row.status === "Issued"|| row.status === "Ceased"? h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: () => handleDownloadClick(row)
+                },
+                { default: () => "Download PDF" }
+            ) : null;
+        }
     }
 ];
+
+
+async function downloadPDF(application) {
+    try {
+        const pdf = await generateApplicationPDF(application);
+        pdf.save(`Application_${application.application_code}.pdf`);
+        message.success('PDF will downloaded shortly');
+    } catch (error) {
+        console.error(error);
+        message.error('Error downloading PDF');
+    }
+}
+
+function handleDownloadClick(row) {
+    downloadPDF(row);
+}
+
+function handleEditPaymentModalClose(){
+    isShowingEditPaymentModal.value = false;
+    fetchApplication();
+}
+
+function handleEditApplicationModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
+
 
 onMounted(() => {
     fetchApplication();
@@ -147,9 +207,15 @@ onMounted(() => {
 
 async function fetchApplication() {
     isLoading.value = true;
-    const {data} = await Http.get("incomeCertificate");
-    isLoading.value = false;
-    applications.value = data.data;
+    try {
+        // const { data } = await Http.get("/userIncomeCertificates");
+        const { data } = await Http.get("/incomeCertificate");
+        applications.value = data.data;
+    } catch (error) {
+        console.error("Failed to fetch applications", error);
+    } finally {
+        isLoading.value = false;
+    }
 }
 </script>
 

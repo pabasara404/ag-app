@@ -20,13 +20,20 @@ class MahapolaAction
         return Mahapola::all();
     }
 
-    public static function getApplicationByStatus(string $statuses): array|\Illuminate\Database\Eloquent\Collection
+    public static function getApplicationByStatus(string $statuses): Collection
     {
-        $statusArray = explode(',', $statuses);
-        return MahapolaBuilder::whereStatus($statusArray)
-        ->with('gn_division')
-        ->get();
+        $statusArray = array_filter(explode(',', $statuses)); // Filter out any empty values
+
+        // Ensure $statusArray is not empty before querying
+        if (empty($statusArray)) {
+            return collect(); // Return an empty collection if no valid statuses are provided
+        }
+
+        return Mahapola::whereIn('status', $statusArray)
+            ->with('gn_division')
+            ->get();
     }
+
 
     public static function store(array $mahapola, User $authUser = null)
     {
@@ -34,6 +41,14 @@ class MahapolaAction
         try {
             $dto = (array) new MahapolaDTO($mahapola);
             $mahapola = Mahapola::create($dto);
+
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $mahapola->user()->associate($user);
+                    $mahapola->save();
+                }
+            }
 
             $gnDivision = GNDivision::find($dto['gn_division']['id']);
             $mahapola->gn_division()->associate($gnDivision);

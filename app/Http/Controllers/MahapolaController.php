@@ -12,8 +12,10 @@ use App\Http\Requests\UpdateMahapolaRequest;
 use App\Models\PresidentFund;
 use App\Services\FileDetailService;
 use App\Services\FileService;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Storage;
 
 class MahapolaController extends Controller
@@ -23,9 +25,27 @@ class MahapolaController extends Controller
      */
     public function index()
     {
-        $mahapolas = Mahapola::with('gn_division')->get();
+        $mahapolas = Mahapola::with('gn_division', 'user')->get();
         return MahapolaResource::collection($mahapolas);
     }
+
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = Mahapola::with(
+            "gn_division",
+            "user"
+        )->where('user_id', $userId)->get();
+
+        return MahapolaResource::collection($applications);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -88,28 +108,49 @@ class MahapolaController extends Controller
         return response()->json(['message' => 'Status updated successfully']);
     }
 
-    public function filterByStatus(Request $request): JsonResponse
+    public function filterByStatus(Request $request): AnonymousResourceCollection
     {
         $statuses = $request->query('statuses', '');
 
         if (empty($statuses)) {
-            return response()->json(['error' => 'Statuses parameter is required'], 400);
+            return MahapolaResource::collection(collect());
         }
 
         $mahapolas = MahapolaAction::getApplicationByStatus($statuses);
-        return response()->json(['data' => $mahapolas]);
+        return MahapolaResource::collection($mahapolas);
     }
+
 
     public function upload(Request $request){
         $path = FileService::upload($request->file, 'mahapola');
 
-        FileDetailService::store([
-            'name' => $path,
+        $fileDetail = FileDetailService::store([
+            'name' => $request->file->getClientOriginalName(),
             'path' => $path,
             'type' => $request->file->getMimeType(),
         ]);
 
-//        Mahapola::
+        $mahapola = Mahapola::findOrFail($request->id);
 
+        if (!$mahapola->file_detail_ids){
+            dump($mahapola->file_detail_ids);
+            $mahapola->update(
+                ['file_detail_ids'=> [$fileDetail->id]]
+            );
+
+            return response()->noContent();
+        }
+
+        $mahapola->update(
+            ['file_detail_ids'=> [...Json::decode($mahapola->file_detail_ids), $fileDetail->id]]
+        );
+
+        return response()->noContent();
+    }
+
+    public function download(Request $request): string
+    {
+        $path = storage_path() . '/app/' . $request->path;
+        return response()->download($path);
     }
 }

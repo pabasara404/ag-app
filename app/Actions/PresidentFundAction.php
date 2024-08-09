@@ -32,6 +32,14 @@ class PresidentFundAction
             $dto = (array) new PresidentFundDTO($presidentFund);
             $presidentFund = PresidentFund::create($dto);
 
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $presidentFund->user()->associate($user);
+                    $presidentFund->save();
+                }
+            }
+
             $gnDivision = GNDivision::find($dto['gn_division']['id']);
             $presidentFund->gn_division()->associate($gnDivision);
             $presidentFund->save();

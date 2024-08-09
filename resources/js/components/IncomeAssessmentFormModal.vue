@@ -1,4 +1,4 @@
-di<template>
+<template>
   <n-modal
     v-model:show="isShowing"
     preset="card"
@@ -11,24 +11,9 @@ di<template>
           <n-h2>Income Assessment Form</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-<!--        <n-watermark-->
-
-<!--            image="../../images/Emblem_of_Sri_Lanka.svg.png"-->
-<!--            cross-->
-<!--            fullscreen-->
-<!--            :font-size="16"-->
-<!--            :line-height="16"-->
-<!--            :width="384"-->
-<!--            :height="384"-->
-<!--            :x-offset="12"-->
-<!--            :y-offset="0"-->
-<!--            :image-width="64"-->
-<!--            :image-opacity="0.24"-->
-<!--        />-->
-<!--   v-if="initialStatus === 'issued'"-->
-      <n-form ref="formRef" :model="formValue">
+      <n-form ref="formRef" :rules="rules"  :model="formValue">
           <n-form-item
+              v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
           <n-input
               :disabled="true"
@@ -37,22 +22,26 @@ di<template>
         </n-form-item>
           <n-form-item label="The Name of the Applicant" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.name"
                   placeholder="Ex: Siripala"
               />
           </n-form-item>
           <n-form-item label="The Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.address"
             placeholder="401, Katana, Negombo"
           /> </n-form-item>
           <n-form-item label="National Identity Card Number" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
@@ -61,6 +50,7 @@ di<template>
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -78,10 +68,12 @@ di<template>
           </n-form-item>
           <n-form-item label="Purpose for which Certificate is obtained" path="initial_capital">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.purpose"
                   placeholder="Purpose for which Certificate is obtained" /></n-form-item>
           <n-form-item label="Institution submitting the Certificate" path="submitting_institute">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.submitting_institute"
                   placeholder="Institution submitting the Certificate" /></n-form-item>
           <n-card title="How the income is earned" v-if="isNewApplication">
@@ -89,34 +81,40 @@ di<template>
               </n-p>
               <n-form-item label="Source of Income" path="initial_capital">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.source_of_income"
                       placeholder="Source of Income" /></n-form-item>
               <n-form-item label="Deed/Vehicle Number/Business Registration Number" path="registration_no">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.registration_no"
                       placeholder="Deed/Vehicle Number/Business Registration Number" />
               </n-form-item>
               <n-form-item label="Name of Land/Business Name">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.name"
                       placeholder="Name of Land/Business Name"
                   />
               </n-form-item>
               <n-form-item label="Size">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.size"
                       placeholder="Size"
                   />
               </n-form-item>
               <n-form-item label="Monthly Income in Numbers" path="principal_place">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.monthly_income"
                       placeholder="Monthly Income in Numbers" /></n-form-item>
               <n-form-item label="Annual Income in Numbers" path="principal_place">
                   <n-input
+                      :disabled="initialStatus==='Escalated'"
                       v-model:value="incomeDetailsForm.annual_income"
                       placeholder="Annual Income in Numbers" /></n-form-item>
-          <n-button @click="addIncomeDetails">Add Income Details</n-button>
+            <n-button :disabled="initialStatus==='Escalated'" @click="addIncomeDetails">Add Income Details</n-button>
           </n-card>
           <br/>
 
@@ -142,7 +140,7 @@ di<template>
                       <td>{{ income.size}}</td>
                       <td>{{ income.monthly_income}}</td>
                       <td>{{ income.annual_income}}</td>
-                      <td><n-button @click="removeIncomeRow(key)">
+                      <td><n-button :disabled="initialStatus==='Escalated'" @click="removeIncomeRow(key)">
                           <n-icon>
                               <clear-outlined-icon/>
                           </n-icon>
@@ -159,6 +157,7 @@ di<template>
           </n-form-item>
           <n-form-item label="File No. if paying income tax" path="principal_place">
             <n-input
+                :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.income_tax_number"
             placeholder="File No. if paying income tax" />
           </n-form-item>
@@ -167,60 +166,65 @@ di<template>
           <div v-if="!isNewApplication">
               <n-form-item label="If the Applicant is a Samurdhi Beneficiary?" path="otherBusiness">
                   <n-radio-group
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       v-model:value="formValue.is_samurdhi_beneficiary"
                       name="otherBusiness"
                   >
                       <n-space>
-                          <n-radio :value="true" label="Yes"> Yes </n-radio>
-                          <n-radio :value="false" label="No"> No </n-radio>
+                          <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                          <n-radio :value="'No'" label="No"> No </n-radio>
                       </n-space>
                   </n-radio-group>
               </n-form-item>
 
-              <n-card v-if="formValue.is_samurdhi_beneficiary">
+              <n-card v-if="formValue.is_samurdhi_beneficiary === 'Yes'">
                   <n-h3>By Samurdhi Development Officer</n-h3>
                   <n-form-item label="Samurdhi subside amount" path="subside_amount">
                       <n-input
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                           v-model:value="samurdhiSubsideAmount"
                           placeholder="Samurdhi subside amount"
                       />
                   </n-form-item>
                   <n-form-item label="Has the Samurdhi subsidiaries been returned or not?" path="otherBusiness">
                       <n-radio-group
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                           v-model:value="samurdhiIsSubsidiariesReturned"
                           name="otherBusiness"
                       >
                           <n-space>
-                              <n-radio :value="true" label="Yes"> Yes </n-radio>
-                              <n-radio :value="false" label="No"> No </n-radio>
+                              <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                              <n-radio :value="'No'" label="No"> No </n-radio>
                           </n-space>
                       </n-radio-group>
                   </n-form-item>
                   <n-form-item label="Recommendation of Samurdhi Development Officer">
                       <n-input
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                           type="textarea"
                           v-model:value="samurdhiRecommendation"
                           placeholder="Recommendation of Samurdhi Development Officer"
                       />
                   </n-form-item>
                   <n-form-item label="Samurdhi Development Officer Checked Date" path="land_deed_date">
-                      <n-date-picker v-model:value="selectedSamurdhiCheckedDate" type="date" />
+                      <n-date-picker
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
+                          v-model:value="selectedSamurdhiCheckedDate" type="date" />
                   </n-form-item>
               </n-card>
           </div>
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-<!--                  <n-input-group>-->
-                      <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-<!--                      <n-time-picker v-model:value="checked_time" />-->
-<!--                  </n-input-group>-->
+                      <n-date-picker
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated' || initialStatus==='Need to Reviewed By Samurdhi Officer'" v-model:value="selectedCheckedDate" type="date" />
               </n-form-item>
               <n-form-item
                   label="Status"
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'|| initialStatus==='Need to Reviewed By Samurdhi Officer'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -240,6 +244,7 @@ di<template>
                   label="Comments"
               >
                   <n-input
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'|| initialStatus==='Need to Reviewed By Samurdhi Officer'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Comments"
@@ -288,7 +293,7 @@ di<template>
         <div class="flex justify-end">
             <n-form-item>
                 <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
                 <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
             </n-form-item>
         </div>
@@ -304,7 +309,6 @@ import { computed, ref, watch, onMounted, defineEmits } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
-  InformationCircleOutline as InformationCircleOutlineIcon,
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
@@ -325,7 +329,6 @@ const props = defineProps({
 });
 
 const GNDivisionOptions = ref([]);
-const treeCuttingReasons = ref([]);
 
 const formValue = ref({
     id: "",
@@ -358,7 +361,7 @@ const formValue = ref({
     samurdhi_details: {
         id: "",
         subside_amount: "5000",
-        is_subsidiaries_returned: false,
+        is_subsidiaries_returned: "No",
         recommendation: "Approved",
         checked_date: "2023-05-15"
     },
@@ -398,23 +401,28 @@ function handleStatusSelect(selected) {
 }
 
 const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
 };
 
 watch(
@@ -425,31 +433,43 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Need to Reviewed By Samurdhi Officer";
-        await Http.post("incomeCertificate", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Need to Reviewed By Samurdhi Officer";
+            await Http.post("incomeCertificate", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if ((props.initialStatus === "Pending" && formValue.value.status === "Pending")) {
+            formValue.value.status = "Resubmitted";
+        }
+        if (props.initialStatus === "Need to Reviewed By Samurdhi Officer" && formValue.value.status === "Need to Reviewed By Samurdhi Officer") {
+            formValue.value.status = "Need to Reviewed By GN Officer";
+        }
+        if (props.initialStatus === "Need to Reviewed By GN Officer" && formValue.value.status === "Need to Reviewed By GN Officer") {
+            formValue.value.status = "Escalated";
+        }
+        await Http.put(`incomeCertificate/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
-    }
-    if ((props.initialStatus === "Pending" && formValue.value.status === "Pending")) {
-        formValue.value.status = "Resubmitted";
-    }
-    if (props.initialStatus === "Need to Reviewed By Samurdhi Officer" && formValue.value.status === "Need to Reviewed By Samurdhi Officer") {
-        formValue.value.status = "Need to Reviewed By GN Officer";
-    }
-    await Http.put(`incomeCertificate/${formValue.value.id}`, formValue.value);
-    emit("close", false);
+    }catch (e) {
+    console.error(e);
+    message.error("An error occurred while saving the Application");
+}
 }
 
 const updateStatus = async (status) => {
     try {
-        await Http.put(`incomeCertificate/${props.application.id}`, {
+        await Http.put(`incomeCertificate/${props.application.id}/status`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 

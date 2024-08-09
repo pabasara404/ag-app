@@ -11,47 +11,36 @@
           <n-h2>Mahapola Application Form</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-<!--        <n-watermark-->
-
-<!--            image="../../images/Emblem_of_Sri_Lanka.svg.png"-->
-<!--            cross-->
-<!--            fullscreen-->
-<!--            :font-size="16"-->
-<!--            :line-height="16"-->
-<!--            :width="384"-->
-<!--            :height="384"-->
-<!--            :x-offset="12"-->
-<!--            :y-offset="0"-->
-<!--            :image-width="64"-->
-<!--            :image-opacity="0.24"-->
-<!--        />-->
-<!--   v-if="initialStatus === 'issued'"-->
       <n-form ref="formRef" :model="formValue">
           <n-form-item
               label="Application Reference Number" path="application_code">
           <n-input
+              :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
               v-model:value="formValue.application_code"
           />
         </n-form-item>
           <n-form-item label="The Name of the Applicant" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   v-model:value="formValue.name"
                   placeholder="Ex: Siripala"
               />
           </n-form-item>
           <n-form-item label="The Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
             v-model:value="formValue.address"
             placeholder="401, Katana, Negombo"
           /> </n-form-item>
           <n-form-item label="National Identity Card Number" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   v-model:value="formValue.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
@@ -60,6 +49,7 @@
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'||initialStatus==='Approved'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -81,6 +71,7 @@
                       label="Any comment about application"
                   >
                   <n-input
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'||initialStatus==='Approved'"
                       type="textarea"
                       v-model:value="formValue.comment"
                       placeholder="Any comment about application"
@@ -91,6 +82,7 @@
                   path="grama_niladari_division"
                     >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'||initialStatus==='Approved'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="gnDivisionsForDropdown"
@@ -111,6 +103,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'||initialStatus==='Approved'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -136,36 +129,16 @@
               </n-ul>
         </n-p>
         <n-form-item>
-<!--          <n-upload-->
-<!--              ref="uploadRef"-->
-<!--              :default-upload="false"-->
-<!--            multiple-->
-<!--            directory-dnd-->
-<!--            :action="`api/mahapolaApplication/upload?id=${submittedApplicationId.value}`"-->
-<!--            :max="5"-->
-<!--            :with-credentials=true-->
-<!--              :on-change="(file, selectedFileList, event)=>{-->
-<!--                  // fileList = selectedFileList;-->
-<!--                  console.log(selectedFileList);-->
-<!--              }"-->
-<!--          >-->
-<!--            <n-upload-dragger>-->
-<!--              <div style="margin-bottom: 12px">-->
-<!--                <n-icon size="48" :depth="3">-->
-<!--                  <archive-icon />-->
-<!--                </n-icon>-->
-<!--              </div>-->
-<!--              <n-text style="font-size: 16px">-->
-<!--                Click or drag a file to this area to upload-->
-<!--              </n-text>-->
-<!--              <n-p depth="3" style="margin: 8px 0 0 0">-->
-<!--                Strictly prohibit from uploading sensitive information. For-->
-<!--                example, your bank card PIN or your credit card expiry date.-->
-<!--              </n-p>-->
-<!--            </n-upload-dragger>-->
-<!--          </n-upload>-->
             <v-file-input @update:modelValue=handleFiles clearable label="Upload files" multiple variant="outlined"></v-file-input>
-        </n-form-item>
+
+        </n-form-item >
+          <v-list v-if="!isNewApplication" lines="one">
+              <v-list-item
+                  v-for="fileDetail in formValue.file_details"
+                  :key="fileDetail.id"
+                  :title="fileDetail.name"
+              ><n-button @click="handleDownload(fileDetail.path, fileDetail.name)">Download</n-button></v-list-item>
+          </v-list>
         <n-p
           >I certify that I have the legal right to the land related to felling
           of trees and that there is no dispute, that the above information is
@@ -190,21 +163,14 @@
 import { computed, ref, watch, onMounted, defineEmits } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import {
-  ArchiveOutline as ArchiveIcon,
-  InformationCircleOutline as InformationCircleOutlineIcon,
-} from "@vicons/ionicons5";
-import {
-  ArrowDropDownRound as ArrowDropDownRoundIcon,
-  ClearOutlined as ClearOutlinedIcon,
+  ArrowDropDownRound as ArrowDropDownRoundIcon
 } from "@vicons/material";
 import Http from "@/services/http";
-import moment from "moment";
 import {getLocalAuthUser} from "@/services/auth.js";
 import { useCookies } from "vue3-cookies";
 
 const submittedApplicationId = ref(0);
 const formRef = ref(null);
-const uploadRef = ref(null);
 const message = useMessage();
 const isShowing = ref(false);
 const emit = defineEmits(["close", "save"]);
@@ -235,7 +201,35 @@ const formValue = ref({
     submission_timestamp: "2023-07-15 10:00:00",
     comment: "This is a test comment",
     application_code: "bsdgh454564",
+    user: getLocalAuthUser()
 });
+
+
+const rules = {
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
+};
+
 
 const statusOptions = [
     { label: 'Pending', key: 'Pending' },
@@ -254,30 +248,6 @@ function handleStatusSelect(selected) {
     formValue.value.status = selected;
 }
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
-
-const uploadAction = computed(()=>{
-   return `api/mahapolaApplication/upload?id=${submittedApplicationId.value}`;
-});
-
 const fileList = ref([]);
 
 
@@ -289,25 +259,34 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        const { data } = await Http.post("mahapolaApplication", formValue.value);
-        submittedApplicationId.value = data.id;
-        console.log(fileList.value);
+    try {
+        if (isNewApplication.value) {
+            formValue.value.status = "Submitted";
+            const { data } = await Http.post("mahapolaApplication", formValue.value);
 
-        await uploadRef.value?.submit({
-            action: "somapala"
-        });
-        submittedApplicationId.value = 0;
-
+            for (const file of fileList.value) {
+                let formData = new FormData();
+                formData.append("file", file);
+                await Http.post(`mahapolaApplication/upload?id=${data.id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+            }
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`mahapolaApplication/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
     }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`mahapolaApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
 
 const updateStatus = async (status) => {
@@ -315,16 +294,14 @@ const updateStatus = async (status) => {
         await Http.put(`mahapolaApplication/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
-
-const csrf = computed(()=>{
-    return cookies.get('XSRF-TOKEN');
-})
 
 const isNewApplication = computed(() => {
   return !formValue.value.id;
@@ -344,6 +321,23 @@ function handleFiles(files){
 
 }
 
+async function handleDownload(path, name ) {
+    await Http({
+        url: `mahapolaApplication/download?path=${path}&name=${name}`,
+        method: "GET",
+        responseType: "blob", // important
+    }).then((response) => {
+        // Service that handles ajax call
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", name);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    });
+}
+
 const selectedGramaNiladariDivision = computed(() => {
   return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {
     return (
@@ -355,7 +349,6 @@ const selectedGramaNiladariDivision = computed(() => {
 
 onMounted(() => {
   fetchGnDivisions();
-    // console.log(cookies.get('XSRF-TOKEN'));
 });
 
 const fetchGnDivisions = async () => {

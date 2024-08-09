@@ -19,8 +19,15 @@ class PresidentFund extends Model
         'submission_timestamp',
         'comment',
         'application_code',
-        'file_paths'
+        'file_paths',
+        'user_id'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function gn_division()
     {

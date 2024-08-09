@@ -1,7 +1,7 @@
 <template>
     <n-layout class="pl-2">
         <PageHeader title="Upload a President Fund Request"/>
-            <n-p>To president fund request please upload the scanned copy of the license with the details of the owner.</n-p>
+            <n-p>To president fund request please upload the scanned copy of the application with the details of the owner.</n-p>
 
             <div class="flex justify-center ... p-8">
                 <n-button
@@ -25,6 +25,7 @@
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
 import ApplicationModal from "@/components/PresidentFundModal.vue";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
@@ -47,6 +48,7 @@ function addNewApplication() {
         submission_timestamp: "2023-07-15 10:00:00",
         comment: "This is a test comment",
         application_code: "bsdgh454564",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

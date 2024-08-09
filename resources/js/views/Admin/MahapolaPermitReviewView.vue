@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="President Fund Request Review" />
+    <PageHeader title="Mahapola Fund Request Review" />
     <n-space vertical>
         <n-data-table
             :loading="isLoading"
