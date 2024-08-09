@@ -95,7 +95,7 @@
                     <span>State here the actual date of commencement of Business activities.</span>
                 </n-tooltip></n-form-item>
 
-                <n-card title="Enter details of the partners">
+                <n-card v-if="isNewApplication" title="Enter details of the partners">
                     <n-form-item label="Full Name of each partner of the Firm">
                         <n-input
                             :disabled="initialStatus==='Escalated'"
@@ -202,7 +202,7 @@
                         </n-radio-group>
                     </n-form-item>
                     <div v-if="formValue.is_other_business_value ==='Yes'">
-                        <n-card title="Business Details">
+                        <n-card v-if="isNewApplication" title="Business Details">
                             <n-form-item label="Business Registration no" path="registration_no">
                                 <n-input
                                     :disabled="initialStatus==='Escalated'"
@@ -235,6 +235,8 @@
                             </n-form-item>
                             <n-button
                                 :disabled="initialStatus==='Escalated'" @click="addOtherBusinessDetails">Add Business</n-button>
+
+                        </n-card>
                             <n-form-item>
                                 <n-table :bordered="false" :single-line="false">
                                     <thead>
@@ -261,7 +263,6 @@
                                     </tbody>
                                 </n-table>
                             </n-form-item>
-                        </n-card>
 
                         <br/>
                     </div>
@@ -276,7 +277,7 @@
                         </n-radio-group>
                     </n-form-item>
                     <div v-if="partnerDetailsForm.is_director ==='Yes'">
-                        <n-card>
+                        <n-card v-if="isNewApplication">
                             <n-form-item label="Registration no" path="registration_no">
                                 <n-input
                                     :disabled="initialStatus==='Escalated'" v-model:value="directorDetailsForm.registration_no" placeholder="Registration number" />
@@ -318,6 +319,7 @@
                     <n-button
                         :disabled="initialStatus==='Escalated'" @click="addPartnerDetails">Add Partner</n-button>
 
+                </n-card>
                     <n-h5>Partner List: </n-h5>
                     <n-form-item>
                         <n-table :bordered="false" :single-line="false">
@@ -346,7 +348,6 @@
                             </tbody>
                         </n-table>
                     </n-form-item>
-                </n-card>
                 <br/>
                 <p>The above statement of particulars required for the purpose of registration is hereby furnished by me.</p><br/>
                 <n-card v-if="!isNewApplication">

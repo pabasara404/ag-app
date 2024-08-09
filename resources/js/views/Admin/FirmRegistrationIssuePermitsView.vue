@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Issue Timber Cutting Applications" />
+    <PageHeader title="Issue Firm Registrations"/>
     <n-data-table
         :loading="isLoading"
         :columns="columns"
@@ -19,7 +19,7 @@
 import PageHeader from "@/components/PageHeader.vue";
 import {h, onMounted, ref} from "vue";
 import {NButton} from "naive-ui";
-import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
+import EditApplicationModal from "@/components/BusinessFirmApplicationModal.vue";
 import Http from "@/services/http.js";
 
 const applications = ref([]);
@@ -31,16 +31,20 @@ const isShowingEditApplicationModal = ref(false);
 
 const columns = [
     {
-        title: "Name of Applicant",
-        key: "name",
+        title: "Reference No.",
+        key: "application_code",
     },
     {
-        title: "Tree count",
-        key: "tree_count",
+        title: "Name of the business",
+        key: "business_name",
     },
     {
-        title: "Address",
-        key: "address",
+        title: "Nature of the Business",
+        key: "nature",
+    },
+    {
+        title: "Initial Capital",
+        key: "initial_capital",
     },
     {
         title: "Status",
@@ -51,10 +55,14 @@ const columns = [
         key: "submission_timestamp",
     },
     {
+        title: "Last updated date",
+        key: "updated_at",
+    },
+    {
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return h(
                 NButton,
                 {
                     round: true,
@@ -68,10 +76,31 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "View Application" }
-            ) : null;
+                { default: () => "Review" }
+            );
         }
-    }
+    },
+    {
+        title: "",
+        key: "actions",
+        render(row) {
+            return h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: async () => {
+                        await deleteApplication(row);
+                        await fetchApplication();
+                    },
+                },
+                { default: () => "Delete" }
+            );
+        },
+    },
 ];
 
 onMounted(() => {
@@ -87,6 +116,12 @@ async function fetchApplication() {
     });
     isLoading.value = false;
     applications.value = data.data;
+}
+
+async function deleteApplication(application) {
+    isLoading.value = true;
+    await Http.delete(`individualBusiness/${application.id}`);
+    isLoading.value = false;
 }
 
 </script>

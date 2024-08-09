@@ -93,13 +93,8 @@ class FirmController extends Controller
      */
     public function update(UpdateFirmRequest $request, Firm $firmApplication)
     {
-        Log::info('Received data:', $request->toArray());
-        Log::info('Firm before update:', $firmApplication->toArray());
 
         $firmApplication->update($request->toArray());
-
-        Log::info('Firm after update:', $firmApplication->toArray());
-
         return response()->noContent();
     }
 
