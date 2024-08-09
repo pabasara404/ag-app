@@ -33,6 +33,7 @@ class FirmResource extends JsonResource
             "submission_timestamp"=>$this->submission_timestamp,
             "application_code"=>$this->application_code,
             "gn_division"=> $this->gn_division,
+            "user"=>$this->user,
         ];
     }
 }

@@ -13,6 +13,7 @@ use App\Models\OtherPartneredBusiness;
 use App\Models\Partner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -30,6 +31,26 @@ class FirmController extends Controller
         )->get();
 
         return FirmResource::collection($firms);
+    }
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function userApplications(): AnonymousResourceCollection
+    {
+        $userId = auth()->id();
+
+        $applications = Firm::with(
+            'addresses',
+            'owner_detail',
+            'other_businesses',
+            'director_details',
+            'gn_division',
+            'user',
+        )->where('user_id', $userId)->get();
+
+        return FirmResource::collection($applications);
     }
 
     /**
@@ -89,14 +110,6 @@ class FirmController extends Controller
     {
         $firm->delete();
         return response()->noContent();
-    }
-
-    public function searchByReferenceNo(SearchFirmRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-    {
-        $applicationCode = $request->input('application_code');
-        $firms = Firm::where('application_code', 'like', "%$applicationCode%")->get();
-
-        return FirmResource::collection($firms);
     }
 
     public function updateStatus(Request $request, $id): JsonResponse

@@ -9,6 +9,7 @@ use App\Models\GnDivision;
 use App\Models\OtherPartneredBusiness;
 use App\Models\Partner;
 use App\Models\DirectorDetail;
+use App\Models\User;
 use App\QueryBuilders\FirmBuilder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +52,13 @@ class FirmAction
                 $gnDivision = GnDivision::find($dto->gn_division['id']);
                 if ($gnDivision) {
                     $firm->gn_division()->associate($gnDivision);
+                    $firm->save();
+                }
+            }
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $firm->user()->associate($user);
                     $firm->save();
                 }
             }

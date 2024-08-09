@@ -19,6 +19,7 @@ class FirmDTO
     public ?string $application_code;
     public string $ownership_of_land_checked_value;
     public array $gn_division;
+    public array $user;
 
     public function __construct(array $data)
     {

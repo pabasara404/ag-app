@@ -33,6 +33,7 @@ import BusinessFirmApplicationModal from "@/components/BusinessFirmApplicationMo
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
+import {getLocalAuthUser} from "@/services/auth.js";
 
 function addNewApplication() {
     selectedApplication.value = {
@@ -51,18 +52,18 @@ function addNewApplication() {
                 id: "",
                 full_name: "John Doe",
                 previous_name: "John Smith",
-                government_officer_checked_value: "Yes",
+                government_officer_checked_value: "'Yes'",
                 nationality: "American",
                 nic: "A1234567",
                 contact_number: "123-456-7890",
                 residence: "456 Elm Street",
-                is_other_occupation_value: "1",
+                is_other_occupation_value: "'Yes'",
                 occupation: "Engineer",
-                is_other_business_value: "1",
+                is_other_business_value: "'Yes'",
                 other_partnered_businesses: [
                     { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
                 ],
-                is_director: "1",
+                is_director: "'Yes'",
                 director_details: [
                     { id: "", business_name: "Tech Holdings", registration_no: "D123" }
                 ]
@@ -79,6 +80,8 @@ function addNewApplication() {
         status: "Submitted",
         ownership_of_land_checked_value: "Rent",
         submission_timestamp:"",
+        application_code:"",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

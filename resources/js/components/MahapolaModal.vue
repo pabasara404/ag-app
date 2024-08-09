@@ -164,7 +164,7 @@
 <!--              </n-p>-->
 <!--            </n-upload-dragger>-->
 <!--          </n-upload>-->
-            <v-file-input clearable label="Upload files" multiple variant="outlined"></v-file-input>
+            <v-file-input @update:modelValue=handleFiles clearable label="Upload files" multiple variant="outlined"></v-file-input>
         </n-form-item>
         <n-p
           >I certify that I have the legal right to the land related to felling
@@ -278,7 +278,7 @@ const uploadAction = computed(()=>{
    return `api/mahapolaApplication/upload?id=${submittedApplicationId.value}`;
 });
 
-const fileList = ref();
+const fileList = ref([]);
 
 
 watch(
@@ -338,6 +338,11 @@ const gnDivisionsForDropdown = computed(() => {
     };
   });
 });
+
+function handleFiles(files){
+    fileList.value = files;
+
+}
 
 const selectedGramaNiladariDivision = computed(() => {
   return gnDivisionsForDropdown.value.find((gnDivisionForDropdown) => {

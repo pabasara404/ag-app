@@ -95,11 +95,6 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('userIndividualBusinessApplications', [individualBusinessController::class, 'userApplications']);
 
 
-// Example routes in api.php
-    Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);
-    Route::get('individualBusiness/searchByReferenceNo', [IndividualBusinessController::class, 'searchByReferenceNo']);
-
-
 //routes for firms
 //Route::get('firmApplication/searchByReferenceNo', [FirmController::class, 'searchByReferenceNo']);
     Route::get('firmApplication', [FirmController::class, 'index']);
@@ -108,6 +103,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('firmApplication/{firmApplication}', [FirmController::class, 'destroy']);
     Route::post('firmApplication', [FirmController::class, 'store']);
     Route::put('firmApplication/{id}', [FirmController::class, 'updateStatus']);
+    Route::get('userFirmApplications', [FirmController::class, 'userApplications']);
 
 
 //routes for valuations

@@ -60,10 +60,12 @@
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
-import { NButton } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/TimberCuttingPermitApplicationModal.vue";
 import EditPaymentModal from "@/components/EditPaymentModal.vue";
+import { generateApplicationPDF } from '@/utils/pdfUtils';
+const message = useMessage();
 
 
 const isLoading = ref(false);
@@ -149,8 +151,40 @@ const columns = [
                 { default: () => "Download" }
             ) : null;
         }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return row.status === "Issued"|| row.status === "Ceased"? h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: () => handleDownloadClick(row)
+                },
+                { default: () => "Download PDF" }
+            ) : null;
+        }
     }
 ];
+
+async function downloadPDF(application) {
+    try {
+        const pdf = await generateApplicationPDF(application);
+        pdf.save(`Application_${application.application_code}.pdf`);
+        message.success('PDF will downloaded shortly');
+    } catch (error) {
+        console.error(error);
+        message.error('Error downloading PDF');
+    }
+}
+
+function handleDownloadClick(row) {
+    downloadPDF(row);
+}
 
 function handleEditPaymentModalClose(){
     isShowingEditPaymentModal.value = false;

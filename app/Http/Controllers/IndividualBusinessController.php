@@ -102,14 +102,6 @@ class IndividualBusinessController extends Controller
         return response()->noContent();
     }
 
-    public function searchByReferenceNo(SearchIndividualBusinessRequest $request)
-    {
-        $applicationCode = $request->input('application_code');
-        $individualBusinesses = IndividualBusiness::where('application_code', 'like', "%$applicationCode%")->get();
-
-        return IndividualBusinessResource::collection($individualBusinesses);
-    }
-
     public function updateStatus(Request $request, $id): JsonResponse
     {
         $application = IndividualBusiness::findOrFail($id);

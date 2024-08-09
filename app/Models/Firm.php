@@ -24,7 +24,13 @@ class Firm extends Model
         'submission_timestamp',
         'application_code',
         'gn_division_id',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function addresses()
     {

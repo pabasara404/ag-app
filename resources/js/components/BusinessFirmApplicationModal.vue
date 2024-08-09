@@ -25,12 +25,14 @@
                 </n-form-item>
                 <n-form-item label="The Business Name" path="business_name">
                     <n-input
+                        :disabled="initialStatus==='Escalated'"
                         v-model:value="formValue.business_name"
                         placeholder="Enter Name of the Business"
                     />
                 </n-form-item>
                 <n-form-item label="The General Nature Of the Business" path="nature">
                     <n-input
+                        :disabled="initialStatus==='Escalated'"
                         v-model:value="formValue.nature"
                         placeholder="The General Nature Of the Business"
                     /> <n-tooltip trigger="hover">
@@ -41,6 +43,7 @@
                 </n-tooltip></n-form-item
                 ><n-form-item label="The Principal Place of the Business" path="principal_place">
                 <n-input
+                    :disabled="initialStatus==='Escalated'"
                     v-model:value="formValue.principal_place"
                     placeholder="The Principal Place of the Business" /></n-form-item>
                 <n-form-item
@@ -48,6 +51,7 @@
                     path="grama_niladari_division"
                 >
                     <n-dropdown
+                        :disabled="initialStatus==='Escalated'"
                         trigger="hover"
                         placement="bottom-start"
                         :options="gnDivisionsForDropdown"
@@ -65,21 +69,25 @@
                 </n-form-item>
                 <n-form-item label="Initial Capital of the Business" path="initial_capital">
                     <n-input
+                        :disabled="initialStatus==='Escalated'"
                         v-model:value="formValue.initial_capital"
                         placeholder="Initial Capital of the Business" />
                 </n-form-item>
                 <n-form-item label="If any Branch Office/ Store / Stores Warehouse is prevailing the address">
                     <div v-for="(address, index) in formValue.addresses" :key="index">
-                        <n-input class="my-1"
+                        <n-input
+                            :disabled="initialStatus==='Escalated'" class="my-1"
                             v-model:value="formValue.addresses[index].name"
                             placeholder="If any Branch Office/Store/Stores Warehouse is prevailing the address"
                         />
                     </div>
                 </n-form-item>
-                <n-button @click="addAddress">Add Another Address</n-button>
+                <n-button
+                    :disabled="initialStatus==='Escalated'" @click="addAddress">Add Another Address</n-button>
                 <br /><br />
                 <n-form-item label="The Date of Commencement of the Business" path="nature">
-                    <n-date-picker v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
+                    <n-date-picker
+                        :disabled="initialStatus==='Escalated'" v-model:value="selectedStartDate" type="date" /> <n-tooltip trigger="hover">
                     <template #trigger>
                         <n-icon><InformationCircleOutlineIcon /></n-icon>
                     </template>
@@ -89,6 +97,7 @@
                 <n-card title="Enter details of the partners">
                     <n-form-item label="Full Name of each partner of the Firm">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.full_name"
                             placeholder="Sub no"
                         /><n-tooltip trigger="hover">
@@ -100,6 +109,7 @@
                     </n-form-item>
                     <n-form-item label="If any previous Name for the Partner Name in full" path="partnerName">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.previous_name"
                             placeholder="If any previous Name for the Partner Name in full"
                         /> <n-tooltip trigger="hover">
@@ -110,17 +120,19 @@
                     </n-tooltip></n-form-item>
                     <n-form-item label="If the partner is a government officer?" path="timberSeller">
                     <n-radio-group
+                        :disabled="initialStatus==='Escalated'"
                         v-model:value="partnerDetailsForm.government_officer_checked_value"
                         name="governmentOfficer"
                     >
                         <n-space>
-                            <n-radio :value="true" label="Yes"> Yes </n-radio>
-                            <n-radio :value="false" label="No"> No </n-radio>
+                            <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                            <n-radio :value="'No'" label="No"> No </n-radio>
                         </n-space>
                     </n-radio-group>
                 </n-form-item>
                     <n-form-item label="The Nationality of the Partner" path="ownerNationality">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.nationality"
                             placeholder="The Nationality of the Partner" /><n-tooltip trigger="hover">
                         <template #trigger>
@@ -131,6 +143,7 @@
                     </n-form-item>
                     <n-form-item label="National Identity Card Number" path="partnerNic">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.nic"
                             placeholder="National Identity Card Number" /><n-tooltip trigger="hover">
                         <template #trigger>
@@ -141,11 +154,13 @@
                     </n-form-item>
                     <n-form-item label="Telephone Number" path="partnerNic">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.contact_number"
                             placeholder="Telephone Number" />
                     </n-form-item>
                     <n-form-item label="The Usual residence of the Partner" path="partnerResidence">
                         <n-input
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="partnerDetailsForm.residence"
                             placeholder="The Usual residence of the Partner" /><n-tooltip trigger="hover">
                         <template #trigger>
@@ -156,12 +171,13 @@
                     </n-form-item>
                         <n-form-item label="If the Partner have other occupation?" path="otherBusiness">
                             <n-radio-group
+                                :disabled="initialStatus==='Escalated'"
                                 v-model:value="formValue.is_other_occupation_value"
                                 name="otherBusiness"
                             >
                                 <n-space>
-                                    <n-radio :value="true" label="Yes"> Yes </n-radio>
-                                    <n-radio :value="false" label="No"> No </n-radio>
+                                    <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                                    <n-radio :value="'No'" label="No"> No </n-radio>
                                 </n-space>
                             </n-radio-group>
                         </n-form-item>
@@ -174,12 +190,13 @@
                         </div>
                     <n-form-item label="If the Partner in any other business?" path="otherBusiness">
                         <n-radio-group
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="formValue.is_other_business_value"
                             name="otherBusiness"
                         >
                             <n-space>
-                                <n-radio :value="true" label="Yes"> Yes </n-radio>
-                                <n-radio :value="false" label="No"> No </n-radio>
+                                <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                                <n-radio :value="'No'" label="No"> No </n-radio>
                             </n-space>
                         </n-radio-group>
                     </n-form-item>
@@ -187,19 +204,24 @@
                         <n-card title="Business Details">
                             <n-form-item label="Business Registration no" path="registration_no">
                                 <n-input
+                                    :disabled="initialStatus==='Escalated'"
                                     v-model:value="otherBusinessDetailsForm.registration_no"
                                     placeholder="Business Registration number" />
                             </n-form-item>
                             <n-form-item label="Name of the other business" path="partnerResidence">
                                 <n-input
+                                    :disabled="initialStatus==='Escalated'"
                                     v-model:value="otherBusinessDetailsForm.business_name"
                                     placeholder="Name of the other business" />
                             </n-form-item>
                             <n-form-item label="Registered Date" path="registered_date">
-                                <n-date-picker v-model:value="selectedRegisteredDate" type="date" />
+                                <n-date-picker
+                                    :disabled="initialStatus==='Escalated'"
+                                    v-model:value="selectedRegisteredDate" type="date" />
                             </n-form-item>
                             <n-form-item label="The General Nature Of the Business" path="nature">
                                 <n-input
+                                    :disabled="initialStatus==='Escalated'"
                                     v-model:value="otherBusinessDetailsForm.nature"
                                     placeholder="The General Nature Of the Business"
                                 />
@@ -210,7 +232,8 @@
                                     <span>If trading. / export of manufacture. state clearly the of goods that are being traded imported/ exported or manufactured</span>
                                 </n-tooltip>
                             </n-form-item>
-                            <n-button @click="addOtherBusinessDetails">Add Business</n-button>
+                            <n-button
+                                :disabled="initialStatus==='Escalated'" @click="addOtherBusinessDetails">Add Business</n-button>
                             <n-form-item>
                                 <n-table :bordered="false" :single-line="false">
                                     <thead>
@@ -243,17 +266,19 @@
                     </div>
                     <br/>
                     <n-form-item label="If the owner is a director of a cooperation?" path="is_director">
-                        <n-radio-group v-model:value="partnerDetailsForm.is_director" name="otherBusiness">
+                        <n-radio-group
+                            :disabled="initialStatus==='Escalated'" v-model:value="partnerDetailsForm.is_director" name="otherBusiness">
                             <n-space>
-                                <n-radio :value="true" label="Yes"> Yes </n-radio>
-                                <n-radio :value="false" label="No"> No </n-radio>
+                                <n-radio :value="'Yes'" label="Yes"> Yes </n-radio>
+                                <n-radio :value="'No'" label="No"> No </n-radio>
                             </n-space>
                         </n-radio-group>
                     </n-form-item>
                     <div v-if="partnerDetailsForm.is_director">
                         <n-card>
                             <n-form-item label="Registration no" path="registration_no">
-                                <n-input v-model:value="directorDetailsForm.registration_no" placeholder="Registration number" />
+                                <n-input
+                                    :disabled="initialStatus==='Escalated'" v-model:value="directorDetailsForm.registration_no" placeholder="Registration number" />
                             </n-form-item>
                             <n-form-item label="Corporation Name">
                                 <n-input v-model:value="directorDetailsForm.name" placeholder="Name" />
@@ -276,7 +301,8 @@
                                 <td>{{ director_detail.registration_no }}</td>
                                 <td>{{ director_detail.name }}</td>
                                 <td>
-                                    <n-button @click="removeDirectorRow(key)">
+                                    <n-button
+                                        :disabled="initialStatus==='Escalated'" @click="removeDirectorRow(key)">
                                         <n-icon><clear-outlined-icon /></n-icon>
                                     </n-button>
                                 </td>
@@ -286,7 +312,8 @@
                     </n-form-item>
                     <br/>
                     </div>
-                    <n-button @click="addPartnerDetails">Add Partner</n-button>
+                    <n-button
+                        :disabled="initialStatus==='Escalated'" @click="addPartnerDetails">Add Partner</n-button>
 
                     <n-h5>Partner List: </n-h5>
                     <n-form-item>
@@ -307,7 +334,8 @@
                                     <td>{{ partner.contact_number }}</td>
                                     <td>{{ partner.nic }}</td>
                                     <td>
-                                        <n-button @click="removePartnerRow(key)">
+                                        <n-button
+                                            :disabled="initialStatus==='Escalated'" @click="removePartnerRow(key)">
                                             <n-icon><clear-outlined-icon /></n-icon>
                                         </n-button>
                                     </td>
@@ -322,6 +350,7 @@
                     <n-h3>By GN Officer</n-h3>
                     <n-form-item label="Ownership of land" path="ownershipOfLand">
                         <n-radio-group
+                            :disabled="initialStatus==='Escalated'"
                             v-model:value="formValue.ownership_of_land_checked_value"
                             name="ownershipOfLand"
                         >
@@ -337,15 +366,14 @@
                         </n-radio-group>
                     </n-form-item>
                     <n-form-item label="Checked Date" path="land_deed_date">
-                        <!--                  <n-input-group>-->
-                        <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-                        <!--                      <n-time-picker v-model:value="checked_time" />-->
-                        <!--                  </n-input-group>-->
+                        <n-date-picker
+                            :disabled="initialStatus==='Pending' || initialStatus==='Escalated'" v-model:value="selectedCheckedDate" type="date" />
                     </n-form-item>
                     <n-form-item
                         label="Any comment about application"
                     >
                         <n-input
+                            :disabled="initialStatus==='Pending'"
                             type="textarea"
                             v-model:value="formValue.comment"
                             placeholder="Any comment about application"
@@ -356,6 +384,7 @@
                         path="status"
                     >
                         <n-dropdown
+                            :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                             trigger="hover"
                             placement="bottom-start"
                             :options="statusOptions"
@@ -431,7 +460,7 @@
                 <div class="flex justify-end">
                     <n-form-item>
                         <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                        <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                        <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
                         <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
                     </n-form-item>
                 </div>
@@ -455,6 +484,7 @@ import {
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
+import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
 const isShowing = ref(false);
@@ -465,54 +495,6 @@ const props = defineProps({
     initialStatus: String
 });
 const GNDivisionOptions = ref([]);
-// const formValue = ref({
-//     id: "",
-//     business_name: "",
-//     nature: "",
-//     principal_place: "",
-//     initial_capital: "",
-//     addresses: [
-//         { id: "", name: "" }
-//     ],
-//     start_date: "",
-//     partner_details: [],
-//     checked_date: "",
-//     comment: "",
-//     status: "",
-//     ownership_of_land_checked_value: ""
-// });
-//
-// const partnerDetailsForm = ref({
-//     id: "",
-//     full_name: "",
-//     previous_name: "",
-//     government_officer_checked_value: "",
-//     nationality: "",
-//     nic: "",
-//     contact_number: "",
-//     residence: "",
-//     is_other_occupation_value: "",
-//     occupation: "",
-//     is_other_business_value: "",
-//     other_partnered_businesses: [],
-//     is_director: "",
-//     director_details: []
-// submission_timestamp:"",
-// });
-//
-// const otherBusinessDetailsForm = ref({
-//     id:"",
-//     registration_no:"",
-//     business_name:"",
-//     registered_date:"",
-//     nature:"",
-// });
-//
-// const directorDetailsForm = ref({
-//     id:"",
-//     business_name:"",
-//     registration_no:""
-// });
 
 const formValue = ref({
     id: "",
@@ -536,18 +518,18 @@ const formValue = ref({
             id: "",
             full_name: "John Doe",
             previous_name: "John Smith",
-            government_officer_checked_value: "Yes",
+            government_officer_checked_value: "'Yes'",
             nationality: "American",
             nic: "A1234567",
             contact_number: "123-456-7890",
             residence: "456 Elm Street",
-            is_other_occupation_value: "1",
+            is_other_occupation_value: "'Yes'",
             occupation: "Engineer",
-            is_other_business_value: "1",
+            is_other_business_value: "'Yes'",
             other_partnered_businesses: [
                 { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
             ],
-            is_director: "1",
+            is_director: "'Yes'",
             director_details: [
                 { id: "", business_name: "Tech Holdings", registration_no: "D123" }
             ]
@@ -558,7 +540,8 @@ const formValue = ref({
     status: "Submitted",
     ownership_of_land_checked_value: "Rent",
     submission_timestamp:"",
-    application_code:""
+    application_code:"",
+    user: getLocalAuthUser()
 });
 
 const partnerDetailsForm = ref({
@@ -593,6 +576,30 @@ const directorDetailsForm = ref({
 });
 
 
+const rules = {
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ]
+};
 
 const isNewApplication = computed(() => {
     return !formValue.value.id;
@@ -606,23 +613,26 @@ watch(
     }
 );
 async function certifyAndSubmit() {
-    console.log("Submitting form:", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Submitted";
+            await Http.post("firmApplication", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
 
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("firmApplication", formValue.value);
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+
+        await Http.put(`firmApplication/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
     }
-
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-
-    console.log(`Updating firmApplication/${formValue.value.id} with data:`, formValue.value);
-
-    await Http.put(`firmApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
 
 const gnDivisionsForDropdown = computed(() => {
@@ -801,10 +811,12 @@ const updateStatus = async (status) => {
         await Http.put(`firmApplication/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
         console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 

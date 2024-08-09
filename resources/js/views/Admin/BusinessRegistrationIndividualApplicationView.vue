@@ -28,7 +28,6 @@
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { ref } from "vue";
-import TimberTransportingPermitApplicationModal from "@/components/TimberTransportingPermitApplicationModal.vue";
 import BusinessIndividualApplicationModal from "@/components/BusinessIndividualApplicationModal.vue";
 
 const selectedApplication = ref(false);

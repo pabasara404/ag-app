@@ -63,10 +63,12 @@
 <script setup>
 import PageHeader from "@/components/PageHeader.vue";
 import { h, onMounted, ref } from "vue";
-import { NButton } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
 import Http from "@/services/http.js";
 import EditApplicationModal from "@/components/BusinessIndividualApplicationModal.vue";
 import EditPaymentModal from "@/components/EditPaymentModal.vue";
+import { generateApplicationPDF } from '@/utils/pdfUtils';
+const message = useMessage();
 
 const isLoading = ref(false);
 const applications = ref([]);
@@ -163,19 +165,30 @@ const columns = [
                     strong: true,
                     secondary: true,
                     size: "small",
-                    onClick: () => {
-                        selectedApplication.value = row;
-                        isShowingEditPaymentModal.value = true;
-                        applicationCode.value = row.application_code;
-                        userName.value = row.user.name;
-                        paymentType.value = "individual_businesses";
-                    },
+                    onClick: () => handleDownloadClick(row)
                 },
                 { default: () => "Download PDF" }
             ) : null;
         }
     }
 ];
+
+
+async function downloadPDF(application) {
+    try {
+        const pdf = await generateApplicationPDF(application);
+        pdf.save(`Application_${application.application_code}.pdf`);
+        message.success('PDF will downloaded shortly');
+    } catch (error) {
+        console.error(error);
+        message.error('Error downloading PDF');
+    }
+}
+
+function handleDownloadClick(row) {
+    downloadPDF(row);
+}
+
 
 
 function handleEditPaymentModalClose(){
@@ -203,6 +216,7 @@ async function fetchApplication() {
         isLoading.value = false;
     }
 }
+
 </script>
 
 <style scoped>
