@@ -26,7 +26,7 @@
                 The application has been reviewed and rejected, failing to meet the required standards or criteria.
             </n-tab-pane>
             <n-tab-pane name="Awaiting Payment">
-                The application has been approved and is pending the completion of the payment process.
+                The application has been approved and is pending the completion of the payment process. You can click "Download" button to do the payment and download the Permit/Certification.
             </n-tab-pane>
             <n-tab-pane name="Issued">
                 The application has been fully processed, and the requested documents or items have been issued.

@@ -1,6 +1,6 @@
 <template>
     <PageHeader title="Submit a Notice of Cessation of Business" />
-    <p>Please enter your Application Code/ Reference Number in here:</p><br/>
+    <p>&nbsp;&nbsp;Please enter your Application Code/ Reference Number in here:</p><br/>
     <div class="flex justify-center w-full">
         <div class="w-2/5 flex">
             <n-input
@@ -40,7 +40,6 @@
                 <div v-html="formatData(selectedApplication)"></div>
             </n-card>
             <n-modal
-                @close="handleEditApplicationModalClose"
                 v-model:show="showModal"
                 :mask-closable="false"
                 preset="dialog"

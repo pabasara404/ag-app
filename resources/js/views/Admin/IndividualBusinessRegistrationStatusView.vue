@@ -26,7 +26,7 @@
                 The application has been reviewed and rejected, failing to meet the required standards or criteria.
             </n-tab-pane>
             <n-tab-pane name="Awaiting Payment">
-                The application has been approved and is pending the completion of the payment process.
+                The application has been approved and is pending the completion of the payment process. You Can click "Download" button to do the payment and download the Permit/Certification.
             </n-tab-pane>
             <n-tab-pane name="Issued">
                 The application has been fully processed, and the requested documents or items have been issued.
@@ -149,6 +149,29 @@ const columns = [
                     },
                 },
                 { default: () => "Download" }
+            ) : null;
+        }
+    },{
+        title: "",
+        key: "actions",
+        render(row) {
+            return row.status === "Issued"|| row.status === "Ceased"? h(
+                NButton,
+                {
+                    round: true,
+                    type: "info",
+                    strong: true,
+                    secondary: true,
+                    size: "small",
+                    onClick: () => {
+                        selectedApplication.value = row;
+                        isShowingEditPaymentModal.value = true;
+                        applicationCode.value = row.application_code;
+                        userName.value = row.user.name;
+                        paymentType.value = "individual_businesses";
+                    },
+                },
+                { default: () => "Download PDF" }
             ) : null;
         }
     }
