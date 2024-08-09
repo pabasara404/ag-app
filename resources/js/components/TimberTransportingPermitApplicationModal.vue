@@ -13,8 +13,6 @@
         </div>
       </n-page-header>
 
-
-
       <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
@@ -486,25 +484,6 @@ const treeDetailsForm = ref({
     piece_count: "8",
 });
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
 
 watch(
     () => props.isShowing,

@@ -113,6 +113,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('valuation/{valuation}', [ValuationController::class, 'update']);
     Route::put('valuation/{id}', [ValuationController::class, 'updateStatus']);
     Route::delete('valuation/{valuation}', [ValuationController::class, 'destroy']);
+    Route::get('userValuations', [ValuationController::class, 'userApplications']);
 
 
 //routes for excises
@@ -157,6 +158,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('animalTransportation/{animalTransportation}', [AnimalTransportationController::class, 'update']);
     Route::put('animalTransportation/{id}', [AnimalTransportationController::class, 'updateStatus']);
     Route::delete('animalTransportation/{animalTransportation}', [AnimalTransportationController::class, 'destroy']);
+    Route::get('userAnimalTransportation', [AnimalTransportationController::class, 'userApplications']);
 
 
 //routes for incomeCertificates

@@ -48,8 +48,7 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleEditApplicationModalClose"
         :initial-status="initialStatus"
     />
 </template>
@@ -132,6 +131,11 @@ const columns = [
         }
     }
 ];
+
+function handleEditApplicationModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
 
 onMounted(() => {
     fetchApplication();

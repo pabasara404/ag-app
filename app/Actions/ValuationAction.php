@@ -43,6 +43,14 @@ class ValuationAction
             $valuation->gn_division()->associate($gnDivision);
             $valuation->save();
 
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $valuation->user()->associate($user);
+                    $valuation->save();
+                }
+            }
+
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();

@@ -17,7 +17,8 @@ class AnimalTransportationController extends Controller
      */
     public function index()
     {
-        $animalTransportations = AnimalTransportation::with('animals')->get();
+        $animalTransportations = AnimalTransportation::with('animals',
+            'user')->get();
 
         return AnimalTransportationResource::collection($animalTransportations);
     }
@@ -96,5 +97,17 @@ class AnimalTransportationController extends Controller
 
         $animalTransportations = AnimalTransportationAction::getApplicationByStatus($statuses);
         return response()->json(['data' => $animalTransportations]);
+    }
+
+    public function userApplications(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $userId = auth()->id();
+
+        $applications = AnimalTransportation::with(
+            'animals',
+            'user'
+        )->where('user_id', $userId)->get();
+
+        return AnimalTransportationResource::collection($applications);
     }
 }

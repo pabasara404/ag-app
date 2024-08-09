@@ -29,10 +29,11 @@ class AnimalTransportationResource extends JsonResource
             "checked_date" => $this->checked_date,
             "status" => $this->status,
             "submission_timestamp" => $this->submission_timestamp,
-//            "checked_time" => $this->checked_time,
             "comment" => $this->comment,
             "animals" => $this->animals,
             'updated_at' => $this->updated_at,
+            "user"=>$this->user,
+
         ];
     }
 }

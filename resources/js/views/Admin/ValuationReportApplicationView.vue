@@ -1,13 +1,6 @@
 <template>
     <n-layout class="pl-2">
         <PageHeader title="Valuation Certificate Request Application"/>
-<!--        <n-h4><i><u>Business Names Statute Of Trade, Coporations and Non—incorporated Trade Institutions of the Western Province No. 05 of 2011</u></i></n-h4>-->
-<!--            <n-p>To get a income certificate please fill out the form below.The original copies of relevant documents must be submitted.</n-p>-->
-<!--            <n-p>Required documents to obtain an income certificate:</n-p>-->
-<!--            <n-ul>-->
-<!--                <n-li>1. To confirm the source of income </n-li>-->
-<!--                <n-li>2. If the business is not located in the domain of residence, a report from the village officer of the division where it is located must also be submitted.</n-li>-->
-<!--            </n-ul>-->
             <div class="flex justify-center ... p-8">
                 <n-button
                     @click="addNewApplication"
@@ -32,6 +25,7 @@ import { ref } from "vue";
 import ApplicationModal from "@/components/ValuationReportModal.vue";
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
+import {getLocalAuthUser} from "@/services/auth.js";
 
 
 function addNewApplication() {
@@ -63,7 +57,8 @@ function addNewApplication() {
         status: "",
         submission_timestamp: "2023-07-15 10:00:00",
         checked_date: "2023-07-20",
-        comment: "Initial submission for review."
+        comment: "Initial submission for review.",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

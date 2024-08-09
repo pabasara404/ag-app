@@ -49,6 +49,14 @@ class AnimalTransportationAction
                 $animalTransportation->animals()->save($animal);
             });
 
+            if (!empty($dto['user'])) {
+                $user = User::find($dto['user']['id']);
+                if ($user) {
+                    $animalTransportation->user()->associate($user);
+                    $animalTransportation->save();
+                }
+            }
+
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();

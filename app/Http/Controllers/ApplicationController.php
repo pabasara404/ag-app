@@ -151,7 +151,6 @@ class ApplicationController extends Controller
             case Valuation::class:
                 $relationships = [
                     'gn_division',
-                    'private_land'
                 ];
                 break;
         }

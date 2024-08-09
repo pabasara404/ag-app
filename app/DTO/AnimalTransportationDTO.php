@@ -20,6 +20,8 @@ class AnimalTransportationDTO
     public ?string $submission_timestamp;
     public ?string $comment;
     public array $animals;
+    public array $user;
+
 
     public function __construct(array $data)
     {

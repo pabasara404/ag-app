@@ -26,7 +26,14 @@ class AnimalTransportation extends Model
         'submission_timestamp',
 //        'checked_time',
         'comment',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
     public function animals(): HasMany
     {

@@ -2,16 +2,6 @@
     <n-layout style="height: 540px" has-sider>
         <n-layout style="padding-left: 8px" :inverted="inverted">
             <PageHeader title="Reports Management" />
-<!--            <n-grid x-gap="12" :cols="2">-->
-<!--                <n-gi class="my-3">-->
-<!--                    <n-h5>Application Count By Status</n-h5>-->
-<!--                    <canvas id="statusChart"></canvas>-->
-<!--                </n-gi>-->
-<!--                <n-gi>-->
-<!--                    <div class="green" />-->
-
-<!--                </n-gi>-->
-<!--            </n-grid>-->
             <n-tabs
                 type="line"
                 size="large"
@@ -22,11 +12,11 @@
                     <n-grid x-gap="12" :cols="2">
                         <n-gi>
                             <n-h5>Division Comparison Report</n-h5>
-                            <canvas id="gnDivisionChart"></canvas>
+                            <canvas ref="gnDivisionChart"></canvas>
                         </n-gi>
                         <n-gi>
                             <n-h5>Division Activity Report</n-h5>
-                            <canvas id="issuedApplicationsChart"></canvas>
+                            <canvas ref="issuedApplicationsChart"></canvas>
                         </n-gi>
                     </n-grid>
 
@@ -171,13 +161,7 @@
 </template>
 
 <script setup>
-import { h, onMounted, ref } from "vue";
-import {
-    // Dollar as DollarIcon,
-    Add as AddIcon,
-    TrashBin as TrashBinIcon,
-    Eye as EyeIcon,
-} from "@vicons/ionicons5";
+import {h, nextTick, onMounted, ref} from "vue";
 import Http from "@/services/http";
 import { NButton, NIcon } from "naive-ui";
 import PageHeader from "@/components/PageHeader.vue";
@@ -205,17 +189,9 @@ const allValuationApplications = ref([]);
 const timberTransportationApplications = ref([]);
 const allTimberTransportationApplications = ref([]);
 const submittedApplicationsChart = ref(null);
+const issuedApplicationsChart = ref(null);
+const statusChart = ref(null);
 
-const options = [
-    {
-        label: "Sort By Recently Added",
-        key: "1",
-    },
-    {
-        label: "Sort By Oldest Added",
-        key: "2",
-    },
-];
 const payments = ref([]);
 const citizenColumns = [
     {
@@ -234,10 +210,6 @@ const citizenColumns = [
         title: "Contact Number",
         key: "contact_number",
     },
-    // {
-    //   title: "Role",
-    //   key: "role",
-    // },
     {
         title: "DOB",
         key: "date_of_birth",
@@ -600,8 +572,6 @@ const timberTransportationColumns = [
 
 onMounted(() => {
     fetchPayment();
-    loadGnDivisionChart();
-    loadStatusChart();
     fetchGraphData();
     fetchSubmittedApplicationsData();
     fetchCitizen();
@@ -621,6 +591,11 @@ onMounted(() => {
     fetchAllValuationApplication();
     fetchAllTimberTransportingApplication();
     fetchTimberTransportingApplication();
+    nextTick(() => {
+        loadGnDivisionChart();
+        loadStatusChart();
+        renderChart();
+    });
 });
 
 async function fetchCitizen() {
@@ -696,7 +671,7 @@ async function fetchIncomeApplication() {
     isLoading.value = true;
     const { data } = await Http.get("incomeCertificateByStatus", {
         params: {
-            status: 'Escalated'
+            status: 'Issued'
         }
     });
     isLoading.value = false;
@@ -723,7 +698,7 @@ async function fetchValuationApplication() {
     isLoading.value = true;
     const { data } = await Http.get("valuationByStatus", {
         params: {
-            statuses: 'Escalated'
+            statuses: 'Issued'
         }
     });
     isLoading.value = false;
@@ -741,7 +716,7 @@ async function fetchTimberTransportingApplication() {
     isLoading.value = true;
     const { data } = await Http.get("timberTransportingPermitApplicationByStatus", {
         params: {
-            status: 'Escalated'
+            status: 'Issued'
         }
     });
     isLoading.value = false;
@@ -796,28 +771,30 @@ async function loadGnDivisionChart() {
         const labels = Object.keys(counts);
         const data = Object.values(counts);
 
-        new Chart(document.getElementById('gnDivisionChart'), {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Application Count by GN Division',
-                        data: data,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                    },
-                ],
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
+        if (gnDivisionChart.value) {
+            new Chart(gnDivisionChart.value, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Application Count by GN Division',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
                     },
                 },
-            },
-        });
+            });
+        }
     } catch (error) {
         console.error(error);
     }
@@ -831,7 +808,7 @@ async function loadStatusChart() {
 
         const labels = Object.keys(counts);
         const data = Object.values(counts);
-
+        if (statusChart.value) {
         new Chart(document.getElementById('statusChart'), {
             type: 'bar',
             data: {
@@ -853,7 +830,7 @@ async function loadStatusChart() {
                     },
                 },
             },
-        });
+        });}
     } catch (error) {
         console.error(error);
     }
@@ -875,8 +852,8 @@ const renderChart = () => {
     if (chart.value) {
         chart.value.destroy();
     }
-
-    chart.value = new Chart(document.getElementById('issuedApplicationsChart'), {
+    if (issuedApplicationsChart.value) {
+        chart.value = new Chart(issuedApplicationsChart.value, {
         type: 'bar',
         data: {
             labels: graphData.value.map(item => item.gn_division),
@@ -896,8 +873,8 @@ const renderChart = () => {
                 }
             }
         }
-    });
-};
+    });}
+}
 
 const fetchSubmittedApplicationsData = async () => {
     try {
@@ -910,7 +887,8 @@ const fetchSubmittedApplicationsData = async () => {
 };
 
 const renderSubmittedApplicationsChart = (data) => {
-    const ctx = submittedApplicationsChart.value.getContext("2d");
+    if (submittedApplicationsChart.value) {
+        const ctx = submittedApplicationsChart.value.getContext("2d");
     const labels = [
         "TCP", "TTP", "IBRC", "FRC", "IC", "ATP", "PF", "MP", "EL", "VR"
     ];
@@ -967,5 +945,6 @@ const renderSubmittedApplicationsChart = (data) => {
             },
         },
     });
-};
+    }
+}
 </script>

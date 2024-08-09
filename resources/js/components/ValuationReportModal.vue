@@ -11,23 +11,8 @@
           <n-h2>Application to a Valuation Certificate </n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-        <n-watermark
-            image="../../images/Emblem_of_Sri_Lanka.svg.png"
-            cross
-            fullscreen
-            :font-size="16"
-            :line-height="16"
-            :width="384"
-            :height="384"
-            :x-offset="12"
-            :y-offset="0"
-            :image-width="64"
-            :image-opacity="0.24"
-        />
-<!--   v-if="initialStatus === 'issued'"-->
-      <n-form ref="formRef" :model="formValue">
-          <n-form-item
+      <n-form ref="formRef" :rules="rules" :model="formValue">
+          <n-form-item  v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
           <n-input
               :disabled="true"
@@ -36,22 +21,26 @@
         </n-form-item>
           <n-form-item label="Enter Name of the Applicant" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.name"
                   placeholder="Enter Name of the Applicant"
               />
           </n-form-item>
           <n-form-item label="Address" path="nature">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                 v-model:value="formValue.address"
                 placeholder="Address"
               />
           </n-form-item>
           <n-form-item label="Valuation Amount" path="valuation_amount">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.valuation_amount"
                   placeholder="Valuation Amount" /></n-form-item>
           <n-form-item label="Reason" path="reason">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.reason"
                   placeholder="Reason" /></n-form-item>
           <n-form-item label="Land Deed Number" path="land_deed_number">
@@ -62,66 +51,77 @@
           </n-form-item>
           <n-form-item label="Boundary to North" path="to_north">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.to_north"
                   placeholder="Boundary to North"
               />
           </n-form-item>
           <n-form-item label="Boundary to South" path="to_south">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.to_south"
                   placeholder="Boundary to South"
               />
           </n-form-item>
           <n-form-item label="Boundary to East" path="to_east">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.to_east"
                   placeholder="Boundary to East"
               />
           </n-form-item>
           <n-form-item label="Boundary to West" path="to_west">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.to_west"
                   placeholder="Boundary to West"
               />
           </n-form-item>
           <n-form-item label="Size in Arches" path="size">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.size"
                   placeholder="Size in Arches"
               />
           </n-form-item>
           <n-form-item label="Building Length" path="width">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.length"
                   placeholder="Building Length"
               />
           </n-form-item>
           <n-form-item label="Building Width" path="width">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.width"
                   placeholder="Building Width"
               />
           </n-form-item>
           <n-form-item label="Name of Notary Officer" path="notary_officer_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.notary_officer_name"
                   placeholder="Name of Notary Officer"
               />
           </n-form-item>
           <n-form-item label="Plan No." path="plan_number">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.plan_number"
                   placeholder="Plan No."
               />
           </n-form-item>
           <n-form-item label="Plan date" path="plan_date">
               <n-date-picker
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="selectedPlanDate"
                   placeholder="Plan date"
                   type="date" />
           </n-form-item>
           <n-form-item label="Land Name" path="land_name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.land_name"
                   placeholder="Land Name"
               />
@@ -131,6 +131,7 @@
               path="grama_niladari_division"
             >
               <n-dropdown
+                  :disabled="initialStatus==='Escalated'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -150,14 +151,13 @@
           <n-card v-if="!isNewApplication">
               <n-h3>By GN Officer</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-<!--                  <n-input-group>-->
-                      <n-date-picker v-model:value="selectedCheckedDate" type="date" />
-<!--                      <n-time-picker v-model:value="checked_time" />-->
-<!--                  </n-input-group>-->
+                      <n-date-picker
+                          :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"  v-model:value="selectedCheckedDate" type="date" />
               </n-form-item><n-form-item
               label="Any comment about application"
           >
               <n-input
+                  :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                   type="textarea"
                   v-model:value="formValue.comment"
                   placeholder="Any comment about application"
@@ -168,6 +168,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -228,7 +229,7 @@
         <div class="flex justify-end">
             <n-form-item>
                 <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
                 <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
             </n-form-item>
         </div>
@@ -244,11 +245,9 @@ import { computed, ref, watch, onMounted } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
-  InformationCircleOutline as InformationCircleOutlineIcon,
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
-  ClearOutlined as ClearOutlinedIcon,
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
@@ -263,13 +262,8 @@ const props = defineProps({
     application: Object,
     initialStatus: String
 });
-const non_commercial_use_checked_value = ref(false);
-const timber_seller_checked_value = ref(false);
-const ownership_of_land_checked_value = ref(false);
-const timberCuttingPermitApplications = ref([]);
-const selectedValues = ref([]);
+
 const GNDivisionOptions = ref([]);
-const treeCuttingReasons = ref([]);
 
 const formValue = ref({
     id: "",
@@ -299,7 +293,8 @@ const formValue = ref({
     status: "",
     submission_timestamp: "2023-07-15 10:00:00",
     checked_date: "2023-07-20",
-    comment: "Initial submission for review."
+    comment: "Initial submission for review.",
+    user: getLocalAuthUser()
 });
 
 
@@ -320,25 +315,6 @@ function handleStatusSelect(selected) {
     formValue.value.status = selected;
 }
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
 
 watch(
   () => props.isShowing,
@@ -348,17 +324,23 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Submitted";
-        await Http.post("valuation", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Submitted";
+            await Http.post("valuation", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`valuation/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    } catch (error) {
+        message.error("An error occurred while saving the Application");
     }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`valuation/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
 
 const updateStatus = async (status) => {
@@ -366,10 +348,11 @@ const updateStatus = async (status) => {
         await Http.put(`valuation/${props.application.id}`, {
             status: status
         });
+        message.success("Application was updated successfully!");
         emit('save');
         emit('close', false);
     } catch (error) {
-        console.error("Failed to update status:", error);
+        message.error("An error occurred while saving the Application");
     }
 };
 

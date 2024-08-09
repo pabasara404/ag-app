@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Actions\AnimalTransportationAction;
 use App\Actions\ValuationAction;
+use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Http\Resources\ValuationResource;
+use App\Models\TimberCuttingPermitApplication;
 use App\Models\Valuation;
 use App\Http\Requests\StoreValuationRequest;
 use App\Http\Requests\UpdateValuationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ValuationController extends Controller
 {
@@ -18,8 +21,25 @@ class ValuationController extends Controller
      */
     public function index()
     {
-        $valuations = Valuation::with('gn_division')->get();
+        $valuations = Valuation::with(
+            'user', 'gn_division')->get();
         return ValuationResource::collection($valuations);
+    }
+
+    /**
+     * Display a listing of the resource for the authenticated user.
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function userApplications()
+    {
+        $userId = auth()->id();
+
+        $applications = Valuation::with(
+            'user', 'gn_division'
+        )->where('user_id', $userId)->get();
+
+        return ValuationResource::collection($applications);
     }
 
     /**

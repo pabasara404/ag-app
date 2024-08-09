@@ -11,52 +11,42 @@
           <n-h2>Excise Licence Form</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-<!--        <n-watermark-->
-
-<!--            image="../../images/Emblem_of_Sri_Lanka.svg.png"-->
-<!--            cross-->
-<!--            fullscreen-->
-<!--            :font-size="16"-->
-<!--            :line-height="16"-->
-<!--            :width="384"-->
-<!--            :height="384"-->
-<!--            :x-offset="12"-->
-<!--            :y-offset="0"-->
-<!--            :image-width="64"-->
-<!--            :image-opacity="0.24"-->
-<!--        />-->
-<!--   v-if="initialStatus === 'issued'"-->
       <n-form ref="formRef" :model="formValue">
           <n-form-item
               label="Application Reference Number" path="application_code">
           <n-input
+              :disabled="initialStatus==='Active'"
               v-model:value="formValue.application_code"
           />
         </n-form-item>
           <n-form-item label="The Name of the Applicant" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Active'"
                   v-model:value="formValue.name"
                   placeholder="Ex: Siripala"
               />
           </n-form-item>
           <n-form-item label="The Address of the Applicant" path="address">
           <n-input
+              :disabled="initialStatus==='Active'"
             v-model:value="formValue.address"
             placeholder="401, Katana, Negombo"
           /> </n-form-item>
           <n-form-item label="National Identity Card Number" path="ownerNic">
               <n-input
+                  :disabled="initialStatus==='Active'"
                   v-model:value="formValue.nic"
                   placeholder="National Identity Card Number" />
           </n-form-item>
           <n-form-item label="Name of the Business" path="business_name">
               <n-input
+                  :disabled="initialStatus==='Active'"
                   v-model:value="formValue.business_name"
                   placeholder="Name of the Business" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Active'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
@@ -65,6 +55,7 @@
               path="grama_niladari_division"
           >
               <n-dropdown
+                  :disabled="initialStatus==='Active'"
                   trigger="hover"
                   placement="bottom-start"
                   :options="gnDivisionsForDropdown"
@@ -85,6 +76,7 @@
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Active'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -101,9 +93,11 @@
                   </n-dropdown>
               </n-form-item>
               <n-form-item label="Date of Issue" path="nature">
-                  <n-date-picker v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
+                  <n-date-picker
+                      :disabled="initialStatus==='Active'" v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
               <n-form-item label="Date  of Expire" path="nature">
-                  <n-date-picker v-model:value="selectedExpireDate" type="date" /> </n-form-item>
+                  <n-date-picker
+                      :disabled="initialStatus==='Active'" v-model:value="selectedExpireDate" type="date" /> </n-form-item>
 
          <n-p>Upload following documents:
 
@@ -145,7 +139,6 @@
         <div class="flex justify-end">
             <n-form-item>
                 <n-button v-if="initialStatus!=='Active'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Active'" type="primary" class="mx-5" @click="updateStatus('Issued')">Download</n-button>
             </n-form-item>
         </div>
       </n-form>
@@ -160,7 +153,6 @@ import { computed, ref, watch, onMounted, defineEmits } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import {
   ArchiveOutline as ArchiveIcon,
-  InformationCircleOutline as InformationCircleOutlineIcon,
 } from "@vicons/ionicons5";
 import {
   ArrowDropDownRound as ArrowDropDownRoundIcon,
@@ -168,7 +160,6 @@ import {
 } from "@vicons/material";
 import Http from "@/services/http";
 import moment from "moment";
-import {getLocalAuthUser} from "@/services/auth.js";
 
 const formRef = ref(null);
 const message = useMessage();
@@ -220,26 +211,6 @@ function handleStatusSelect(selected) {
     formValue.value.status = selected;
 }
 
-const rules = {
-  user: {
-    firstName: {
-      required: true,
-      message: "Please input your name",
-      trigger: "blur",
-    },
-    age: {
-      required: true,
-      message: "Please input your age",
-      trigger: ["input", "blur"],
-    },
-  },
-  phone: {
-    required: true,
-    message: "Please input your number",
-    trigger: ["input"],
-  },
-};
-
 watch(
   () => props.isShowing,
   (newValue) => {
@@ -248,17 +219,24 @@ watch(
   }
 );
 async function certifyAndSubmit() {
-    if (isNewApplication.value) {
-        formValue.value.status = "Active";
-        await Http.post("exciseApplication", formValue.value);
+    try{
+        if (isNewApplication.value) {
+            formValue.value.status = "Active";
+            await Http.post("exciseApplication", formValue.value);
+            message.success("Application was submitted successfully!");
+            emit("close", false);
+            return;
+        }
+        if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
+            formValue.value.status = "Resubmitted";
+        }
+        await Http.put(`exciseApplication/${formValue.value.id}`, formValue.value);
+        message.success("Application was updated successfully!");
         emit("close", false);
-        return;
+    }catch (e) {
+        console.error(e);
+        message.error("An error occurred while saving the Application");
     }
-    if (props.initialStatus === "Pending" && formValue.value.status === "Pending") {
-        formValue.value.status = "Resubmitted";
-    }
-    await Http.put(`exciseApplication/${formValue.value.id}`, formValue.value);
-    emit("close", false);
 }
 
 const updateStatus = async (status) => {

@@ -11,56 +11,45 @@
           <n-h2>Application for Request an Animal Transportation Permit</n-h2>
         </div>
       </n-page-header>
-<!--        v-if="props.initialStatus === 'issued'"-->
-        <n-watermark
 
-            image="../../images/Emblem_of_Sri_Lanka.svg.png"
-            cross
-            fullscreen
-            :font-size="16"
-            :line-height="16"
-            :width="384"
-            :height="384"
-            :x-offset="12"
-            :y-offset="0"
-            :image-width="64"
-            :image-opacity="0.24"
-        />
-<!--   v-if="initialStatus === 'issued'"-->
-      <n-form ref="formRef" :model="formValue">
+      <n-form ref="formRef" :rules="rules" :model="formValue">
           <n-form-item
+              v-if="!isNewApplication"
               label="Application Reference Number" path="application_code">
           <n-input
-              :disabled="true"
+              :disabled="initialStatus==='Escalated'"
               v-model:value="formValue.application_code"
           />
         </n-form-item>
-
-
           <n-form-item label="The Applicant Name" path="name">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.name"
                   placeholder="Enter Name of the Applicant"
               />
           </n-form-item>
           <n-form-item label="Address of the Applicant" path="destination">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.address"
                   placeholder="Address of the Applicant" />
           </n-form-item>
           <n-form-item label="Telephone number" path="contactNumber">
               <n-input
+                  :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.contact_number"
                   placeholder="Telephone number" />
           </n-form-item>
           <n-form-item label="Reason to Transport" path="nature">
           <n-input
+              :disabled="initialStatus==='Escalated'"
               type="textarea"
             v-model:value="formValue.reason_to_transport"
             placeholder="Reason to Transport"
           /> </n-form-item
         ><n-form-item label="Start Point" path="start_point">
           <n-input
+              :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.start_point"
             placeholder="Start Point" /><n-tooltip trigger="hover">
           <template #trigger>
@@ -70,11 +59,13 @@
       </n-tooltip></n-form-item>
           <n-form-item label="Destination" path="destination">
           <n-input
+              :disabled="initialStatus==='Escalated'"
               v-model:value="formValue.destination"
               placeholder="Destination" /></n-form-item>
-              <n-card title="Animal Details">
+              <n-card v-if="isNewApplication"  title="Animal Details">
                   <n-form-item label="Serial No" path="registration_no">
                       <n-input
+                          :disabled="initialStatus==='Escalated'"
                           v-model:value="animalDetailsForm.serial_no"
                           placeholder="Serial No" />
                   </n-form-item>
@@ -125,10 +116,11 @@
                           v-model:value="animalDetailsForm.vehicle_registration_no"
                           placeholder="Registration No. of the Vehicle "
                       />
-                  </n-form-item>
+                  </n-form-item><br/>
+                  <n-button
+                      :disabled="initialStatus==='Escalated'" @click="addAnimalDetails">Add Another Animal</n-button>
               </n-card>
-              <br/>
-              <n-button @click="addAnimalDetails">Add Another Animal</n-button>
+
           <br/>
           <n-form-item>
               <n-table :bordered="false" :single-line="false">
@@ -159,7 +151,8 @@
                       <td>{{ animal.specific_marks}}</td>
                       <td>{{ animal.health_certificate_no}}</td>
                       <td>{{ animal.vehicle_registration_no}}</td>
-                      <td><n-button @click="removeAnimalRow(key)">
+                      <td><n-button
+                          :disabled="initialStatus==='Escalated'" @click="removeAnimalRow(key)">
                           <n-icon>
                               <clear-outlined-icon/>
                           </n-icon>
@@ -179,29 +172,32 @@
               /></n-form-item>
         <div>
             <n-form-item label="Date of Issue" path="nature">
-              <n-date-picker v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
+              <n-date-picker
+                  :disabled="initialStatus==='Escalated'" v-model:value="selectedIssuedDate" type="date" /> </n-form-item>
           <n-form-item label="Date  of Expire" path="nature">
-              <n-date-picker v-model:value="selectedExpireDate" type="date" /> </n-form-item>
+              <n-date-picker
+                  :disabled="initialStatus==='Escalated'" v-model:value="selectedExpireDate" type="date" /> </n-form-item>
           </div>
 
           <p>By subtting this application i certify this details in this application is correct.</p><br/>
           <n-card v-if="!isNewApplication">
               <n-h3>By Government Veterinary Office</n-h3>
               <n-form-item label="Checked Date" path="land_deed_date">
-                      <n-date-picker v-model:value="selectedCheckedDate" type="date" />
+                      <n-date-picker :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"  v-model:value="selectedCheckedDate" type="date" />
               </n-form-item><n-form-item
               label="Any comment about application">
-              <n-input
-                  type="textarea"
+              <n-input :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
+                       type="textarea"
                   v-model:value="formValue.comment"
                   placeholder="Any comment about application"
               />
           </n-form-item>
-              <n-form-item
-                  label="Status"
+              <n-form-item :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
+                           label="Status"
                   path="status"
               >
                   <n-dropdown
+                      :disabled="initialStatus==='Pending' || initialStatus==='Escalated'"
                       trigger="hover"
                       placement="bottom-start"
                       :options="statusOptions"
@@ -258,7 +254,7 @@
         <div class="flex justify-end">
             <n-form-item>
                 <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
-                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Issued')">Approve</n-button>
+                <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
                 <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
             </n-form-item>
         </div>
@@ -335,8 +331,8 @@ const formValue = ref({
     checked_date: "2023-01-01",
     status: "",
     submission_timestamp: "",
-    // checked_time: "",
-    comment: "This is a test comment"
+    comment: "This is a test comment",
+    user: getLocalAuthUser()
 });
 
 const animalDetailsForm = ref({

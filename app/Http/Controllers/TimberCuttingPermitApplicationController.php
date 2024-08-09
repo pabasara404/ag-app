@@ -9,6 +9,7 @@ use App\Http\Resources\TimberCuttingPermitApplicationResource;
 use App\Models\TimberCuttingPermitApplication;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Log;
 
 class TimberCuttingPermitApplicationController extends Controller
@@ -16,7 +17,7 @@ class TimberCuttingPermitApplicationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -36,7 +37,7 @@ class TimberCuttingPermitApplicationController extends Controller
     /**
      * Display a listing of the resource for the authenticated user.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function userApplications()
     {

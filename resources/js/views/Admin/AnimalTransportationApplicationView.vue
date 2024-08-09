@@ -33,7 +33,7 @@ import ApplicationModal from "@/components/AnimalTranportationModal.vue";
 
 const selectedApplication = ref(false);
 const isShowingApplicationModal = ref(false);
-
+import {getLocalAuthUser} from "@/services/auth.js";
 
 function addNewApplication() {
     selectedApplication.value = {
@@ -77,8 +77,8 @@ function addNewApplication() {
         checked_date: "2023-01-01",
         status: "",
         submission_timestamp: "",
-        // checked_time: "",
-        comment: "This is a test comment"
+        comment: "This is a test comment",
+        user: getLocalAuthUser()
     };
 
     isShowingApplicationModal.value = true

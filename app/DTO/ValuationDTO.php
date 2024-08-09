@@ -26,6 +26,8 @@ class ValuationDTO
     public string $status;
     public ?string $submission_timestamp;
     public ?string $application_code;
+    public array $user;
+
 
     public function __construct(array $data)
     {

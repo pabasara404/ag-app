@@ -68,7 +68,6 @@ const columns = [
                     type: "info",
                     strong: true,
                     secondary: true,
-                    // renderIcon: EyeIcon,
                     size: "small",
                     onClick: () => {
                         selectedApplication.value = row;

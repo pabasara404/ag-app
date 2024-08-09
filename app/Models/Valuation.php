@@ -31,7 +31,14 @@ class Valuation extends Model
         'submission_timestamp',
         'checked_date',
         'comment',
+        'user_id'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function gn_division()
     {

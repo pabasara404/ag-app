@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Issue Timber Cutting Applications" />
+    <PageHeader title="Issue Animal Transportation Applications" />
     <n-data-table
         :loading="isLoading"
         :columns="columns"
@@ -9,8 +9,7 @@
     <edit-application-modal
         :application="selectedApplication"
         :is-showing="isShowingEditApplicationModal"
-        @close="isShowingEditApplicationModal = $event"
-        @save="fetchApplication"
+        @close="handleModalClose"
         :initial-status="initialStatus"
     />
 </template>
@@ -84,7 +83,7 @@ const columns = [
                         initialStatus.value = row.status;
                     },
                 },
-                { default: () => "Review" }
+                { default: () => "View Application" }
             );
         }
     },{
@@ -109,6 +108,12 @@ const columns = [
         },
     },
 ];
+
+
+function handleModalClose(){
+    isShowingEditApplicationModal.value = false;
+    fetchApplication();
+}
 
 
 onMounted(() => {

@@ -75,17 +75,14 @@ class TimberTransportingPermitApplicationAction
                 }
             }
 
-            // Assign related model IDs to the main model
             $timberTransportingPermitApplication->private_land_id = $privateLand->id;
             $timberTransportingPermitApplication->boundary_id = $boundaries->id;
 
-            // Save timber details
             collect($dto->timber_details)->each(function ($timberDetail) use ($timberTransportingPermitApplication) {
                 $timberDetails = TimberDetail::create($timberDetail);
                 $timberTransportingPermitApplication->timber_details()->save($timberDetails);
             });
 
-            // Save the main model
             $timberTransportingPermitApplication->save();
 
             DB::commit();
