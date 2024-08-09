@@ -578,6 +578,7 @@ const rules = {
         { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
     ],
     address: [
+        { required: true, message: "Address is required", trigger: "blur" },
         { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
     ],
     contact_number: [
@@ -586,13 +587,27 @@ const rules = {
             message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
             trigger: "blur"
         }
-    ], timber_seller_checked_value:
+    ],
+    timber_seller_checked_value: [
         { required: true, message: "This is required", trigger: "blur" }
-    , non_commercial_use_checked_value:
-        { required: true, message: "This is required", trigger: "blur" }, gn_division:
+    ],
+    non_commercial_use_checked_value: [
         { required: true, message: "This is required", trigger: "blur" }
-
+    ],
+    "deed_detail.land_deed_number": [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    ownership_of_land_checked_value: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    road_to_land: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    planted_tree_count: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ]
 };
+
 
 
 watch(
@@ -609,6 +624,11 @@ const isNewTimberCuttingPermitApplication = computed(() => {
 });
 const certifyAndSubmit = async () => {
     try{
+        await formRef.value.validate();
+        if (formValue.value.tree_count === "0") {
+            message.error("Please add a tree details");
+            return;
+        }
         if (isNewTimberCuttingPermitApplication.value) {
             formValue.value.status = "Submitted";
             Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
@@ -652,9 +672,15 @@ const selectedDeedDate = computed({
       : null;
   },
   set: (epoch) => {
+      const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (selectedDate.isAfter(currentDate)) {
+          message.error('Date cannot be a future date.');
+      } else {
     formValue.value.deed_detail.land_deed_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 
@@ -665,10 +691,15 @@ const selectedPlanDate = computed({
       ? moment(planDate).valueOf()
       : null;
   },
-  set: (epoch) => {
+  set: (epoch) => {const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (selectedDate.isAfter(currentDate)) {
+          message.error('Date cannot be a future date.');
+      } else {
     formValue.value.land_detail.plan_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 
@@ -680,9 +711,15 @@ const selectedCheckedDate = computed({
       : null;
   },
   set: (epoch) => {
+      const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (selectedDate.isAfter(currentDate)) {
+          message.error('Date cannot be a future date.');
+      } else {
     formValue.value.checked_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 

@@ -141,14 +141,21 @@ const rules = {
     ]
 };
 
+
 const selectedDOB = computed({
     get: () => {
         return moment(formValue.value.date_of_birth).valueOf();
     },
     set: (epoch) => {
-        formValue.value.date_of_birth = moment
-            .unix(epoch / 1000)
-            .format("YYYY-MM-DD");
+        const selectedDate = moment.unix(epoch / 1000);
+        const currentDate = moment();
+
+        if (selectedDate.isAfter(currentDate)) {
+            message.error('Date of birth cannot be a future date.');
+        } else {
+            formValue.value.date_of_birth = selectedDate.format("YYYY-MM-DD");
+
+        }
     },
 });
 
