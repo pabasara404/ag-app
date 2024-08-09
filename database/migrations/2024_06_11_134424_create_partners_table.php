@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('nic');
             $table->string('contact_number');
             $table->string('residence');
-            $table->boolean('is_other_occupation_value')->default(false);
+            $table->string('is_other_occupation_value')->default(false);
             $table->string('occupation')->nullable();
-            $table->boolean('is_other_business_value')->default(false);
-            $table->boolean('is_director')->default(false);
+            $table->string('is_other_business_value')->default(false);
+            $table->string('is_director')->default(false);
             $table->foreignId('firm_id')->nullable()->references('id')->on('firms')->onDelete('cascade');
             $table->timestamps();
         });

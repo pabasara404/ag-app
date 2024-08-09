@@ -124,7 +124,7 @@
                   </n-space>
               </n-radio-group>
           </n-form-item>
-          <div v-if="formValue.is_other_business_value">
+          <div v-if="formValue.is_other_business_value ==='Yes'">
               <n-card v-if="isNewApplication">
                   <n-form-item label="Business Registration no" path="registration_no">
                       <n-input
@@ -180,7 +180,7 @@
                   </n-space>
               </n-radio-group>
           </n-form-item>
-          <div v-if="formValue.is_director">
+          <div v-if="formValue.is_director ==='Yes'">
               <n-card v-if="isNewApplication">
                   <n-form-item label="Registration no" path="registration_no">
                       <n-input
@@ -374,10 +374,9 @@
           </n-upload>
         </n-form-item>
         <n-p
-          >I certify that I have the legal right to the land related to felling
-          of trees and that there is no dispute, that the above information is
-          true and that I will take full responsibility if any problem
-          arises.</n-p
+          >I certify that I have the legal right to the land related to business registration and that there is no dispute, that the above information is
+            true and that I will take full responsibility if any problem
+            arises.</n-p
         >
         <div class="flex justify-end">
             <n-form-item>

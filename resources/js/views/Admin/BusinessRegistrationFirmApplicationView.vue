@@ -52,18 +52,18 @@ function addNewApplication() {
                 id: "",
                 full_name: "John Doe",
                 previous_name: "John Smith",
-                government_officer_checked_value: "'Yes'",
+                government_officer_checked_value: "Yes",
                 nationality: "American",
                 nic: "A1234567",
                 contact_number: "123-456-7890",
                 residence: "456 Elm Street",
-                is_other_occupation_value: "'Yes'",
+                is_other_occupation_value: "Yes",
                 occupation: "Engineer",
-                is_other_business_value: "'Yes'",
+                is_other_business_value: "Yes",
                 other_partnered_businesses: [
                     { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
                 ],
-                is_director: "'Yes'",
+                is_director: "Yes",
                 director_details: [
                     { id: "", business_name: "Tech Holdings", registration_no: "D123" }
                 ]

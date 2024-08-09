@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('principal_place');
             $table->decimal('initial_capital', 15, 2);
             $table->date('start_date');
-            $table->boolean('is_other_business_value')->default(false);
-            $table->boolean('is_other_occupation_value')->default(false);
+            $table->string('is_other_business_value')->default(false);
+            $table->string('is_other_occupation_value')->default(false);
             $table->string('ownership_of_land_checked_value');
             $table->string('status')->default('Submitted');
             $table->timestamp('submission_timestamp')->nullable();

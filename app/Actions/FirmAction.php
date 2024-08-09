@@ -55,8 +55,9 @@ class FirmAction
                     $firm->save();
                 }
             }
-            if (!empty($dto['user'])) {
-                $user = User::find($dto['user']['id']);
+
+            if (!empty($dto->user)) {
+                $user = User::find($dto->user['id']);
                 if ($user) {
                     $firm->user()->associate($user);
                     $firm->save();

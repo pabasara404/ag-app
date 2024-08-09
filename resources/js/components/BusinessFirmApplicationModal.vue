@@ -77,6 +77,7 @@
                     <div v-for="(address, index) in formValue.addresses" :key="index">
                         <n-input
                             :disabled="initialStatus==='Escalated'" class="my-1"
+                            maxlength="255" show-count clearable
                             v-model:value="formValue.addresses[index].name"
                             placeholder="If any Branch Office/Store/Stores Warehouse is prevailing the address"
                         />
@@ -181,7 +182,7 @@
                                 </n-space>
                             </n-radio-group>
                         </n-form-item>
-                        <div v-if="formValue.is_other_occupation_value">
+                        <div v-if="formValue.is_other_occupation_value  ==='Yes'">
                                 <n-form-item label="Occupation name" >
                                     <n-input
                                         v-model:value="partnerDetailsForm.occupation"
@@ -200,7 +201,7 @@
                             </n-space>
                         </n-radio-group>
                     </n-form-item>
-                    <div v-if="formValue.is_other_business_value">
+                    <div v-if="formValue.is_other_business_value ==='Yes'">
                         <n-card title="Business Details">
                             <n-form-item label="Business Registration no" path="registration_no">
                                 <n-input
@@ -274,7 +275,7 @@
                             </n-space>
                         </n-radio-group>
                     </n-form-item>
-                    <div v-if="partnerDetailsForm.is_director">
+                    <div v-if="partnerDetailsForm.is_director ==='Yes'">
                         <n-card>
                             <n-form-item label="Registration no" path="registration_no">
                                 <n-input
@@ -312,6 +313,8 @@
                     </n-form-item>
                     <br/>
                     </div>
+
+                    <p>After Entering the details click below button to add partner details.</p><br/>
                     <n-button
                         :disabled="initialStatus==='Escalated'" @click="addPartnerDetails">Add Partner</n-button>
 
@@ -452,8 +455,7 @@
                     </n-upload>
                 </n-form-item>
                 <n-p
-                >I certify that I have the legal right to the land related to felling
-                    of trees and that there is no dispute, that the above information is
+                >I certify that I have the legal right to the land related to business registration and that there is no dispute, that the above information is
                     true and that I will take full responsibility if any problem
                     arises.</n-p
                 >
@@ -485,6 +487,7 @@ import {
 import Http from "@/services/http";
 import moment from "moment";
 import {getLocalAuthUser} from "@/services/auth.js";
+const message = useMessage();
 
 const formRef = ref(null);
 const isShowing = ref(false);
@@ -518,18 +521,18 @@ const formValue = ref({
             id: "",
             full_name: "John Doe",
             previous_name: "John Smith",
-            government_officer_checked_value: "'Yes'",
+            government_officer_checked_value: "Yes",
             nationality: "American",
             nic: "A1234567",
             contact_number: "123-456-7890",
             residence: "456 Elm Street",
-            is_other_occupation_value: "'Yes'",
+            is_other_occupation_value: "Yes",
             occupation: "Engineer",
-            is_other_business_value: "'Yes'",
+            is_other_business_value: "Yes",
             other_partnered_businesses: [
                 { id: "", registration_no: "B123", business_name: "Tech Ventures", registered_date: "2022-05-15", nature: "Consulting" }
             ],
-            is_director: "'Yes'",
+            is_director: "Yes",
             director_details: [
                 { id: "", business_name: "Tech Holdings", registration_no: "D123" }
             ]
@@ -553,11 +556,11 @@ const partnerDetailsForm = ref({
     nic: "C9876543",
     contact_number: "987-654-3210",
     residence: "789 Maple Avenue",
-    is_other_occupation_value: "1",
+    is_other_occupation_value: "Yes",
     occupation: "Manager",
-    is_other_business_value: "1",
+    is_other_business_value: "Yes",
     other_partnered_businesses: [],
-    is_director: "1",
+    is_director: "Yes",
     director_details: []
 });
 
