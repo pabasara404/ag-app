@@ -85,7 +85,7 @@ const columns = [
         title: "",
         key: "actions",
         render(row) {
-            return row.status === "Pending" ? h(
+            return row.status === "Pending" || row.status === "Approved" ? h(
                 NButton,
                 {
                     round: true,
@@ -101,27 +101,6 @@ const columns = [
                 },
                 { default: () => "View Application" }
             ):null;
-        }
-    },{
-        title: "",
-        key: "actions",
-        render(row) {
-            return row.status === "Approved" ? h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: () => {
-                        selectedApplication.value = row;
-                        isShowingEditApplicationModal.value = true;
-                        initialStatus.value = row.status;
-                    },
-                },
-                { default: () => "View Application" }
-            ) : null;
         }
     }
 ];
