@@ -376,8 +376,9 @@
               <p>I have personally checked the business and the business hasn't started yet. There is no business from the above name in this division.</p>
           </n-card>
         <div class="flex justify-end">
+            <p v-if="!hasTreeDetails"> Please add tree details.</p>
           <n-form-item>
-              <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+              <n-button :disabled="!hasTreeDetails" v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewApplication? "Certify and Submit" : "Resubmit" }} </n-button>
               <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
               <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
@@ -417,98 +418,14 @@ const props = defineProps({
     initialStatus: String
 });
 const GNDivisionOptions = ref([]);
+const formValue = ref({ id: "", name: "", address: "", contact_number: "", gn_division: { id: "", gn_code: "", name: "", mpa_code: "", }, address_of_timber: "", is_timber_bought_checked_value: "", receipt_no: "", bought_date: "", road_to_timber_location: "", is_timber_private_land_checked_value: "", private_land: { land_deed_number: "", registration_date: "", plan_plot_number: "", registration_office: "", plan_number: "", land_name: "", land_size: "", }, boundary: { north: "", south: "", east: "", west: "", }, end_location: "", route: "", timber_transport_date: "", plate_number: "", timber_details: [], total_pieces: "", checked_date: "", comment: "", status: "", submission_timestamp: "", application_code: "", user: getLocalAuthUser(), });
 
-const formValue = ref({
-    id: "",
-    name: "John Doe",
-    address: "123 Main St, Anytown, USA",
-    contact_number: "123-456-7890",
-    gn_division: {
-        id: "74",
-        gn_code: "370",
-        name: "Kotugoda",
-        mpa_code: "204",
-    },
-    address_of_timber: "456 Oak St, Anytown, USA",
-    is_timber_bought_checked_value: "Yes",
-    receipt_no: "ABC123",
-    bought_date: "2022-01-01",
-    road_to_timber_location: "Take the highway and exit at Main St.",
-    is_timber_private_land_checked_value: "No",
-    private_land: {
-        land_deed_number: "123456",
-        registration_date: "2021-01-01",
-        plan_plot_number: "789",
-        registration_office: "Anytown Registry",
-        plan_number: "01234",
-        land_name: "John Doe's Land",
-        land_size: "10 acres",
-    },
-    boundary: {
-        north: "123 Main St",
-        south: "456 Oak St",
-        east: "789 Elm St",
-        west: "321 Maple Ave",
-    },
-    end_location: "567 Pine St, Anytown, USA",
-    route: "Take the highway and exit at Pine St.",
-    timber_transport_date: "2022-02-01",
-    plate_number: "XYZ123",
-    timber_details: [
-        {
-            timber_type: "Oak",
-            length: "10 ft",
-            width: "1 ft",
-            piece_count: "5",
-        },
-        {
-            timber_type: "Maple",
-            length: "8 ft",
-            width: "0.75 ft",
-            piece_count: "0",
-        },
-    ],
-    total_pieces: "15",
-    checked_date: "2024-07-01",
-    comment: "",
-    status: "Submitted",
-    submission_timestamp:"",
-    application_code:"",
-    user: getLocalAuthUser()
-});
-
-const treeDetailsForm = ref({
-    timber_type: "Pine",
-    length: "12 ft",
-    width: "0.5 ft",
-    piece_count: "8",
-});
+const treeDetailsForm = ref({ timber_type: "", length: "", width: "", piece_count: "", });
 
 
-const rules = {
-    name: [
-        { required: true, message: "Name is required", trigger: "blur" },
-        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
-    ],
-    address: [
-        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
-    ],
-    contact_number: [
-        {
-            pattern: /^(?:\+94|0094|0)\d{9}$/,
-            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
-            trigger: "blur"
-        }
-    ],
-    nic: [
-        { required: true, message: "NIC is required", trigger: "blur" },
-        {
-            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
-            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
-            trigger: "blur"
-        }
-    ]
-};
+const rules = { name: [ { required: true, message: "Name is required", trigger: "blur" }, { min: 2, message: "Name should contain at least two characters", trigger: "blur" } ], address: [ { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" } ], contact_number: [ { pattern: /^(?:\+94|0094|0)\d{9}$/, message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx", trigger: "blur" } ], is_timber_bought_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ], receipt_no: [ { required: true, message: "This is required", trigger: "blur" } ], bought_date: [ { required: true, message: "This is required", trigger: "blur" } ], road_to_timber_location: [ { required: true, message: "This is required", trigger: "blur" } ], is_timber_private_land_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ], end_location: [ { required: true, message: "This is required", trigger: "blur" } ], route: [ { required: true, message: "This is required", trigger: "blur" } ], timber_transport_date: [ { required: true, message: "This is required", trigger: "blur" } ], plate_number: [ { required: true, message: "This is required", trigger: "blur" } ], total_pieces: [ { required: true, message: "This is required", trigger: "blur" } ], status: [ { required: true, message: "This is required", trigger: "blur" } ], application_code: [ { required: true, message: "This is required", trigger: "blur" } ], checked_date: [ { required: true, message: "This is required", trigger: "blur" } ], };
+
+const hasTreeDetails = computed(() => { return formValue.value.timber_details.length > 0; });
 
 watch(
     () => props.isShowing,
@@ -520,6 +437,7 @@ watch(
 
 async function certifyAndSubmit() {
    try{
+       await formRef.value.validate();
        if (isNewApplication.value) {
            formValue.value.status = "Submitted";
            await Http.post("timberTransportingPermitApplication", formValue.value);
