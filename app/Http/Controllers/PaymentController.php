@@ -116,4 +116,6 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Error deleting payment'], 500);
         }
     }
+
+
 }

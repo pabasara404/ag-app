@@ -79,28 +79,7 @@ const columns = [
                 { default: () => "Review" }
             );
         }
-    },
-    {
-        title: "",
-        key: "actions",
-        render(row) {
-            return h(
-                NButton,
-                {
-                    round: true,
-                    type: "info",
-                    strong: true,
-                    secondary: true,
-                    size: "small",
-                    onClick: async () => {
-                        await deleteApplication(row);
-                        await fetchApplication();
-                    },
-                },
-                { default: () => "Delete" }
-            );
-        },
-    },
+    }
 ];
 
 onMounted(() => {

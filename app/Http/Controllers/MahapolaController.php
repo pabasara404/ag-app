@@ -153,4 +153,17 @@ class MahapolaController extends Controller
         $path = storage_path() . '/app/' . $request->path;
         return response()->download($path);
     }
+
+    public function checkApplicationCode(Request $request)
+    {
+        $request->validate([
+            'application_code' => 'required|string',
+        ]);
+
+        $applicationCodeExists = Mahapola::where('application_code', $request->application_code)->exists();
+
+        return response()->json([
+            'exists' => $applicationCodeExists
+        ]);
+    }
 }

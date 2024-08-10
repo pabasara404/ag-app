@@ -261,6 +261,11 @@ watch(
 async function certifyAndSubmit() {
     try {
         if (isNewApplication.value) {
+            const applicationCodeResponse = await Http.post("checkApplicationCode", {application_code: formValue.value.application_code});
+            if (applicationCodeResponse.data.exists) {
+                message.error("APPLICATION CODE already exists!");
+                return;
+            }
             formValue.value.status = "Submitted";
             const { data } = await Http.post("mahapolaApplication", formValue.value);
 

@@ -150,6 +150,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('mahapolaApplication/{id}', [MahapolaController::class, 'updateStatus']);
     Route::get('mahapolaByStatus', [MahapolaController::class, 'filterByStatus']);
     Route::get('userMahapolaApplications', [MahapolaController::class, 'userApplications']);
+    Route::post('checkApplicationCode', [MahapolaController::class, 'checkApplicationCode']);
 
 
 //routes for animalTransportations

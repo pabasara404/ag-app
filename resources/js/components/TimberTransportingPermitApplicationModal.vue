@@ -43,7 +43,7 @@
           </n-form-item>
           <n-form-item
               label="Grama Niladari Division"
-              path="grama_niladari_division"
+              path="gn_division"
           >
               <n-dropdown
                   :disabled="initialStatus==='Escalated'"
@@ -68,7 +68,7 @@
                 v-model:value="formValue.address_of_timber"
                 placeholder="Address of the timber" />
           </n-form-item>
-          <n-form-item label="Was timber bought?" path="timber_bought">
+          <n-form-item label="Was timber bought?" path="is_timber_bought_checked_value">
           <n-radio-group
               :disabled="initialStatus==='Escalated'"
             v-model:value="formValue.is_timber_bought_checked_value"
@@ -94,6 +94,7 @@
               </n-form-item>
                   <n-form-item
                       label="How to go the location of timber from AG Office"
+                      path="road_to_timber_location"
                   >
                       <n-input
                           :disabled="initialStatus==='Escalated'"
@@ -105,7 +106,7 @@
           </n-card>
           </div>
           <br/>
-          <n-form-item label="Was timber taken from a private land owner?" path="timber_private">
+          <n-form-item label="Was timber taken from a private land owner?" path="is_timber_private_land_checked_value">
               <n-radio-group
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.is_timber_private_land_checked_value"
@@ -117,46 +118,46 @@
                   </n-space>
               </n-radio-group>
           </n-form-item>
-          <n-form-item label="Land Deed Number" path="land_deed_number">
+          <n-form-item label="Land Deed Number" path="private_land.land_deed_number">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_deed_number"
                   placeholder="Land Deed Number"
               />
           </n-form-item>
-          <n-form-item label="Registration Date" path="registration_date">
+          <n-form-item label="Registration Date" path="private_land.registration_date">
               <n-date-picker
                   :disabled="initialStatus==='Escalated'" v-model:value="selectedRegistrationDate" type="date" />
           </n-form-item>
-          <n-form-item label="Plan plot No." path="plan_plot_no">
+          <n-form-item label="Plan plot No." path="private_land.plan_plot_number">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.plan_plot_number"
                   placeholder="Plan plot No."
               />
           </n-form-item>
-          <n-form-item label="Registration office" path="registration_office">
+          <n-form-item label="Registration office" path="private_land.registration_office">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.registration_office"
                   placeholder="Registration office"
               />
           </n-form-item>
-          <n-form-item label="Plan No." path="plan_number">
+          <n-form-item label="Plan No." path="private_land.plan_number">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.plan_number"
                   placeholder="Plan No."
               />
           </n-form-item>
-          <n-form-item label="Land Name" path="land_name">
+          <n-form-item label="Land Name" path="private_land.land_name">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_name"
                   placeholder="Land Name"
               />
           </n-form-item>
-          <n-form-item label="Land Size in perches" path="land_size">
+          <n-form-item label="Land Size in perches" path="private_land.land_size">
               <n-input
                   :disabled="initialStatus==='Escalated'"
                   v-model:value="formValue.private_land.land_size"
@@ -207,7 +208,7 @@
           </n-form-item>
           <n-form-item label="Date timber is transported" path="timber_transport_date">
               <n-date-picker
-                  :disabled="initialStatus==='Escalated'"v-model:value="selectedTimberTransportDate" type="date" />
+                  :disabled="initialStatus==='Escalated'" v-model:value="selectedTimberTransportDate" type="date" />
           </n-form-item>
           <n-form-item label="Plate number of the vehicle" path="plate_number">
               <n-input
@@ -217,14 +218,14 @@
               />
           </n-form-item>
               <n-card v-if="isNewApplication"  title="Details about the timber. (Use Standard measurements to complete the details.)">
-                  <n-form-item label="Timber type">
+                  <n-form-item label="Timber type" path="timber_details.timber_type">
                       <n-input
                           :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.timber_type"
                           placeholder="Timber type"
                       />
                   </n-form-item>
-                  <n-form-item label="Length(meters and millimeters)">
+                  <n-form-item label="Length(meters and millimeters)" path="timber_details.length">
                       <n-input
                           :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.length"
@@ -232,14 +233,14 @@
                       />
                   </n-form-item>
 
-                  <n-form-item label="Width(mm)">
+                  <n-form-item label="Width(mm)" path="timber_details.width">
                       <n-input
                           :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.width"
                           placeholder="Width(mm)"
                       />
                   </n-form-item>
-                  <n-form-item label="Number of pieces">
+                  <n-form-item label="Number of pieces" path="timber_details.piece_count">
                       <n-input
                           :disabled="initialStatus==='Escalated'"
                           v-model:value="treeDetailsForm.piece_count"
@@ -275,7 +276,7 @@
                       </tbody>
                   </n-table>
               </n-form-item>
-          <n-form-item label="Total Number of pieces">
+          <n-form-item label="Total Number of pieces" path="timber_details.piece_count">
               <n-input
                   :disabled="true"
                   v-model:value="totalPieces"
@@ -423,7 +424,18 @@ const formValue = ref({ id: "", name: "", address: "", contact_number: "", gn_di
 const treeDetailsForm = ref({ timber_type: "", length: "", width: "", piece_count: "", });
 
 
-const rules = { name: [ { required: true, message: "Name is required", trigger: "blur" }, { min: 2, message: "Name should contain at least two characters", trigger: "blur" } ], address: [ { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" } ], contact_number: [ { pattern: /^(?:\+94|0094|0)\d{9}$/, message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx", trigger: "blur" } ], is_timber_bought_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ], receipt_no: [ { required: true, message: "This is required", trigger: "blur" } ], bought_date: [ { required: true, message: "This is required", trigger: "blur" } ], road_to_timber_location: [ { required: true, message: "This is required", trigger: "blur" } ], is_timber_private_land_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ], end_location: [ { required: true, message: "This is required", trigger: "blur" } ], route: [ { required: true, message: "This is required", trigger: "blur" } ], timber_transport_date: [ { required: true, message: "This is required", trigger: "blur" } ], plate_number: [ { required: true, message: "This is required", trigger: "blur" } ], total_pieces: [ { required: true, message: "This is required", trigger: "blur" } ], status: [ { required: true, message: "This is required", trigger: "blur" } ], application_code: [ { required: true, message: "This is required", trigger: "blur" } ], checked_date: [ { required: true, message: "This is required", trigger: "blur" } ], };
+const rules = { name: [ { required: true, message: "Name is required", trigger: "blur" }, { min: 2, message: "Name should contain at least two characters", trigger: "blur" } ],
+    address: [ { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" } ],
+    contact_number: [ { pattern: /^(?:\+94|0094|0)\d{9}$/, message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx", trigger: "blur" } ],
+    is_timber_bought_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ],
+    receipt_no: [ { required: false, message: "This is required", trigger: "blur" } ], bought_date: [ { required: true, message: "This is required", trigger: "blur" } ],
+    road_to_timber_location: [ { required: true, message: "This is required", trigger: "blur" } ],
+    is_timber_private_land_checked_value: [ { required: true, message: "This is required", trigger: "blur" } ],
+    end_location: [ { required: true, message: "This is required", trigger: "blur" } ],
+    route: [ { required: true, message: "This is required", trigger: "blur" } ],
+    timber_transport_date: [ { required: true, message: "This is required", trigger: "blur" } ],
+    plate_number: [ { required: true, message: "This is required", trigger: "blur" } ],
+    total_pieces: [ { required: true, message: "This is required", trigger: "blur" } ],};
 
 const hasTreeDetails = computed(() => { return formValue.value.timber_details.length > 0; });
 
@@ -482,10 +494,15 @@ const selectedRegistrationDate = computed({
       ? moment(landRegistrationDate).valueOf()
       : null;
   },
-  set: (epoch) => {
-    formValue.value.private_land.registration_date = moment
+  set: (epoch) => { const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (selectedDate.isAfter(currentDate)) {
+          message.error('Date cannot be a future date.');
+      } else {
+        formValue.value.private_land.registration_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 
@@ -496,10 +513,15 @@ const selectedBoughtDate = computed({
       ? moment(boughtDate).valueOf()
       : null;
   },
-  set: (epoch) => {
+  set: (epoch) => {const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (selectedDate.isAfter(currentDate)) {
+          message.error('Date cannot be a future date.');
+      } else {
     formValue.value.bought_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 
@@ -510,10 +532,15 @@ const selectedTimberTransportDate = computed({
       ? moment(TimberTransportDate).valueOf()
       : null;
   },
-  set: (epoch) => {
+  set: (epoch) => {const selectedDate = moment.unix(epoch / 1000);
+      const currentDate = moment();
+
+      if (!(selectedDate.isAfter(currentDate))) {
+          message.error('Date cannot be a past date.');
+      } else {
     formValue.value.timber_transport_date = moment
       .unix(epoch / 1000)
-      .format("YYYY-MM-DD");
+      .format("YYYY-MM-DD");}
   },
 });
 
@@ -524,8 +551,13 @@ const selectedCheckedDate = computed({
             ? moment(checkedDate).toDate()
             : null;
     },
-    set: (date) => {
-        formValue.value.checked_date = moment(date).format("YYYY-MM-DD");
+    set: (date) => {const selectedDate = moment.unix(date / 1000);
+        const currentDate = moment();
+
+        if (selectedDate.isAfter(currentDate)) {
+            message.error('Date cannot be a future date.');
+        } else {
+        formValue.value.checked_date = moment(date).format("YYYY-MM-DD");}
     }
 });
 
@@ -534,6 +566,11 @@ const totalPieces = computed(() => {
     return formValue.value.timber_details.reduce((total, detail) => {
         return total + parseInt(detail.piece_count || "0");
     }, 0);
+});
+
+// Watch the computed property and update total_pieces
+watch(totalPieces, (newValue) => {
+    formValue.value.total_pieces = newValue;
 });
 
 const isNewApplication = computed(() => {

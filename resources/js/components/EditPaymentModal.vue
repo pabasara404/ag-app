@@ -7,7 +7,7 @@
                     <n-h2 v-else>Add New Payment</n-h2>
                 </n-page-header>
                 <n-form ref="formRef" :rules="rules" :model="formValue">
-                    <n-form-item label="Name with Initials" path="user.firstName">
+                    <n-form-item label="Name with Initials" path="name">
                         <n-input v-model:value="formValue.name" placeholder="Enter Name" :value="userName" />
                     </n-form-item>
                     <n-form-item label="Payment Type" path="role">
@@ -25,7 +25,7 @@
                             <n-input v-model:value="formValue.payment_type" :value="paymentType" readonly />
                         </template>
                     </n-form-item>
-                    <n-form-item label="Application Code" path="user.firstName">
+                    <n-form-item label="Application Code" path="application_code">
                         <n-input v-model:value="formValue.application_code" placeholder="Enter Application Code" :value="applicationCode" />
                         <n-button class="mx-1.5" attr-type="button" @click="searchApplication">
                             <n-icon size="25"><SearchIcon /></n-icon>
@@ -40,16 +40,16 @@
                         </n-card>
                     </template>
                     <br/>
-                    <n-form-item label="Amount" path="user.firstName">
+                    <n-form-item label="Amount" path="amount">
                         <n-input v-model:value="formValue.amount" placeholder="Enter Amount" />
                     </n-form-item>
-                    <n-form-item label="Receipt No" path="user.firstName">
+                    <n-form-item label="Receipt No" path="receipt_no">
                         <n-input v-model:value="formValue.receipt_no" placeholder="Receipt No" />
                     </n-form-item>
-                    <n-form-item label="Paid Date">
+                    <n-form-item label="Paid Date"  path="selectedDate">
                         <n-date-picker v-model:value="selectedDate" type="date" />
                     </n-form-item>
-                    <n-form-item label="Phone Number" path="phone">
+                    <n-form-item label="Phone Number" path="contact_number">
                         <n-input
                             v-model:value="formValue.contact_number"
                             placeholder="Phone Number"
@@ -58,7 +58,7 @@
                     <n-form-item label="NIC" path="nic">
                         <n-input v-model:value="formValue.nic" placeholder="NIC" />
                     </n-form-item>
-                    <n-form-item label="Upload the Payment Receipt" path="nic">
+                    <n-form-item label="Upload the Payment Receipt">
                         <n-upload
                             multiple
                             directory-dnd
@@ -155,7 +155,33 @@ const formValue = ref({
 });
 
 const rules = {
-
+    name: [
+        { required: true, message: "Name is required", trigger: "blur" },
+        { min: 2, message: "Name should contain at least two characters", trigger: "blur" }
+    ],
+    address: [
+        { max: 255, message: "Address should not exceed 255 characters", trigger: "blur" }
+    ],
+    contact_number: [
+        {required: true,
+            pattern: /^(?:\+94|0094|0)\d{9}$/,
+            message: "Phone number should be in the format +94xxxxxxxxx, 0094xxxxxxxxx, or 0xxxxxxxxx",
+            trigger: "blur"
+        }
+    ],
+    nic: [
+        { required: true, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
+    ],
+    receipt_no: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],amount: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
 };
 
 const paymentTypeOptions = [
@@ -194,7 +220,13 @@ const selectedDate = computed({
         return moment(formValue.value.paid_date).isValid() ? moment(formValue.value.paid_date).valueOf() : null;
     },
     set: (epoch) => {
-        formValue.value.paid_date = moment(epoch).isValid() ? moment(epoch).format("YYYY-MM-DD") : "";
+        const selectedDate = moment.unix(epoch / 1000);
+        const currentDate = moment();
+
+        if (selectedDate.isAfter(currentDate)) {
+            message.error('Date cannot be a future date.');
+        } else {
+        formValue.value.paid_date = moment(epoch).isValid() ? moment(epoch).format("YYYY-MM-DD") : "";}
     },
 });
 
@@ -368,6 +400,7 @@ function addApplicationDetailsToPdf(pdf, applicationLabel, details) {
 
 async function save() {
     try {
+        await formRef.value.validate();
         const response = await Http.post(`/payment`, formValue.value);
         message.success('Payment saved successfully. Download will begin shortly');
 
