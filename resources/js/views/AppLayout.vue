@@ -71,7 +71,6 @@
                     class="h-[calc(100vh-80px-24px)]"
                 >
                     <n-menu
-                        v-if="!hasOnlyOneSideBarItem"
                         :inverted="inverted"
                         :collapsed-width="64"
                         :collapsed-icon-size="22"
@@ -284,7 +283,7 @@ const menuOptions = [
     {
         label: "Welfare Information Verification",
         key: "welfareInformationVerification",
-        authorizedBy: ["GeneralUser", "Admin"],
+        authorizedBy: ["GeneralUser", "GeneralUser", "Admin"],
         icon: renderIcon(LogoBitcoinIcon),
         children: [
             {
@@ -392,14 +391,27 @@ const menuOptions = [
         icon: renderIcon(BarChartIcon),
     },
 ];
-// const signOut = () => store.dispatch("auth/logout");
+
+const sidebarCollapsed = ref(false);
+
+// Add this watch
+watch(sidebarCollapsed, (newValue) => {
+    console.log("Sidebar collapsed:", newValue);
+});
+
 
 const authUserSideBarItems = computed(() => {
-    const authUserRole = () => getLocalAuthUser()?.role?.role_type;
+    const authUserRole = () => {
+        const role = getLocalAuthUser()?.role?.role_type;
+        console.log("User role:", role);
+        return role;
+    };
 
-    return menuOptions.filter((option) => {
-        return option.authorizedBy.includes(authUserRole);
+    const filteredItems = menuOptions.filter((option) => {
+        return option.authorizedBy.includes(authUserRole());
     });
+    console.log("Filtered sidebar items:", filteredItems);
+    return filteredItems;
 });
 
 const hasOnlyOneSideBarItem = authUserSideBarItems.value.length === 1;

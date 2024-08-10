@@ -1,5 +1,5 @@
 <template>
-    <PageHeader title="Admin Dashboard" />
+    <PageHeader title="General Dashboard" />
     <n-grid x-gap="12" :cols="4" class="white-background">
         <n-gi>
             <div class="light-green p-2 hover-card">
@@ -23,17 +23,12 @@
         </n-gi>
     </n-grid>
 
-    <n-grid x-gap="12" :cols="3" class="white-background">
+    <n-grid x-gap="12" :cols="2" class="white-background">
         <n-gi>
             <div id="app" class="m-2 border-solid border-2 w-100 p-2 h-90 rounded-md">
                 <div class="bar-chart-container">
                     <BarChart></BarChart>
                 </div>
-            </div>
-        </n-gi>
-        <n-gi>
-            <div class="m-2 border-solid border-2 p-2 w-100 rounded-md">
-                <canvas ref="lineChart"></canvas>
             </div>
         </n-gi>
         <n-gi>

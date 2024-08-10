@@ -36,6 +36,7 @@ return new class extends Migration
             $table->foreignId('land_detail_id')->nullable()->references('id')->on('land_details');
             $table->foreignId('boundary_id')->nullable()->references('id')->on('boundaries');
             $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
+            $table->json('file_detail_ids')->nullable();
             $table->timestamps();
         });
     }

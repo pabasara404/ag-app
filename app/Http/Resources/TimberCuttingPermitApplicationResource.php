@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\FileDetail;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TimberCuttingPermitApplicationResource extends JsonResource
@@ -38,6 +40,7 @@ class TimberCuttingPermitApplicationResource extends JsonResource
             "comment"=>$this->comment,
             "updated_at"=>$this->updated_at,
             "application_code"=>$this->application_code,
+            'file_details' => FileDetail::query()->whereIn('id', Json::decode($this->file_detail_ids) ?? [])->get(),
             "user"=>$this->user,
 
         ];

@@ -16,7 +16,7 @@ class ApplicationStatistics
         'president_funds',
         'mahapolas',
         'excises',
-        'valuations',
+        'valuations'
     ];
 
     public static function getApplicationCountsByGnDivision()
@@ -153,5 +153,30 @@ class ApplicationStatistics
         }
 
         return $countsByType;
+    }
+
+    public static function getMonthlyTransportedAnimalCount()
+    {
+
+        $data = DB::table('animal_transportations')
+            ->selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', date('Y')) // Filter by the current year
+            ->groupBy('month')
+            ->get();
+
+        return $data;
+    }
+
+    public function getMonthlyTotalIncome()
+    {
+        // Query to get the total income grouped by month
+        $data = DB::table('payments')
+            ->selectRaw('MONTH(paid_date) as month, YEAR(paid_date) as year, SUM(amount) as total_income')
+            ->whereYear('paid_date', date('Y')) // Filter by the current year
+            ->groupBy('month', 'year')
+            ->orderBy('month')
+            ->get();
+
+        return $data;
     }
 }

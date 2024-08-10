@@ -406,8 +406,9 @@
               <p>I have personally inspected the tree/trees for which permission is sought to be cut by the applicant. There is no problem Regarding ownership or boundaries of the land. I certify that the facts mentioned in this report are true. I recommend permission for cutting tree/trees.</p>
           </n-card>
         <div class="flex justify-end">
+            <p v-if="!hasTreeDetails"> Please add tree details.</p>
           <n-form-item>
-            <n-button v-if="initialStatus!=='Escalated'" @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
+            <n-button v-if="initialStatus!=='Escalated'" :disabled="!hasTreeDetails" @click="certifyAndSubmit"> {{ isNewTimberCuttingPermitApplication? "Certify and Submit" : "Resubmit" }} </n-button>
               <n-button v-if="initialStatus==='Escalated'" type="primary" class="mx-5" @click="updateStatus('Awaiting Payment')">Approve</n-button>
               <n-button v-if="initialStatus==='Escalated'" type="error" @click="updateStatus('Rejected')">Reject</n-button>
           </n-form-item>
@@ -572,6 +573,7 @@ const treeDetailsForm = ref({
     age: ""
 });
 
+const hasTreeDetails = computed(() => { return formValue.value.tree_details.length > 0; });
 const rules = {
     name: [
         { required: true, message: "Name is required", trigger: "blur" },
@@ -594,16 +596,75 @@ const rules = {
     non_commercial_use_checked_value: [
         { required: true, message: "This is required", trigger: "blur" }
     ],
-    "deed_detail.land_deed_number": [
+    deed_detail: {
+        land_deed_number: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ],
+        land_deed_date: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ]
+    },
+    ownership_of_land_checked_value: [
         { required: true, message: "This is required", trigger: "blur" }
     ],
-    ownership_of_land_checked_value: [
+    land_detail: {
+        land_name: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ],
+        land_size: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ],
+        plan_number: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ],
+        plan_date: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ],
+        plan_plot_number: [
+            { required: true, message: "This is required", trigger: "blur" }
+        ]
+    },
+    tree_count: [
+        { required: true, message: "Please Add Tree Details", trigger: "blur" }
+    ],
+    tree_details: [
+        {
+            type: "array",
+            required: true,
+            message: "At least one tree detail is required",
+            trigger: "blur"
+        }
+    ],
+    tree_cutting_reasons: [
+        {
+            type: "array",
+            required: true,
+            message: "At least one tree cutting reason is required",
+            trigger: "blur"
+        }
+    ],
+    trees_cut_before: [
         { required: true, message: "This is required", trigger: "blur" }
     ],
     road_to_land: [
         { required: true, message: "This is required", trigger: "blur" }
     ],
-    planted_tree_count: [
+    status: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    submission_timestamp: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    checked_date: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    checked_time: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    comment: [
+        { required: true, message: "This is required", trigger: "blur" }
+    ],
+    application_code: [
         { required: true, message: "This is required", trigger: "blur" }
     ]
 };
@@ -625,13 +686,17 @@ const isNewTimberCuttingPermitApplication = computed(() => {
 const certifyAndSubmit = async () => {
     try{
         await formRef.value.validate();
-        if (formValue.value.tree_count === "0") {
+        if (formValue.value.tree_count === "0" || formValue.value.tree_count === null ) {
             message.error("Please add a tree details");
+            return;
+        }
+        if (!formValue.value.gn_division) {
+            message.error("Please select a gn division");
             return;
         }
         if (isNewTimberCuttingPermitApplication.value) {
             formValue.value.status = "Submitted";
-            Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
+            const { data } = Http.post("timberCuttingPermitApplication", formValue.value).then(() => {
                 message.success("Application was submitted successfully!");
                 emit("close", false);
             });

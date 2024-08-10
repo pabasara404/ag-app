@@ -59,11 +59,11 @@ const selectedApplication = ref(false);
 function addNewApplication() {
     selectedApplication.value = {
             id: "",
-            name: "John Doe",  // Dummy data
-            address: "123 Main St",  // Dummy data
-            contact_number: "0712345678",  // Dummy data
-            timber_seller_checked_value: "Yes",  // Dummy data
-            non_commercial_use_checked_value: "Yes",  // Dummy data
+            name: "",  // Dummy data
+            address: "",  // Dummy data
+            contact_number: "",  // Dummy data
+            timber_seller_checked_value: "",  // Dummy data
+            non_commercial_use_checked_value: "",  // Dummy data
             gn_division: {
                 id: "",
                 gn_code: "",
@@ -71,10 +71,10 @@ function addNewApplication() {
                 mpa_code: "",
             },
             deed_detail: {
-                land_deed_number: "LD123456",  // Dummy data
+                land_deed_number: "",  // Dummy data
                 land_deed_date: "",
             },
-            ownership_of_land_checked_value: "Yes",  // Dummy data
+            ownership_of_land_checked_value: "",  // Dummy data
             land_detail: {
                 land_name: "",
                 land_size: "",
@@ -92,8 +92,8 @@ function addNewApplication() {
             tree_details: [],
             tree_cutting_reasons: [],  // Dummy data
             trees_cut_before: "",
-            planted_tree_count: 10,  // Dummy data
-            road_to_land: "Yes",  // Dummy data
+            planted_tree_count: 0,  // Dummy data
+            road_to_land: "",  // Dummy data
             status: "",
             submission_timestamp: "",
             checked_date: "",

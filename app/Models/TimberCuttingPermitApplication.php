@@ -36,7 +36,8 @@ class TimberCuttingPermitApplication extends Model
         'tree_detail_id',
         'comment',
         'application_code',
-        'user_id'
+        'user_id',
+        'file_detail_ids',
     ];
 
     protected $casts = [

@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('issuedApplicationCounts', [StatisticsController::class, 'getIssuedApplicationCounts']);
     Route::get('submittedApplicationCounts', [StatisticsController::class, 'getSubmittedApplicationCounts']);
     Route::get('/search-applications', [ApplicationController::class, 'searchApplications']);
+    Route::get('/monthly-transported-animal-count', [StatisticsController::class, 'getMonthlyTransportedAnimalCount']);
 
 
     Route::post('/payment', [PaymentController::class, 'store']);
@@ -178,6 +179,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('timberCuttingPermitApplication', [TimberCuttingPermitApplicationController::class, 'store']);
     Route::put('timberCuttingPermitApplication/{id}', [TimberCuttingPermitApplicationController::class, 'updateStatus']);
     Route::get('userTimberCuttingPermitApplications', [TimberCuttingPermitApplicationController::class, 'userApplications']);
+    Route::post('timberCuttingPermitApplication/upload', [TimberCuttingPermitApplicationController::class, 'upload']);
+    Route::get('timberCuttingPermitApplication/download', [TimberCuttingPermitApplicationController::class, 'download']);
 //
 //routes for timberTransportingPermitApplications
     Route::get('timberTransportingPermitApplication', [TimberTransportingPermitApplicationController::class, 'index']);

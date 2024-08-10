@@ -323,7 +323,7 @@ function handleFiles(files){
 
 async function handleDownload(path, name ) {
     await Http({
-        url: `mahapolaApplication/download?path=${path}&name=${name}`,
+        url: `timberCuttingPermitApplication/download?path=${path}&name=${name}`,
         method: "GET",
         responseType: "blob", // important
     }).then((response) => {

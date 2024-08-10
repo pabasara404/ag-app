@@ -3,7 +3,7 @@
     <n-grid x-gap="12" :cols="4" class="white-background">
         <n-gi>
             <div class="light-green p-2 hover-card">
-                <n-h5>Monthly Transported Animal Count: 20</n-h5>
+                <n-h5>Monthly Transported Animal Permit Count: 21</n-h5>
             </div>
         </n-gi>
         <n-gi>
@@ -59,7 +59,29 @@ const lineChart = ref(null);
 onMounted(() => {
     fetchDonutChartData();
     renderLineChart();
+    fetchMonthlyTransportedAnimalCount();
 });
+
+const transportedAnimalCount = ref(0);
+
+
+const fetchMonthlyTransportedAnimalCount = async () => {
+    try {
+        const response = await axios.get('/api/monthly-transported-animal-count');
+        transportedAnimalCount.value = response.data.count;
+    } catch (error) {
+        console.error('Error fetching the monthly transported animal count:', error);
+    }
+};
+
+const fetchMonthlyTotalIncome = async () => {
+    try {
+        const response = await axios.get('/api/monthly-total-income');
+        totalIncome.value = response.data.reduce((acc, curr) => acc + parseFloat(curr.total_income), 0);
+    } catch (error) {
+        console.error('Error fetching the monthly total income:', error);
+    }
+};
 
 const fetchDonutChartData = async () => {
     try {
