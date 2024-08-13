@@ -60,6 +60,7 @@ function addNewApplication() {
     selectedApplication.value = {
             id: "",
             name: "John Doe",  // Dummy data
+            nic: "",  // Dummy data
             address: "123 Main St",  // Dummy data
             contact_number: "0712345678",  // Dummy data
             timber_seller_checked_value: "Yes",  // Dummy data

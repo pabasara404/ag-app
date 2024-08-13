@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('contact_number')->nullable();
+            $table->string('nic')->nullable();
             $table->string('timber_seller_checked_value')->nullable();
             $table->string('non_commercial_use_checked_value')->nullable();
             $table->string('ownership_of_land_checked_value')->nullable();

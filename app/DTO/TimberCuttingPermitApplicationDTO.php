@@ -21,6 +21,7 @@ class TimberCuttingPermitApplicationDTO
     public ?string $checked_time;
     public ?string $comment;
     public ?string $application_code;
+    public ?string $nic;
 
     // Foreign key relations as arrays or objects depending on your needs
     public ?array $gn_division;

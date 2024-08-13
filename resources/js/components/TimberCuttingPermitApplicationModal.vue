@@ -54,6 +54,14 @@
             </n-space>
           </n-radio-group>
         </n-form-item>
+              <n-card v-if="formValue.timber_seller_checked_value === 'No'">
+                  <n-form-item label="Nic" path="nic">
+                      <n-input
+                          :disabled="initialStatus==='Escalated'"
+                          v-model:value="formValue.nic"
+                          placeholder="Please add your nic" />
+                  </n-form-item>
+              </n-card>
           <n-form-item
           label="Are you cutting trees for non-commercial use?"
           path="non_commercial_use_checked_value"
@@ -450,128 +458,130 @@ const props = defineProps({
 });
 const GNDivisionOptions = ref([]);
 const treeCuttingReasons = ref([]);
-//
-// const formValue = ref({
-//     id: "",
-//     name: "John Doe",
-//     address: "123 Main St",
-//     contact_number: "555-1234",
-//     timber_seller_checked_value: "Yes",
-//     non_commercial_use_checked_value: "No",
-//     gn_division: {
-//         id: "74",
-//         gn_code: "370",
-//         name: "Kotugoda",
-//         mpa_code: "204",
-//     },
-//     deed_detail: {
-//         land_deed_number: "789",
-//         land_deed_date: "2022-04-11",
-//     },
-//     ownership_of_land_checked_value: "Co-owner",
-//     land_detail: {
-//         land_name: "Example Land",
-//         land_size: "10 acres",
-//         plan_number: "Plan123",
-//         plan_date: "2022-04-11",
-//         plan_plot_number: "Plot456",
-//     },
-//     boundary: {
-//         north: "North boundary",
-//         south: "South boundary",
-//         east: "East boundary",
-//         west: "West boundary",
-//     },
-//     tree_count: "2",
-//     tree_details: [
-//         {id:"",
-//             sub_no: "001",
-//             type: "Pine",
-//             height: "10 meters",
-//             girth: "2 meters",
-//             reproducibility: "Yes",
-//             age:"12"}
-//     ],
-//     tree_cutting_reasons: [
-//         {id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2},
-//         {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
-//     trees_cut_before: "2",
-//     planted_tree_count: "20",
-//     road_to_land: "Paved road",
-//     status: "Submitted",
-//     submission_timestamp:"",
-//     checked_date:"",
-//     checked_time:"",
-//     comment:"",
-//     application_code:"",
-//     user: getLocalAuthUser()
-// });
-//
-// const treeDetailsForm = ref({
-//     id:"",
-//     sub_no: "001",
-//     type: "Pine",
-//     height: "10 meters",
-//     girth: "2 meters",
-//     reproducibility: "Yes",
-//     age: "5 years"
-// });
 
 const formValue = ref({
     id: "",
-    name: "",
-    address: "",
-    contact_number: "",
-    timber_seller_checked_value: "",
-    non_commercial_use_checked_value: "",
+    name: "John Doe",
+    address: "123 Main St",
+    contact_number: "555-1234",
+    nic: "200058000604",
+    timber_seller_checked_value: "Yes",
+    non_commercial_use_checked_value: "No",
     gn_division: {
-        id: "",
-        gn_code: "",
-        name: "",
-        mpa_code: "",
+        id: "74",
+        gn_code: "370",
+        name: "Kotugoda",
+        mpa_code: "204",
     },
     deed_detail: {
-        land_deed_number: "",
-        land_deed_date: "",
+        land_deed_number: "789",
+        land_deed_date: "2022-04-11",
     },
-    ownership_of_land_checked_value: "",
+    ownership_of_land_checked_value: "Co-owner",
     land_detail: {
-        land_name: "",
-        land_size: "",
-        plan_number: "",
-        plan_date: "",
-        plan_plot_number: "",
+        land_name: "Example Land",
+        land_size: "10 acres",
+        plan_number: "Plan123",
+        plan_date: "2022-04-11",
+        plan_plot_number: "Plot456",
     },
     boundary: {
-        north: "",
-        south: "",
-        east: "",
-        west: "",
+        north: "North boundary",
+        south: "South boundary",
+        east: "East boundary",
+        west: "West boundary",
     },
-    tree_count: "",
-    tree_details: [],
-    tree_cutting_reasons: [],
-    trees_cut_before: "",
-    planted_tree_count: "",
-    road_to_land: "",
-    status: "",
-    submission_timestamp: "",
-    checked_date: "",
-    checked_time: "",
-    comment: "",
-    application_code: "",
+    tree_count: "2",
+    tree_details: [
+        {id:"",
+            sub_no: "001",
+            type: "Pine",
+            height: "10 meters",
+            girth: "2 meters",
+            reproducibility: "Yes",
+            age:"12"}
+    ],
+    tree_cutting_reasons: [
+        {id: 2, label: "To build the house intended to be built", created_at: null, updated_at: null, value: 2},
+        {id: 3, label: "Due to death due to natural causes", created_at: null, updated_at: null, value: 3}],
+    trees_cut_before: "2",
+    planted_tree_count: "20",
+    road_to_land: "Paved road",
+    status: "Submitted",
+    submission_timestamp:"",
+    checked_date:"",
+    checked_time:"",
+    comment:"",
+    application_code:"",
     user: getLocalAuthUser()
 });
 
 const treeDetailsForm = ref({
-    id: "",
-    sub_no: "",
-    type: "",
-    height: "",
-    girth: "",
-    reproducibility: "",
-    age: ""
+    id:"",
+    sub_no: "001",
+    type: "Pine",
+    height: "10 meters",
+    girth: "2 meters",
+    reproducibility: "Yes",
+    age: "5 years"
 });
+//
+// const formValue = ref({
+//     id: "",
+//     name: "",
+//     nic:"",
+//     address: "",
+//     contact_number: "",
+//     timber_seller_checked_value: "",
+//     non_commercial_use_checked_value: "",
+//     gn_division: {
+//         id: "",
+//         gn_code: "",
+//         name: "",
+//         mpa_code: "",
+//     },
+//     deed_detail: {
+//         land_deed_number: "",
+//         land_deed_date: "",
+//     },
+//     ownership_of_land_checked_value: "",
+//     land_detail: {
+//         land_name: "",
+//         land_size: "",
+//         plan_number: "",
+//         plan_date: "",
+//         plan_plot_number: "",
+//     },
+//     boundary: {
+//         north: "",
+//         south: "",
+//         east: "",
+//         west: "",
+//     },
+//     tree_count: "",
+//     tree_details: [],
+//     tree_cutting_reasons: [],
+//     trees_cut_before: "",
+//     planted_tree_count: "",
+//     road_to_land: "",
+//     status: "",
+//     submission_timestamp: "",
+//     checked_date: "",
+//     checked_time: "",
+//     comment: "",
+//     application_code: "",
+//     user: getLocalAuthUser()
+// });
+//
+// const treeDetailsForm = ref({
+//     id: "",
+//     sub_no: "",
+//     type: "",
+//     height: "",
+//     girth: "",
+//     reproducibility: "",
+//     age: ""
+// });
 
 const hasTreeDetails = computed(() => { return formValue.value.tree_details.length > 0; });
 const rules = {
@@ -666,6 +676,13 @@ const rules = {
     ],
     application_code: [
         { required: true, message: "This is required", trigger: "blur" }
+    ],nic: [
+        { required: false, message: "NIC is required", trigger: "blur" },
+        {
+            pattern: /^(?:\d{9}[vVxX]|\d{12})$/,
+            message: "NIC should be in the old format (9 digits followed by a letter) or the new format (12 digits)",
+            trigger: "blur"
+        }
     ]
 };
 

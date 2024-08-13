@@ -38,6 +38,7 @@ class TimberCuttingPermitApplicationResource extends JsonResource
             "planted_tree_count"=> $this->planted_tree_count,
             "road_to_land"=> $this->road_to_land,
             "comment"=>$this->comment,
+            "nic"=>$this->nic,
             "updated_at"=>$this->updated_at,
             "application_code"=>$this->application_code,
             'file_details' => FileDetail::query()->whereIn('id', Json::decode($this->file_detail_ids) ?? [])->get(),

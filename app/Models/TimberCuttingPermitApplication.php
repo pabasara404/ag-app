@@ -38,6 +38,7 @@ class TimberCuttingPermitApplication extends Model
         'application_code',
         'user_id',
         'file_detail_ids',
+        'nic'
     ];
 
     protected $casts = [
